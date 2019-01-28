@@ -1,0 +1,22 @@
+{
+  "name": "XRSDKOculus",
+  "version": "0.0.1-preview",
+  "libraryName": "XRSDKOculus",
+
+  "displays": [
+    {
+      "id": "oculus display"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "oculus input",
+      "disablesLegacyInput": true
+    }
+  ],
+  "sessions": [
+    {
+      "id": "oculus session"
+    }
+  ]
+}
