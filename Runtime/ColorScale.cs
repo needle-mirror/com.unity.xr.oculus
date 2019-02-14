@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Unity.XR.Oculus
 {
-    public static class Utils
+    public static partial class Utils
     {
         /// <summary>
         /// Set the color scale and color offset of the eye texture layers

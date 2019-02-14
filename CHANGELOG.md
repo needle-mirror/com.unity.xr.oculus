@@ -4,14 +4,19 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [1.1.5] - 2019-12-20
-### Changes
-- cleans up documentation
 
-## [1.1.5-preview] - 2019-12-19
+## [1.2.0-preview.1] - 2019-2-14
 ### Changes
-- cleans up plugin graphics thread lifecylce
-- Fixed a manifest merging issue with the 1.44 Oculus Integration assets
+- Cleans up plugin graphics thread lifecylce
+- Cleans up documentation
+- Update to Oculus 1.44 plugin
+### Adds
+- Public foveation setting API
+- Public Oculus statistics APIs
+- Improved recentering support
+### Fixes
+- There was a crash on exit when using single threaded rendering.  This has been fixed.
+- Fixed BeginFrame log spew.
 
 ## [1.1.4] - 2019-12-13
 - No changes, version rev only.
@@ -47,7 +52,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [1.1.2-preview] - 2019-11-25
 ### Fixes
-- Enables vulkan support on Quest and Go
+- Enables Vulkan support on Quest and Go
 - provider now uses correct occlusion mesh
 
 ### Known Issues
@@ -94,7 +99,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.0.1] - 2019-08-28
 ### Fixes
 - Input bugs
-  - GO reported sceondary button when it should have reported a menu button
+  - Go reported sceondary button when it should have reported a menu button
   - Quest and Rift S reported a thumbrest when they did not have one
   - Oculus Remote would never connect
 - Timing issues upon pausing/resuming app on standalone HMDs
@@ -128,7 +133,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Win32 compatibility
 - Updates minimum unity version to 2019.2
 - Input tracking reference node reporting
-- Updates to oculus plugin 1.34
+- Updates to Oculus plugin 1.34
 - XRStats support
 - Device relative eye positions
 - Recenter functionality
