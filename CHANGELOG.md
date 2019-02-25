@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [1.2.0] - 2019-2-25
+### Changes
+- Remove preview tag
+- Add missing release notes for 1.1.5
+
 ## [1.2.0-preview.1] - 2019-2-14
 ### Changes
 - Cleans up plugin graphics thread lifecylce
@@ -17,6 +22,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixes
 - There was a crash on exit when using single threaded rendering.  This has been fixed.
 - Fixed BeginFrame log spew.
+
+## [1.1.5] - 2019-12-20
+### Changes
+- Cleans up documentation
+
+## [1.1.5-preview] - 2019-12-19
+### Changes
+- Cleans up plugin graphics thread lifecylce
+- Fixed a manifest merging issue with the 1.44 Oculus Integration assets
 
 ## [1.1.4] - 2019-12-13
 - No changes, version rev only.
