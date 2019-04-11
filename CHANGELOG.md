@@ -3,6 +3,27 @@ All notable changes to this package will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+## [0.1.2-preview.1] - 2019-04-11
+### Changes
+- updates minimum unity version to 2019.2
+
+## [0.1.2-preview] - 2019-04-10
+### Changes
+- updates XR Management dependency to 0.2.0-preivew.9
+
+## [0.1.1-preview] - 2019-04-4
+### Fixes
+- Test Automation and test package setup
+- Display jitter and performance issues
+- Input tracking reference node reporting
+
+## [0.1.0-preview] - 2019-04-01
+### Added
+- Experience Subystem
+
+### Changed
+- Updates to oculus plugin 1.34
+
 ## [0.0.9-preview] - 2019-01-28
 ### Added
 - focus callback

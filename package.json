@@ -1,8 +1,8 @@
 {
   "name": "com.unity.xr.oculus",
   "displayName": "Oculus",
-  "version": "0.0.9-preview",
-  "unity": "2018.3",
+  "version": "0.1.2-preview.1",
+  "unity": "2019.2",
   "description": "Provides rendering and input support for Oculus devices using the XRSDK.",
   "keywords": [
     "oculus",
@@ -13,11 +13,14 @@
   ],
   "registry": "https://staging-packages.unity.com",
   "dependencies": {
-    "com.unity.xr.management": "2.0.0-preview.3"
+    "com.unity.xr.management": "2.0.0-preview.9"
   },
   "repository": {
     "type": "git",
-    "url": "https://gitlab.cds.internal.unity3d.com/xr/sdk/oculus.git",
-    "revision": "7914568d1392929a7ff64c601a78291e56838a98"
+    "url": "git@github.cds.internal.unity3d.com:unity/xr.sdk.oculus.git",
+    "revision": "1b8f6179678c8ddde2f41a33c7cf75f06f8eefdd"
+  },
+  "relatedPackages": {
+    "com.unity.xr.oculus.tests": "0.1.2-preview.1"
   }
 }
