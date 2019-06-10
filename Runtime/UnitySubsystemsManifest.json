@@ -5,7 +5,8 @@
 
   "displays": [
     {
-      "id": "oculus display"
+      "id": "oculus display",
+      "disablesLegacyVr" : true
     }
   ],
   "inputs": [

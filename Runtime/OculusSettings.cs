@@ -9,24 +9,17 @@ namespace Unity.XR.Oculus
     [XRConfigurationData("Oculus", "Unity.XR.Oculus.Settings")]
     public class OculusSettings : ScriptableObject
     {
-        public enum StereoRenderingModes
+        public enum StereoRenderingMode
         {
             MultiPass = 0,
-            SinglePass,
             SinglePassInstanced
         }
 
-        public enum StereoRenderingModesAndroid
-        {
-            MultiPass = 0,
-            Multiview = 3
-        }
+        [SerializeField, Tooltip("Set the Stereo Rendering Method")]
+        public StereoRenderingMode StereoRenderingModeDesktop;
 
         [SerializeField, Tooltip("Set the Stereo Rendering Method")]
-        public StereoRenderingModes StereoRenderingMode;
-
-        [SerializeField, Tooltip("Set the Stereo Rendering Method")]
-        public StereoRenderingModesAndroid StereoRenderingModeAndroid;
+        public StereoRenderingMode StereoRenderingModeAndroid;
 
         [SerializeField, Tooltip("Enable a shared depth buffer")]
         public bool SharedDepthBuffer;
@@ -40,7 +33,7 @@ namespace Unity.XR.Oculus
 #if UNITY_ANDROID && !UNITY_EDITOR
             return (ushort)StereoRenderingModeAndroid;
 # else
-            return (ushort)StereoRenderingMode;
+            return (ushort)StereoRenderingModeDesktop;
 #endif
         }
 #if !UNITY_EDITOR

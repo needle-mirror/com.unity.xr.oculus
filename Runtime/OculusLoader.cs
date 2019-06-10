@@ -72,13 +72,32 @@ namespace Unity.XR.Oculus
             CreateSubsystem<XRDisplaySubsystemDescriptor, XRDisplaySubsystem>(s_DisplaySubsystemDescriptors, "oculus display");
             CreateSubsystem<XRInputSubsystemDescriptor, XRInputSubsystem>(s_InputSubsystemDescriptors, "oculus input");
             CreateSubsystem<XRExperienceSubsystemDescriptor, XRExperienceSubsystem>(s_ExperienceSubsystemDescriptors, "oculus experience");
+        
+            if (sessionSubsystem == null || displaySubsystem == null || inputSubsystem == null || experienceSubsystem == null)
+            {
+                Debug.LogError("Unable to start XR SDK Oculus.");
+            }
 
+            if (sessionSubsystem == null)
+            {
+                Debug.LogError("Failed to load session subsystem.");
+            }
 
-            Debug.Log(displaySubsystem);
-            Debug.Log(inputSubsystem);
-            Debug.Log(sessionSubsystem);
-            Debug.Log(experienceSubsystem);
+            if (displaySubsystem == null)
+            {
+                Debug.LogError("Failed to load display subsystem.");
+            }
 
+            if (inputSubsystem == null)
+            {
+                Debug.LogError("Failed to load input subsystem.");
+            }
+
+            if (experienceSubsystem == null)
+            {
+                Debug.LogError("Failed to load experience subsystem.");
+            }
+ 
 
             return sessionSubsystem != null && displaySubsystem != null && inputSubsystem != null && experienceSubsystem != null;
         }

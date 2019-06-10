@@ -1,4 +1,3 @@
-#if UNITY_ANDROID
 using System.Reflection;
 using System.Xml;
 using UnityEngine;
@@ -6,9 +5,68 @@ using UnityEngine.Rendering;
 using UnityEditor.Android;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
+using Unity.XR.Oculus;
+using UnityEditor.XR.Management;
 
 namespace UnityEditor.XR.Oculus
 {
+    public class OculusBuildProcessor : XRBuildHelper<OculusSettings>
+    {
+        public override string BuildSettingsKey { get {return "Unity.XR.Oculus.Settings";} }
+    }
+
+    [InitializeOnLoad]
+    public static class OculusEnterPlayModeSettingsCheck
+    {
+        static OculusEnterPlayModeSettingsCheck()
+        {
+            EditorApplication.playModeStateChanged += PlaymodeStateChangedEvent;
+        }
+
+        private static void PlaymodeStateChangedEvent(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.EnteredPlayMode)
+            {
+                if (PlayerSettings.GetGraphicsAPIs(BuildTarget.StandaloneWindows)[0] !=
+                    GraphicsDeviceType.Direct3D11)
+                {
+                    Debug.LogError("D3D11 is currently the only graphics API compatible with the Oculus XR Plugin on desktop platforms. Please change the preferred Graphics API setting in Player Settings.");
+                }
+            }
+        }
+    }
+
+    internal class OculusPrebuildSettings : IPreprocessBuildWithReport
+    {
+        public int callbackOrder { get; }
+
+        public void OnPreprocessBuild(BuildReport report)
+        {
+
+#if UNITY_EDITOR && UNITY_STANDALONE_WIN
+            if (PlayerSettings.GetGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget)[0] !=
+                GraphicsDeviceType.Direct3D11)
+            {
+                throw new BuildFailedException("D3D11 is currently the only graphics API compatible with the Oculus XR Plugin on desktop platforms. Please change the Graphics API setting in Player Settings.");
+            }
+#endif
+
+#if UNITY_EDITOR && UNITY_ANDROID
+            if (PlayerSettings.GetGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget)[0] !=
+                GraphicsDeviceType.OpenGLES3)
+            {
+                throw new BuildFailedException("OpenGLES3 is currently the only graphics API compatible with the Oculus XR Plugin on mobile platforms.");
+            }
+            if (PlayerSettings.Android.minSdkVersion < AndroidSdkVersions.AndroidApiLevel19)
+            {
+                throw new BuildFailedException("Minimum API must be set to 19 or higher for Oculus XR Plugin.");
+
+            }
+#endif
+        }
+    }
+
+#if UNITY_ANDROID
     internal class OculusManifest : IPostGenerateGradleAndroidProject
     {
         static readonly string k_AndroidURI = "http://schemas.android.com/apk/res/android";
@@ -111,5 +169,5 @@ namespace UnityEditor.XR.Oculus
             Debug.Log(sw);
         }
     }
-}
 #endif
+}
