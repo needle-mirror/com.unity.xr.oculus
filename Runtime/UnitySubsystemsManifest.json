@@ -1,6 +1,6 @@
 {
   "name": "XRSDKOculus",
-  "version": "0.1.1-preview",
+  "version": "1.0.0-preview",
   "libraryName": "XRSDKOculus",
 
   "displays": [
@@ -12,16 +12,6 @@
   "inputs": [
     {
       "id": "oculus input"
-    }
-  ],
-  "sessions": [
-    {
-      "id": "oculus session"
-    }
-  ],
-  "experience": [
-    {
-      "id": "oculus experience"
     }
   ]
 }

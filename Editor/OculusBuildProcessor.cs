@@ -42,27 +42,28 @@ namespace UnityEditor.XR.Oculus
 
         public void OnPreprocessBuild(BuildReport report)
         {
-
-#if UNITY_EDITOR && UNITY_STANDALONE_WIN
-            if (PlayerSettings.GetGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget)[0] !=
-                GraphicsDeviceType.Direct3D11)
+            if (report.summary.platformGroup == BuildTargetGroup.Android)
             {
-                throw new BuildFailedException("D3D11 is currently the only graphics API compatible with the Oculus XR Plugin on desktop platforms. Please change the Graphics API setting in Player Settings.");
-            }
-#endif
+                if (PlayerSettings.GetGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget)[0] !=
+                    GraphicsDeviceType.OpenGLES3)
+                {
+                    throw new BuildFailedException("OpenGLES3 is currently the only graphics API compatible with the Oculus XR Plugin on mobile platforms.");
+                }
+                if (PlayerSettings.Android.minSdkVersion < AndroidSdkVersions.AndroidApiLevel19)
+                {
+                    throw new BuildFailedException("Minimum API must be set to 19 or higher for Oculus XR Plugin.");
 
-#if UNITY_EDITOR && UNITY_ANDROID
-            if (PlayerSettings.GetGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget)[0] !=
-                GraphicsDeviceType.OpenGLES3)
-            {
-                throw new BuildFailedException("OpenGLES3 is currently the only graphics API compatible with the Oculus XR Plugin on mobile platforms.");
+                }
             }
-            if (PlayerSettings.Android.minSdkVersion < AndroidSdkVersions.AndroidApiLevel19)
-            {
-                throw new BuildFailedException("Minimum API must be set to 19 or higher for Oculus XR Plugin.");
 
+            if (report.summary.platformGroup == BuildTargetGroup.Standalone)
+            {
+                if (PlayerSettings.GetGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget)[0] !=
+                    GraphicsDeviceType.Direct3D11)
+                {
+                    throw new BuildFailedException("D3D11 is currently the only graphics API compatible with the Oculus XR Plugin on desktop platforms. Please change the Graphics API setting in Player Settings.");
+                }
             }
-#endif
         }
     }
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
-using UnityEngine.Experimental.XR;
 using UnityEngine.XR.Management;
 using UnityEngine.XR;
 
@@ -18,18 +17,8 @@ namespace Unity.XR.Oculus
     , IXRLoaderPreInit
 #endif
     {
-        private static List<XRSessionSubsystemDescriptor> s_SessionSubsystemDescriptors = new List<XRSessionSubsystemDescriptor>();
         private static List<XRDisplaySubsystemDescriptor> s_DisplaySubsystemDescriptors = new List<XRDisplaySubsystemDescriptor>();
         private static List<XRInputSubsystemDescriptor> s_InputSubsystemDescriptors = new List<XRInputSubsystemDescriptor>();
-        private static List<XRExperienceSubsystemDescriptor> s_ExperienceSubsystemDescriptors = new List<XRExperienceSubsystemDescriptor>();
-
-        public XRSessionSubsystem sessionSubsystem
-        {
-            get
-            {
-                return GetLoadedSubsystem<XRSessionSubsystem>();
-            }
-        }
 
         public XRDisplaySubsystem displaySubsystem
         {
@@ -47,14 +36,6 @@ namespace Unity.XR.Oculus
             }
         }
 
-        public XRExperienceSubsystem experienceSubsystem
-        {
-            get
-            {
-                return GetLoadedSubsystem<XRExperienceSubsystem>();
-            }
-        }
-
         public override bool Initialize()
         {
             OculusSettings settings = GetSettings();
@@ -67,20 +48,12 @@ namespace Unity.XR.Oculus
                 SetUserDefinedSettings(userDefinedSettings);
             }
 
-
-            CreateSubsystem<XRSessionSubsystemDescriptor, XRSessionSubsystem>(s_SessionSubsystemDescriptors, "oculus session");
             CreateSubsystem<XRDisplaySubsystemDescriptor, XRDisplaySubsystem>(s_DisplaySubsystemDescriptors, "oculus display");
             CreateSubsystem<XRInputSubsystemDescriptor, XRInputSubsystem>(s_InputSubsystemDescriptors, "oculus input");
-            CreateSubsystem<XRExperienceSubsystemDescriptor, XRExperienceSubsystem>(s_ExperienceSubsystemDescriptors, "oculus experience");
         
-            if (sessionSubsystem == null || displaySubsystem == null || inputSubsystem == null || experienceSubsystem == null)
+            if (displaySubsystem == null || inputSubsystem == null)
             {
                 Debug.LogError("Unable to start XR SDK Oculus.");
-            }
-
-            if (sessionSubsystem == null)
-            {
-                Debug.LogError("Failed to load session subsystem.");
             }
 
             if (displaySubsystem == null)
@@ -92,44 +65,31 @@ namespace Unity.XR.Oculus
             {
                 Debug.LogError("Failed to load input subsystem.");
             }
-
-            if (experienceSubsystem == null)
-            {
-                Debug.LogError("Failed to load experience subsystem.");
-            }
  
 
-            return sessionSubsystem != null && displaySubsystem != null && inputSubsystem != null && experienceSubsystem != null;
+            return displaySubsystem != null && inputSubsystem != null;
         }
 
         public override bool Start()
         {
-            StartSubsystem<XRSessionSubsystem>();
             StartSubsystem<XRDisplaySubsystem>();
             StartSubsystem<XRInputSubsystem>();
-            StartSubsystem<XRExperienceSubsystem>();
 
             return true;
         }
 
         public override bool Stop()
         {
-            StopSubsystem<XRSessionSubsystem>();
             StopSubsystem<XRDisplaySubsystem>();
             StopSubsystem<XRInputSubsystem>();
-            StopSubsystem<XRExperienceSubsystem>();
-
 
             return true;
-
         }
 
         public override bool Deinitialize()
         {
-            DestroySubsystem<XRSessionSubsystem>();
             DestroySubsystem<XRDisplaySubsystem>();
             DestroySubsystem<XRInputSubsystem>();
-            DestroySubsystem<XRExperienceSubsystem>();
 
             return true;
         }
