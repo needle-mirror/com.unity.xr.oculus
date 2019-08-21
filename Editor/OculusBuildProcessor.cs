@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 using UnityEngine;
@@ -6,13 +7,30 @@ using UnityEditor.Android;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using Unity.XR.Oculus;
+using UnityEditor;
 using UnityEditor.XR.Management;
+using UnityEngine.XR.Management;
 
 namespace UnityEditor.XR.Oculus
 {
     public class OculusBuildProcessor : XRBuildHelper<OculusSettings>
     {
         public override string BuildSettingsKey { get {return "Unity.XR.Oculus.Settings";} }
+    }
+
+    public static class OculusBuildTools
+    {
+        public static bool OculusLoaderPresentInSettingsForBuildTarget(BuildTargetGroup btg)
+        {
+            var generalSettingsForBuildTarget = XRGeneralSettingsPerBuildTarget.XRGeneralSettingsForBuildTarget(btg);
+            if (!generalSettingsForBuildTarget)
+                return false;
+            var settings = generalSettingsForBuildTarget.AssignedSettings;
+            if (!settings)
+                return false;
+            List<XRLoader> loaders = settings.loaders;
+            return loaders.Exists(loader => loader is OculusLoader);
+        }
     }
 
     [InitializeOnLoad]
@@ -27,6 +45,11 @@ namespace UnityEditor.XR.Oculus
         {
             if (state == PlayModeStateChange.EnteredPlayMode)
             {
+                if (!OculusBuildTools.OculusLoaderPresentInSettingsForBuildTarget(BuildTargetGroup.Standalone))
+                {
+                    return;
+                }
+
                 if (PlayerSettings.GetGraphicsAPIs(BuildTarget.StandaloneWindows)[0] !=
                     GraphicsDeviceType.Direct3D11)
                 {
@@ -42,27 +65,31 @@ namespace UnityEditor.XR.Oculus
 
         public void OnPreprocessBuild(BuildReport report)
         {
+            if(!OculusBuildTools.OculusLoaderPresentInSettingsForBuildTarget(report.summary.platformGroup))
+                return;
 
-#if UNITY_EDITOR && UNITY_STANDALONE_WIN
-            if (PlayerSettings.GetGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget)[0] !=
-                GraphicsDeviceType.Direct3D11)
+            if (report.summary.platformGroup == BuildTargetGroup.Android)
             {
-                throw new BuildFailedException("D3D11 is currently the only graphics API compatible with the Oculus XR Plugin on desktop platforms. Please change the Graphics API setting in Player Settings.");
-            }
-#endif
+                if (PlayerSettings.GetGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget)[0] !=
+                    GraphicsDeviceType.OpenGLES3)
+                {
+                    throw new BuildFailedException("OpenGLES3 is currently the only graphics API compatible with the Oculus XR Plugin on mobile platforms.");
+                }
+                if (PlayerSettings.Android.minSdkVersion < AndroidSdkVersions.AndroidApiLevel19)
+                {
+                    throw new BuildFailedException("Minimum API must be set to 19 or higher for Oculus XR Plugin.");
 
-#if UNITY_EDITOR && UNITY_ANDROID
-            if (PlayerSettings.GetGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget)[0] !=
-                GraphicsDeviceType.OpenGLES3)
-            {
-                throw new BuildFailedException("OpenGLES3 is currently the only graphics API compatible with the Oculus XR Plugin on mobile platforms.");
+                }
             }
-            if (PlayerSettings.Android.minSdkVersion < AndroidSdkVersions.AndroidApiLevel19)
-            {
-                throw new BuildFailedException("Minimum API must be set to 19 or higher for Oculus XR Plugin.");
 
+            if (report.summary.platformGroup == BuildTargetGroup.Standalone)
+            {
+                if (PlayerSettings.GetGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget)[0] !=
+                    GraphicsDeviceType.Direct3D11)
+                {
+                    throw new BuildFailedException("D3D11 is currently the only graphics API compatible with the Oculus XR Plugin on desktop platforms. Please change the Graphics API setting in Player Settings.");
+                }
             }
-#endif
         }
     }
 
@@ -118,6 +145,9 @@ namespace UnityEditor.XR.Oculus
 
         public void OnPostGenerateGradleAndroidProject(string path)
         {
+            if(!OculusBuildTools.OculusLoaderPresentInSettingsForBuildTarget(BuildTargetGroup.Android))
+                return;
+
             var manifestPath = path + k_AndroidManifestPath;
             var manifestDoc = new XmlDocument();
             manifestDoc.Load(manifestPath);
@@ -144,18 +174,6 @@ namespace UnityEditor.XR.Oculus
 
             UpdateOrCreateAttributeInTag(manifestDoc, nodePath, "activity", "launchMode", "singleTask");
 
-	        // Uncomment the following block to add additional manifest entries required for store release submissions
-            
-            //nodePath = "/manifest/application";
-            //UpdateOrCreateAttributeInTag(manifestDoc, nodePath, "activity", "excludeFromRecents", "true");
-
-            //nodePath = "/manifest/application/activity/intent-filter";
-            //UpdateOrCreateAttributeInTag(manifestDoc, nodePath, "action", "name", "android.intent.action.MAIN");
-            //UpdateOrCreateAttributeInTag(manifestDoc, nodePath, "category", "name", "android.intent.category.INFO");
-
-            //nodePath = "/manifest/application";
-            //UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "unityplayer.SkipPermissionsDialog", "value", "false");
-            
             manifestDoc.Save(manifestPath);
         }
 
