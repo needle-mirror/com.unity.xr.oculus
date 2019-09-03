@@ -9,31 +9,40 @@ namespace Unity.XR.Oculus
     [XRConfigurationData("Oculus", "Unity.XR.Oculus.Settings")]
     public class OculusSettings : ScriptableObject
     {
-        public enum StereoRenderingMode
+        public enum StereoRenderingModeDesktop
         {
             MultiPass = 0,
-            SinglePassInstanced
+            SinglePassInstanced = 1,
+        }
+
+        public enum StereoRenderingModeAndroid
+        {
+            MultiPass = 0,
+            Multiview = 2
         }
 
         [SerializeField, Tooltip("Set the Stereo Rendering Method")]
-        public StereoRenderingMode StereoRenderingModeDesktop;
+        public StereoRenderingModeDesktop m_StereoRenderingModeDesktop;
 
         [SerializeField, Tooltip("Set the Stereo Rendering Method")]
-        public StereoRenderingMode StereoRenderingModeAndroid;
+        public StereoRenderingModeAndroid m_StereoRenderingModeAndroid;
 
         [SerializeField, Tooltip("Enable a shared depth buffer")]
-        public bool SharedDepthBuffer;
+        public bool SharedDepthBuffer = true;
 
         [SerializeField, Tooltip("Enable Oculus Dash Support")]
-        public bool DashSupport;
+        public bool DashSupport = true;
+
+        [SerializeField, Tooltip("Configure Manifest for Oculus Quest")]
+        public bool V2Signing = true;
 
 
         public ushort GetStereoRenderingMode()
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
-            return (ushort)StereoRenderingModeAndroid;
+            return (ushort)m_StereoRenderingModeAndroid;
 # else
-            return (ushort)StereoRenderingModeDesktop;
+            return (ushort)m_StereoRenderingModeDesktop;
 #endif
         }
 #if !UNITY_EDITOR

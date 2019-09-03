@@ -4,6 +4,19 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2019-09-03
+### Changes
+- XR Plugin Management dependency
+
+## [1.0.1] - 2019-08-28
+### Fixes
+- Input bugs
+  - GO reported sceondary button when it should have reported a menu button
+  - Quest and Rift S reported a thumbrest when they did not have one
+  - Oculus Remote would never connect
+- Timing issues upon pausing/resuming app on standalone HMDs
+- V2signing checkbox for properly signed apks on quest
+
 ## [1.0.0] - 2019-07-10
 ### Changes
 - Removed preview tag

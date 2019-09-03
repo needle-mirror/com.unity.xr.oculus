@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 using UnityEngine;
@@ -6,13 +7,41 @@ using UnityEditor.Android;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using Unity.XR.Oculus;
+using UnityEditor;
 using UnityEditor.XR.Management;
+using UnityEngine.XR.Management;
 
 namespace UnityEditor.XR.Oculus
 {
     public class OculusBuildProcessor : XRBuildHelper<OculusSettings>
     {
         public override string BuildSettingsKey { get {return "Unity.XR.Oculus.Settings";} }
+    }
+
+    public static class OculusBuildTools
+    {
+        public static bool OculusLoaderPresentInSettingsForBuildTarget(BuildTargetGroup btg)
+        {
+            var generalSettingsForBuildTarget = XRGeneralSettingsPerBuildTarget.XRGeneralSettingsForBuildTarget(btg);
+            if (!generalSettingsForBuildTarget)
+                return false;
+            var settings = generalSettingsForBuildTarget.AssignedSettings;
+            if (!settings)
+                return false;
+            List<XRLoader> loaders = settings.loaders;
+            return loaders.Exists(loader => loader is OculusLoader);
+        }
+
+        public static OculusSettings GetSettings()
+        {
+            OculusSettings settings = null;
+#if UNITY_EDITOR
+            UnityEditor.EditorBuildSettings.TryGetConfigObject<OculusSettings>("Unity.XR.Oculus.Settings", out settings);
+#else
+            settings = OculusSettings.s_Settings;
+#endif
+            return settings;
+        }
     }
 
     [InitializeOnLoad]
@@ -27,6 +56,11 @@ namespace UnityEditor.XR.Oculus
         {
             if (state == PlayModeStateChange.EnteredPlayMode)
             {
+                if (!OculusBuildTools.OculusLoaderPresentInSettingsForBuildTarget(BuildTargetGroup.Standalone))
+                {
+                    return;
+                }
+
                 if (PlayerSettings.GetGraphicsAPIs(BuildTarget.StandaloneWindows)[0] !=
                     GraphicsDeviceType.Direct3D11)
                 {
@@ -42,6 +76,9 @@ namespace UnityEditor.XR.Oculus
 
         public void OnPreprocessBuild(BuildReport report)
         {
+            if(!OculusBuildTools.OculusLoaderPresentInSettingsForBuildTarget(report.summary.platformGroup))
+                return;
+
             if (report.summary.platformGroup == BuildTargetGroup.Android)
             {
                 if (PlayerSettings.GetGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget)[0] !=
@@ -85,7 +122,7 @@ namespace UnityEditor.XR.Oculus
         }
 
         void UpdateOrCreateNameValueElementsInTag(XmlDocument doc, string parentPath, string tag,
-            string firstName, string firstValue, string secondName, string secondValue)
+            string firstName, string firstValue, string secondName, string secondValue, string thirdName=null, string thirdValue=null)
         {
             var xmlNodeList = doc.SelectNodes(parentPath + "/" + tag);
 
@@ -99,16 +136,26 @@ namespace UnityEditor.XR.Oculus
                     {
                         var valueSibling = attrib.NextSibling;
                         valueSibling.Value = secondValue;
+
+                        if (thirdValue != null)
+                        {
+                            valueSibling = attrib.NextSibling;
+                            valueSibling.Value = thirdValue;
+                        }
+
                         return;
                     }
                 }
             }
             
-            // Didn't find any attributes that matched, create both
+            // Didn't find any attributes that matched, create both (or all three)
             XmlElement childElement = doc.CreateElement(tag);
             childElement.SetAttribute(firstName, k_AndroidURI, firstValue);
             childElement.SetAttribute(secondName, k_AndroidURI, secondValue);
-
+            if (thirdValue != null)
+            {
+                childElement.SetAttribute(thirdName, k_AndroidURI, thirdValue);
+            }
             var xmlParentNode = doc.SelectSingleNode(parentPath);
 
             if (xmlParentNode != null)
@@ -119,6 +166,9 @@ namespace UnityEditor.XR.Oculus
 
         public void OnPostGenerateGradleAndroidProject(string path)
         {
+            if(!OculusBuildTools.OculusLoaderPresentInSettingsForBuildTarget(BuildTargetGroup.Android))
+                return;
+
             var manifestPath = path + k_AndroidManifestPath;
             var manifestDoc = new XmlDocument();
             manifestDoc.Load(manifestPath);
@@ -145,18 +195,12 @@ namespace UnityEditor.XR.Oculus
 
             UpdateOrCreateAttributeInTag(manifestDoc, nodePath, "activity", "launchMode", "singleTask");
 
-	        // Uncomment the following block to add additional manifest entries required for store release submissions
-            
-            //nodePath = "/manifest/application";
-            //UpdateOrCreateAttributeInTag(manifestDoc, nodePath, "activity", "excludeFromRecents", "true");
+            if (!OculusBuildTools.GetSettings() || OculusBuildTools.GetSettings().V2Signing)
+            {
+                nodePath = "/manifest";
+                UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "uses-feature", "name", "android.hardware.vr.headtracking", "required", "true", "version", "1");
+            }
 
-            //nodePath = "/manifest/application/activity/intent-filter";
-            //UpdateOrCreateAttributeInTag(manifestDoc, nodePath, "action", "name", "android.intent.action.MAIN");
-            //UpdateOrCreateAttributeInTag(manifestDoc, nodePath, "category", "name", "android.intent.category.INFO");
-
-            //nodePath = "/manifest/application";
-            //UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "unityplayer.SkipPermissionsDialog", "value", "false");
-            
             manifestDoc.Save(manifestPath);
         }
 

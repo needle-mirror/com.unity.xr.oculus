@@ -11,27 +11,21 @@ namespace Unity.XR.Oculus.Editor
     {
         private const string kSharedDepthBuffer = "SharedDepthBuffer";
         private const string kDashSupport = "DashSupport";
-        private const string kStereoRenderingModeDesktop = "StereoRenderingModeDesktop";
-        private const string kStereoRenderingModeAndroid = "StereoRenderingModeAndroid";
+        private const string kStereoRenderingModeDesktop = "m_StereoRenderingModeDesktop";
+        private const string kStereoRenderingModeAndroid = "m_StereoRenderingModeAndroid";
+        private const string kV2Signing = "V2Signing";
 
         static GUIContent s_SharedDepthBufferLabel = EditorGUIUtility.TrTextContent("Shared Depth Buffer");
         static GUIContent s_DashSupportLabel = EditorGUIUtility.TrTextContent("Dash Support");
         static GUIContent s_StereoRenderingMode = EditorGUIUtility.TrTextContent("Stereo Rendering Mode");
+        static GUIContent s_V2Signing = EditorGUIUtility.TrTextContent("V2 Signing (Quest)");
+
 
         private SerializedProperty m_SharedDepthBuffer;
         private SerializedProperty m_DashSupport;
         private SerializedProperty m_StereoRenderingModeDesktop;
         private SerializedProperty m_StereoRenderingModeAndroid;
-
-        public GUIContent AndroidTab;
-        public GUIContent WindowsTab;
-        private int tab = 0;
-
-        public void OnEnable()
-        {
-            AndroidTab = new GUIContent("Android",  EditorGUIUtility.IconContent("BuildSettings.Android.Small").image);
-            WindowsTab = new GUIContent("Windows",  EditorGUIUtility.IconContent("BuildSettings.Standalone.Small").image);
-        }
+        private SerializedProperty m_V2Signing;
 
         public override void OnInspectorGUI()
         {
@@ -43,11 +37,12 @@ namespace Unity.XR.Oculus.Editor
             if (m_DashSupport == null) m_DashSupport = serializedObject.FindProperty(kDashSupport);
             if (m_StereoRenderingModeDesktop == null) m_StereoRenderingModeDesktop = serializedObject.FindProperty(kStereoRenderingModeDesktop);
             if (m_StereoRenderingModeAndroid == null) m_StereoRenderingModeAndroid = serializedObject.FindProperty(kStereoRenderingModeAndroid);
+            if (m_V2Signing == null) m_V2Signing = serializedObject.FindProperty(kV2Signing);
 
 
             serializedObject.Update();
 
-            tab = GUILayout.Toolbar(tab, new GUIContent[] {WindowsTab, AndroidTab},EditorStyles.toolbarButton);
+            BuildTargetGroup selectedBuildTargetGroup = EditorGUILayout.BeginBuildTargetSelectionGrouping();
             EditorGUILayout.Space();
 
             EditorGUILayout.BeginVertical(GUILayout.ExpandWidth(true));
@@ -57,18 +52,20 @@ namespace Unity.XR.Oculus.Editor
                 EditorGUILayout.Space();
             }
             EditorGUI.BeginDisabledGroup(EditorApplication.isPlayingOrWillChangePlaymode);
-            if (tab == 0)
+            if (selectedBuildTargetGroup == BuildTargetGroup.Standalone)
             {
                 EditorGUILayout.PropertyField(m_SharedDepthBuffer, s_SharedDepthBufferLabel);
                 EditorGUILayout.PropertyField(m_DashSupport, s_DashSupportLabel);
                 EditorGUILayout.PropertyField(m_StereoRenderingModeDesktop, s_StereoRenderingMode);
             }
-            else
+            else if(selectedBuildTargetGroup == BuildTargetGroup.Android)
             {
                 EditorGUILayout.PropertyField(m_StereoRenderingModeAndroid, s_StereoRenderingMode);
+                EditorGUILayout.PropertyField(m_V2Signing, s_V2Signing);
             }
             EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndVertical();
+            EditorGUILayout.EndBuildTargetSelectionGrouping();
 
             serializedObject.ApplyModifiedProperties();
         }
