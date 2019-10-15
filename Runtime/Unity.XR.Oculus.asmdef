@@ -1,9 +1,23 @@
 {
-	"name" : "Unity.XR.Oculus",
-	"references" : [
-		"Unity.XR.Management",
-		"Unity.ugui"
-	],
-	"includePlatforms": [],
-	"excludePlatforms": []
+    "name": "Unity.XR.Oculus",
+    "references": [
+        "Unity.XR.Management",
+        "Unity.ugui",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.inputsystem",
+            "expression": "",
+            "define": "UNITY_INPUT_SYSTEM"
+        }
+    ],
+    "noEngineReferences": false
 }

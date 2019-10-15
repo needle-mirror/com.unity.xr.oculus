@@ -4,6 +4,22 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.0.3-preview.1] - 2019-10-15
+### Fixes
+- thread safe color scale
+- screenshot artifacts with SPI
+
+## [1.0.3-preview] - 2019-09-27
+### Fixes
+- Fixed msaa issues on quest
+- Fixed side-by-side screenshot functionality
+### Changes
+- Disables main framebuffer flag to save memory (~36MB on Quest)
+- Input subsystem layouts to package
+- Adds color scale and offset api and helper class
+- Adds more oculus statistics (accessible via display subsystem api)
+- Adds user presence usage when using new input system 
+
 ## [1.0.2] - 2019-09-03
 ### Changes
 - XR Plugin Management dependency

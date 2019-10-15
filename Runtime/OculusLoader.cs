@@ -4,6 +4,12 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.XR.Management;
 using UnityEngine.XR;
+#if UNITY_INPUT_SYSTEM 
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Layouts;
+using UnityEngine.InputSystem.XR;
+using Unity.XR.Oculus.Input;
+#endif
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -12,6 +18,49 @@ using UnityEditor;
 
 namespace Unity.XR.Oculus
 {
+#if UNITY_INPUT_SYSTEM
+#if UNITY_EDITOR
+    [InitializeOnLoad]
+#endif
+    static class InputLayoutLoader
+    {
+        static InputLayoutLoader()
+        {
+            RegisterInputLayouts();
+        }
+
+        public static void RegisterInputLayouts()
+        {
+            InputSystem.RegisterLayout<OculusHMD>(
+                matches: new InputDeviceMatcher()
+                    .WithInterface(XRUtilities.InterfaceMatchAnyVersion)
+                    .WithProduct("^(Oculus Rift)|^(Oculus Quest)|^(Oculus Go)"));
+            InputSystem.RegisterLayout<OculusTouchController>(
+                matches: new InputDeviceMatcher()
+                    .WithInterface(XRUtilities.InterfaceMatchAnyVersion)
+                    .WithProduct(@"(^(Oculus Touch Controller))|(^(Oculus Quest Controller))"));
+            InputSystem.RegisterLayout<OculusRemote>(
+                matches: new InputDeviceMatcher()
+                    .WithInterface(XRUtilities.InterfaceMatchAnyVersion)
+                    .WithProduct(@"Oculus Remote"));
+            InputSystem.RegisterLayout<OculusTrackingReference>(
+                matches: new InputDeviceMatcher()
+                    .WithInterface(XRUtilities.InterfaceMatchAnyVersion)
+                    .WithProduct(@"((Tracking Reference)|(^(Oculus Rift [a-zA-Z0-9]* \(Camera)))"));
+
+            InputSystem.RegisterLayout<OculusHMDExtended>(
+                name: "GearVR",
+                matches: new InputDeviceMatcher()
+                    .WithInterface(XRUtilities.InterfaceMatchAnyVersion)
+                    .WithProduct("Oculus HMD"));
+            InputSystem.RegisterLayout<GearVRTrackedController>(
+                matches: new InputDeviceMatcher()
+                    .WithInterface(XRUtilities.InterfaceMatchAnyVersion)
+                    .WithProduct("^(Oculus Tracked Remote)"));
+        }
+    }
+#endif
+
     public class OculusLoader : XRLoaderHelper
 #if UNITY_EDITOR
     , IXRLoaderPreInit
@@ -38,6 +87,10 @@ namespace Unity.XR.Oculus
 
         public override bool Initialize()
         {
+#if UNITY_INPUT_SYSTEM
+            InputLayoutLoader.RegisterInputLayouts();
+#endif
+
             OculusSettings settings = GetSettings();
             if (settings != null)
             {
