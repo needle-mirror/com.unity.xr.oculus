@@ -1,7 +1,7 @@
 {
-  "name": "XRSDKOculus",
+  "name": "OculusXRPlugin",
   "version": "1.0.0-preview",
-  "libraryName": "XRSDKOculus",
+  "libraryName": "OculusXRPlugin",
 
   "displays": [
     {

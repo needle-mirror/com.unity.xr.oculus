@@ -11,11 +11,11 @@ namespace Unity.XR.Oculus
             SetColorOffset(colorOffset.x, colorOffset.y, colorOffset.z, colorOffset.w);
         }
 
-       [DllImport("XRSDKOculus", CharSet=CharSet.Auto)]
+       [DllImport("OculusXRPlugin", CharSet=CharSet.Auto)]
         static extern void SetColorScale(float x, float y, float z, float w);
 
         
-        [DllImport("XRSDKOculus", CharSet=CharSet.Auto)]
+        [DllImport("OculusXRPlugin", CharSet=CharSet.Auto)]
         static extern void SetColorOffset(float x, float y, float z, float w);
     }
 
