@@ -4,6 +4,23 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.1.2-preview] - 2019-11-25
+### Fixes
+- Enables vulkan support on Quest and Go
+- provider now uses correct occlusion mesh
+
+### Known Issues
+- Vulkan on Quest/Go does not currently support Multiview
+
+## [1.1.1] - 2019-11-21
+### Fixes
+- viewport scale in the mirror view now uses scaled uvs
+- fixed a potential manifest collision issue when using v2 signing
+### Changes
+- update XR Management dependency to 3.0.4
+- increased the callbackOrder on the Android build processor script so that other scripts can execute first if need be
+- renamed plugin libraries and cleaned up various error messages
+
 ## [1.1.0] - 2019-10-17
 - version bump to 1.1.0, no code changes
 

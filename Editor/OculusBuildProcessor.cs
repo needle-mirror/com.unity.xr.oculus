@@ -81,10 +81,10 @@ namespace UnityEditor.XR.Oculus
 
             if (report.summary.platformGroup == BuildTargetGroup.Android)
             {
-                if (PlayerSettings.GetGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget)[0] !=
-                    GraphicsDeviceType.OpenGLES3)
+                GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget)[0];
+                if (firstGfxType != GraphicsDeviceType.OpenGLES3 && firstGfxType != GraphicsDeviceType.Vulkan)
                 {
-                    throw new BuildFailedException("OpenGLES3 is currently the only graphics API compatible with the Oculus XR Plugin on mobile platforms.");
+                    throw new BuildFailedException("OpenGLES3 and Vulkan are currently the only graphics API compatible with the Oculus XR Plugin on mobile platforms.");
                 }
                 if (PlayerSettings.Android.minSdkVersion < AndroidSdkVersions.AndroidApiLevel19)
                 {
@@ -122,7 +122,7 @@ namespace UnityEditor.XR.Oculus
         }
 
         void UpdateOrCreateNameValueElementsInTag(XmlDocument doc, string parentPath, string tag,
-            string firstName, string firstValue, string secondName, string secondValue, string thirdName=null, string thirdValue=null)
+            string firstName, string firstValue, string secondName, string secondValue)
         {
             var xmlNodeList = doc.SelectNodes(parentPath + "/" + tag);
 
@@ -137,12 +137,6 @@ namespace UnityEditor.XR.Oculus
                         var valueSibling = attrib.NextSibling;
                         valueSibling.Value = secondValue;
 
-                        if (thirdValue != null)
-                        {
-                            valueSibling = attrib.NextSibling;
-                            valueSibling.Value = thirdValue;
-                        }
-
                         return;
                     }
                 }
@@ -152,10 +146,35 @@ namespace UnityEditor.XR.Oculus
             XmlElement childElement = doc.CreateElement(tag);
             childElement.SetAttribute(firstName, k_AndroidURI, firstValue);
             childElement.SetAttribute(secondName, k_AndroidURI, secondValue);
+
+            var xmlParentNode = doc.SelectSingleNode(parentPath);
+
+            if (xmlParentNode != null)
+            {
+                xmlParentNode.AppendChild(childElement);
+            }
+        }
+
+        // same as above, but don't attempt to preserve anything.
+        void CreateNameValueElementsInTag(XmlDocument doc, string parentPath, string tag,
+            string firstName, string firstValue, string secondName, string secondValue, string thirdName=null, string thirdValue=null)
+        {
+            var xmlNodeList = doc.SelectNodes(parentPath + "/" + tag);
+
+            foreach (XmlNode node in xmlNodeList)
+            {
+                node.ParentNode.RemoveChild(node);
+            }
+            
+            XmlElement childElement = doc.CreateElement(tag);
+            childElement.SetAttribute(firstName, k_AndroidURI, firstValue);
+            childElement.SetAttribute(secondName, k_AndroidURI, secondValue);
+
             if (thirdValue != null)
             {
                 childElement.SetAttribute(thirdName, k_AndroidURI, thirdValue);
             }
+
             var xmlParentNode = doc.SelectSingleNode(parentPath);
 
             if (xmlParentNode != null)
@@ -198,13 +217,13 @@ namespace UnityEditor.XR.Oculus
             if (!OculusBuildTools.GetSettings() || OculusBuildTools.GetSettings().V2Signing)
             {
                 nodePath = "/manifest";
-                UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "uses-feature", "name", "android.hardware.vr.headtracking", "required", "true", "version", "1");
+                CreateNameValueElementsInTag(manifestDoc, nodePath, "uses-feature", "name", "android.hardware.vr.headtracking", "required", "true", "version", "1");
             }
 
             manifestDoc.Save(manifestPath);
         }
 
-        public int callbackOrder { get { return 2; } }
+        public int callbackOrder { get { return 10000; } }
 
         void DebugPrint(XmlDocument doc)
         {

@@ -98,6 +98,7 @@ namespace Unity.XR.Oculus
                 userDefinedSettings.sharedDepthBuffer = (ushort)(settings.SharedDepthBuffer ? 1 : 0);
                 userDefinedSettings.dashSupport = (ushort)(settings.DashSupport ? 1 : 0);
                 userDefinedSettings.stereoRenderingMode = (ushort) settings.GetStereoRenderingMode();
+                userDefinedSettings.colorSpace = (ushort) ((QualitySettings.activeColorSpace == ColorSpace.Linear) ? 1 : 0);
                 SetUserDefinedSettings(userDefinedSettings);
             }
 
@@ -106,7 +107,7 @@ namespace Unity.XR.Oculus
         
             if (displaySubsystem == null || inputSubsystem == null)
             {
-                Debug.LogError("Unable to start XR SDK Oculus.");
+                Debug.LogError("Unable to start Oculus XR Plugin.");
             }
 
             if (displaySubsystem == null)
@@ -153,9 +154,10 @@ namespace Unity.XR.Oculus
             public ushort sharedDepthBuffer;
             public ushort dashSupport;
             public ushort stereoRenderingMode;
+            public ushort colorSpace;
         }
 
-        [DllImport("XRSDKOculus", CharSet=CharSet.Auto)]
+        [DllImport("OculusXRPlugin", CharSet=CharSet.Auto)]
         static extern void SetUserDefinedSettings(UserDefinedSettings settings);
 
         public OculusSettings GetSettings()
@@ -172,7 +174,7 @@ namespace Unity.XR.Oculus
 #if UNITY_EDITOR
         public string GetPreInitLibraryName(BuildTarget buildTarget, BuildTargetGroup buildTargetGroup)
         {
-            return "XRSDKOculus";
+            return "OculusXRPlugin";
         }
 #endif
     }
