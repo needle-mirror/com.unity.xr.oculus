@@ -7,7 +7,7 @@
     {
       "id": "oculus display",
       "disablesLegacyVr" : true,
-      "supportedMirrorBlitReservedModes" : ["leftEye","rightEye", "sideBySide"]
+      "supportedMirrorBlitReservedModes" : ["leftEye","rightEye", "sideBySide","occlusionMesh"]
     }
   ],
   "inputs": [

@@ -4,6 +4,15 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.1.4-preview] - 2019-12-03
+### Fixes
+- Occlusion mesh no longer renders in the preview view unless specified by the user.
+- Fixed an issue where some entries in a custom AndroidManifest.xml were getting removed when V2 signing was enabled.
+
+## [1.1.3] - 2019-11-27
+- No changes version rev only.
+
+
 ## [1.1.3-preview.1] - 2019-11-27
 ### Fixes
 - Fixes a crash that occured when building an app without the android loader in the XR Management list
@@ -23,7 +32,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - provider now uses correct occlusion mesh
 
 ### Known Issues
-- Vulkan on Quest/Go does not currently support Multiview
+- Vulkan on Quest/Go does not currently support Multiview, this will be supported in a later release of the Unity Editor
+- FFR on Vulkan on Quest/Go is not currently supported, this feature will be supported in a later release of the Unity Editor
 
 ## [1.1.1] - 2019-11-21
 ### Fixes

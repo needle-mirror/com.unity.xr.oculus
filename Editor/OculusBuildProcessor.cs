@@ -155,15 +155,22 @@ namespace UnityEditor.XR.Oculus
             }
         }
 
-        // same as above, but don't attempt to preserve anything.
+        // same as above, but don't create if the node already exists
         void CreateNameValueElementsInTag(XmlDocument doc, string parentPath, string tag,
             string firstName, string firstValue, string secondName, string secondValue, string thirdName=null, string thirdValue=null)
         {
             var xmlNodeList = doc.SelectNodes(parentPath + "/" + tag);
 
+            // don't create if the firstValue matches
             foreach (XmlNode node in xmlNodeList)
             {
-                node.ParentNode.RemoveChild(node);
+                foreach (XmlAttribute attrib in node.Attributes)
+                {
+                    if (attrib.Value == firstValue)
+                    {
+                        return;
+                    }
+                }
             }
             
             XmlElement childElement = doc.CreateElement(tag);
