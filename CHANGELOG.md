@@ -4,6 +4,13 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.1.4-preview.1] - 2019-12-12
+### Changes
+- Expands internal performance profiling tooling
+- Re-enables GLES2
+### Fixes
+- [Quest] Fixes an issue where resting then waking the device with the power button caused a black screen in the application (v12 quest runtime and up) 
+
 ## [1.1.4-preview] - 2019-12-03
 ### Fixes
 - Occlusion mesh no longer renders in the preview view unless specified by the user.
@@ -11,7 +18,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [1.1.3] - 2019-11-27
 - No changes version rev only.
-
 
 ## [1.1.3-preview.1] - 2019-11-27
 ### Fixes

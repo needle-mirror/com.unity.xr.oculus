@@ -82,9 +82,9 @@ namespace UnityEditor.XR.Oculus
             if (report.summary.platformGroup == BuildTargetGroup.Android)
             {
                 GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget)[0];
-                if (firstGfxType != GraphicsDeviceType.OpenGLES3 && firstGfxType != GraphicsDeviceType.Vulkan)
+                if (firstGfxType != GraphicsDeviceType.OpenGLES3 && firstGfxType != GraphicsDeviceType.Vulkan && firstGfxType != GraphicsDeviceType.OpenGLES2)
                 {
-                    throw new BuildFailedException("OpenGLES3 and Vulkan are currently the only graphics API compatible with the Oculus XR Plugin on mobile platforms.");
+                    throw new BuildFailedException("OpenGLES2, OpenGLES3, and Vulkan are currently the only graphics APIs compatible with the Oculus XR Plugin on mobile platforms.");
                 }
                 if (PlayerSettings.Android.minSdkVersion < AndroidSdkVersions.AndroidApiLevel19)
                 {
