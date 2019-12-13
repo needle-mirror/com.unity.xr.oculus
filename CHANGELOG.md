@@ -4,6 +4,9 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.1.4] - 2019-12-13
+- No changes, version rev only.
+
 ## [1.1.4-preview.1] - 2019-12-12
 ### Changes
 - Expands internal performance profiling tooling
@@ -17,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fixed an issue where some entries in a custom AndroidManifest.xml were getting removed when V2 signing was enabled.
 
 ## [1.1.3] - 2019-11-27
+- UNRELEASED
 - No changes version rev only.
 
 ## [1.1.3-preview.1] - 2019-11-27
