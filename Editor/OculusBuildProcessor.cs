@@ -134,9 +134,15 @@ namespace UnityEditor.XR.Oculus
                 {
                     if (attrib.Value == firstValue)
                     {
-                        var valueSibling = attrib.NextSibling;
-                        valueSibling.Value = secondValue;
-
+                        XmlAttribute valueAttrib = attributeList[secondName, k_AndroidURI];
+                        if (valueAttrib != null)
+                        {
+                            valueAttrib.Value = secondValue;
+                        }
+                        else
+                        {
+                            ((XmlElement)node).SetAttribute(secondName, k_AndroidURI, secondValue);
+                        }
                         return;
                     }
                 }

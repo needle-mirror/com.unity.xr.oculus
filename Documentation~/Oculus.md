@@ -1,6 +1,6 @@
 # About the Oculus XR Plugin :
 
-The Oculus XR Plugin enables you to build applications for a veriety of Oculus devices including the Rift, Rift S, Quest and GO.
+The Oculus XR Plugin enables you to build applications for a variety of Oculus devices including the Rift, Rift S, Quest and GO.
 
 # Supported XR Plugin Subsystems:
 

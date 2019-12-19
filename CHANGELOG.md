@@ -4,6 +4,11 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.1.5-preview] - 2019-12-19
+### Changes
+- cleans up plugin graphics thread lifecylce
+- Fixed a manifest merging issue with the 1.44 Oculus Integration assets
+
 ## [1.1.4] - 2019-12-13
 - No changes, version rev only.
 
