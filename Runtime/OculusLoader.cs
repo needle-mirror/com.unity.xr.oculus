@@ -330,11 +330,21 @@ namespace Unity.XR.Oculus
             PlayerSettings.SetGraphicsAPIs(BuildTarget.Android, newApisList.ToArray());
         }
 
+        private void SetAndroidMinSdkVersion()
+        {
+            if (PlayerSettings.Android.minSdkVersion != AndroidSdkVersions.AndroidApiLevel23)
+            {
+                Debug.Log("The Android Minimum API Level has been changed to 23 in Player Settings as this is required for Oculus builds.");
+                PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel23;
+            }
+        }
+
         public override void WasAssignedToBuildTarget(BuildTargetGroup buildTargetGroup)
         {
             if (buildTargetGroup == BuildTargetGroup.Android)
             {
                 RemoveVulkanFromAndroidGraphicsAPIs();
+                SetAndroidMinSdkVersion();
             }
         }
 #endif

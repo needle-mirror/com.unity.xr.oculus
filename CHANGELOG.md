@@ -4,6 +4,11 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.8.1] - 2020-02-01
+### Changed
+- Enabling the Oculus Android loader will automatically set the Minimum API Level setting to 23.
+- Updated XR Management dependency to 4.0.1
+
 ## [1.7.0] - 2020-12-10
 ### Changed
 No changes since 1.7.0-preview.2
