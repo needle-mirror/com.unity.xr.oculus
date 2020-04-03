@@ -53,3 +53,10 @@ FFR works best when rendering directly into the *eye textures* using the [foward
 ### Vulkan
 
 Currently, using the Vulkan graphics API is supported in an experimental release and only for the Quest platform.  The implementation supports multiview rendering and fixed-foveated rendering.
+
+To enable Vulkan, follow the steps below:
+
+* Open the **Project Settings** window (menu: **Edit > Project Settings**), and select **Player**.
+* Under the **Android** settings, add and move **Vulkan** to the top of the list of **Graphic APIs** so that it is selected ahead of others.
+
+Note that unless otherwise modified, OpenGL ES 3.0 is the default graphics API used.

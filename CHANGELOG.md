@@ -5,20 +5,46 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
-## [1.2.0] - 2019-2-25
+## [1.3.1] - 2020-04-03
+### Changes
+- Updated XR Management dependency to 3.2.4
+
+## [1.3.0] - 2020-03-16
+### Changes
+- Bundles up 1.2.5-preview.x changes for release.
+- Minor version bump to add a loader callback API method.
+
+## [1.2.5-preview.3] - 2020-03-09
+### Changes
+- Updated XR Management dependency to 3.2.0-preview.8
+- When Oculus Android is enabled in XR Management, Vulkan is removed from the Android graphics API list. It can manually be added back in to the list.
+
+## [1.2.5-preview.2] - 2020-02-27
+### Changes
+- Updated XR Management dependency to 3.2.0-preview.3
+- Renamed Oculus loader
+
+## [1.2.5-preview.1] - 2020-02-26
+### Changes
+- Updated XR Management dependency to 3.2.0-preview.2
+- Implement XR Management Metadata interfaces
+
+## [1.2.0] - 2020-02-25
 ### Changes
 - Remove preview tag
 - Add missing release notes for 1.1.5
 
-## [1.2.0-preview.1] - 2019-2-14
+## [1.2.0-preview.1] - 2020-02-14
 ### Changes
 - Cleans up plugin graphics thread lifecylce
 - Cleans up documentation
 - Update to Oculus 1.44 plugin
+
 ### Adds
 - Public foveation setting API
 - Public Oculus statistics APIs
 - Improved recentering support
+
 ### Fixes
 - There was a crash on exit when using single threaded rendering.  This has been fixed.
 - Fixed BeginFrame log spew.
@@ -39,6 +65,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changes
 - Expands internal performance profiling tooling
 - Re-enables GLES2
+
 ### Fixes
 - [Quest] Fixes an issue where resting then waking the device with the power button caused a black screen in the application (v12 quest runtime and up) 
 
@@ -77,6 +104,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixes
 - viewport scale in the mirror view now uses scaled uvs
 - fixed a potential manifest collision issue when using v2 signing
+
 ### Changes
 - update XR Management dependency to 3.0.4
 - increased the callbackOrder on the Android build processor script so that other scripts can execute first if need be
@@ -98,9 +126,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixes
 - Fixed msaa issues on quest
 - Fixed side-by-side screenshot functionality
+
 ### Changes
 - Disables main framebuffer flag to save memory (~36MB on Quest)
 - Input subsystem layouts to package
+
 ### Adds
 - Color scale and offset api and helper class
 - More oculus statistics (accessible via display subsystem api)

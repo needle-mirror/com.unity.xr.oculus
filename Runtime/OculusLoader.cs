@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.XR.Management;
 using UnityEngine.XR;
 #if UNITY_INPUT_SYSTEM 
@@ -147,6 +148,59 @@ namespace Unity.XR.Oculus
 
             return true;
         }
+
+#if UNITY_EDITOR
+        private void RemoveVulkanFromAndroidGraphicsAPIs()
+        {
+            // don't need to do anything if auto apis is selected
+            if (PlayerSettings.GetUseDefaultGraphicsAPIs(BuildTarget.Android))
+                return;
+
+            GraphicsDeviceType[] oldApis = PlayerSettings.GetGraphicsAPIs(BuildTarget.Android);
+            List<GraphicsDeviceType> newApisList = new List<GraphicsDeviceType>();
+            bool vulkanRemoved = false;
+
+            // copy all entries except vulkan
+            foreach (GraphicsDeviceType dev in oldApis)
+            {
+                if (dev == GraphicsDeviceType.Vulkan)
+                {
+                    vulkanRemoved = true;
+                    continue;
+                }
+                
+                newApisList.Add(dev);
+            }
+
+            // if we didn't remove Vulkan from the list, no need to do any further processing
+            if (vulkanRemoved == false)
+                return;
+
+            if (newApisList.Count <= 0)
+            {
+                newApisList.Add(GraphicsDeviceType.OpenGLES3);
+                Debug.LogWarning(
+                    "Vulkan is currently experimental on Oculus Quest. It has been removed from your list of Android graphics APIs and replaced with OpenGLES3.\n" +
+                    "If you would like to use experimental Quest Vulkan support, you can add it back into the list of graphics APIs in the Player settings.");
+            }
+            else
+            {
+                Debug.LogWarning(
+                    "Vulkan is currently experimental on Oculus Quest. It has been removed from your list of Android graphics APIs.\n" +
+                    "If you would like to use experimental Quest Vulkan support, you can add it back into the list of graphics APIs in the Player settings.");
+            }
+
+            PlayerSettings.SetGraphicsAPIs(BuildTarget.Android, newApisList.ToArray());
+        }
+
+        public override void WasAssignedToBuildTarget(BuildTargetGroup buildTargetGroup)
+        {
+            if (buildTargetGroup == BuildTargetGroup.Android)
+            {
+                RemoveVulkanFromAndroidGraphicsAPIs();
+            }
+        }
+#endif
 
         [StructLayout(LayoutKind.Sequential)]
         struct UserDefinedSettings
