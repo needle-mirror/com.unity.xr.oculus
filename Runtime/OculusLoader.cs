@@ -149,7 +149,7 @@ namespace Unity.XR.Oculus
             return true;
         }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR && XR_MGMT_GTE_320
         private void RemoveVulkanFromAndroidGraphicsAPIs()
         {
             // don't need to do anything if auto apis is selected

@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [1.3.3] - 2020-04-08
+### Changes
+- Change XR Management dependency to 3.0.6 to resolve a package manager issue.
+
+## [1.3.2] - 2020-04-08
+### Changes
+- Fixed a breaking change involving an incompatibility with versions of XR Management earlier than 3.2.4.
+
 ## [1.3.1] - 2020-04-03
 ### Changes
 - Updated XR Management dependency to 3.2.4

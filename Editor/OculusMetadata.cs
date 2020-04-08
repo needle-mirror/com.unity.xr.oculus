@@ -1,3 +1,5 @@
+#if XR_MGMT_GTE_320
+
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.XR.Management.Metadata;
@@ -51,3 +53,5 @@ namespace Unity.XR.Oculus.Editor
         }
     }
 }
+
+#endif // XR_MGMT_GTE_320
