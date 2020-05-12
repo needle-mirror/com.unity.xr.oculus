@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [1.3.4] - 2020-05-12
+### Changes
+- When Oculus Android is enabled in XR Management, Vulkan is removed from the Android graphics API list. It can manually be added back in to the list.
+
+### Fixes
+- Stats.PluginVersion wasn't properly null terminating the version string. It is now the correct length.
+
 ## [1.3.3] - 2020-04-08
 ### Changes
 - Change XR Management dependency to 3.0.6 to resolve a package manager issue.

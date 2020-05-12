@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
@@ -31,8 +31,11 @@ namespace Unity.XR.Oculus
     public class Stats
     {
         private static IntegratedSubsystem m_Display;
+        private static string m_PluginVersion = string.Empty;
+
         [DllImport("OculusXRPlugin", CharSet=CharSet.Auto)]
         private static extern void GetOVRPVersion(byte[] version);
+
 
         /// <summary>
         /// Gets the version of OVRPlugin currently in use. Format: "major.minor.release"
@@ -41,9 +44,14 @@ namespace Unity.XR.Oculus
         {
             get
             {
-                byte[] buf = new byte[256];
-                GetOVRPVersion(buf);
-                return System.Text.Encoding.ASCII.GetString(buf);
+                if (string.Equals(string.Empty, m_PluginVersion))
+                {
+                    byte[] buf = new byte[256];
+                    GetOVRPVersion(buf);
+                    var end = Array.IndexOf<byte>(buf, 0);
+                    m_PluginVersion = System.Text.Encoding.ASCII.GetString(buf, 0, end);
+                }
+                return m_PluginVersion;
             }
         }
 
