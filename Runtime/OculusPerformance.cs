@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.XR;
 using System.Runtime.InteropServices;
@@ -7,25 +8,48 @@ using XRStats = UnityEngine.XR.Provider.XRStats;
 
 namespace Unity.XR.Oculus
 {
-    static class Performance
+    public static partial class NativeMethods
+    {
+        [DllImport("OculusXRPlugin", CharSet = CharSet.Auto)]
+        internal static extern int SetCPULevel(int cpuLevel);
+
+        [DllImport("OculusXRPlugin", CharSet = CharSet.Auto)]
+        internal static extern int SetGPULevel(int gpuLevel);
+    }
+
+    public static class Performance
     {
         /// <summary>
         /// Set the CPU Level for the device
         /// </summary>
-        /// <param name="cpuLevel">
-        /// Allowable values are integers in the range 0 - 3. A value of 0 is the lowest performance level but is the most power efficient.
+        /// <param name="level">
+        /// Allowable values are integers in the range 0 - 4 (inclusive). A value of 0 is the lowest performance level but is the most power efficient.
+        /// Please note: as this is a hint, it may not be immediately reflected by the system.
         /// </param>
-        [DllImport("OculusXRPlugin", CharSet = CharSet.Auto)]
-        public static extern void SetCPULevel(int cpuLevel);
+        /// <returns>
+        /// True if we have no errors returned by the native function. We return false when the native function returns a failure condition. Check 
+        /// the log for more information.
+        /// </returns>
+        public static bool TrySetCPULevel(int level)
+        {
+            return (NativeMethods.SetCPULevel(level) == 0);
+        }
 
         /// <summary>
         /// Set the GPU performance level 
         /// </summary>
-        /// <param name="gpuLevel"> 
-        /// Allowable values are integers in the range 0 - 3. A value of 0 is the lowest performance level but is the most power efficient.
+        /// <param name="level"> 
+        /// Allowable values are integers in the range 0 - 4 (inclusive). A value of 0 is the lowest performance level but is the most power efficient.
+        /// Please note: as this is a hint, it may not be immediately reflected by the system.
         /// </param>
-        [DllImport("OculusXRPlugin", CharSet = CharSet.Auto)]
-        public static extern void SetGPULevel(int gpuLevel);
+        /// <returns>
+        /// True if we have no errors returned by the native function. We return false when the native function returns a failure condition. Check 
+        /// the log for more information.
+        /// </returns>
+        public static bool TrySetGPULevel(int level)
+        {
+            return (NativeMethods.SetGPULevel(level) == 0);            
+        }
     }
 
     public class Stats
@@ -35,7 +59,6 @@ namespace Unity.XR.Oculus
 
         [DllImport("OculusXRPlugin", CharSet=CharSet.Auto)]
         private static extern void GetOVRPVersion(byte[] version);
-
 
         /// <summary>
         /// Gets the version of OVRPlugin currently in use. Format: "major.minor.release"
@@ -428,10 +451,9 @@ namespace Unity.XR.Oculus
                     return m_Display;
                 }
             }
+
             Debug.LogError("No active Oculus display subsystem was found.");
             return m_Display;
         }
     }
 }
-
-

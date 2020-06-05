@@ -5,184 +5,184 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [1.4.0-preview.1] - 2020-06-05
+### Added
+- Added `int Unity.XR.Oculus.Utils.GetFoveationLevel` to retrieve the current FFR setting for mobile
+- Added `bool Unity.XR.Oculus.Performance.TrySetCPULevel(int level)` for mobile
+- Added `bool Unity.XR.Oculus.Performance.TrySetGPULevel(int level)` for mobile
+- Added **Low Overhead Mode** setting for mobile
+- Added **Protected Context** setting for mobile
+
+### Changed
+- Consolidated changelog to remove versions that were never publicly released
+
+### Fixed
+- Fixed an extraneous blit on mobile
+- Added correct display names for Oculus devices in the Input System
+- Fixed compiler warnings in DeviceLayouts.cs when using Input System 1.0.0+
+
 ## [1.3.4] - 2020-05-12
-### Changes
+### Changed
 - When Oculus Android is enabled in XR Management, Vulkan is removed from the Android graphics API list. It can manually be added back in to the list.
 
-### Fixes
+### Fixed
 - Stats.PluginVersion wasn't properly null terminating the version string. It is now the correct length.
 
 ## [1.3.3] - 2020-04-08
-### Changes
-- Change XR Management dependency to 3.0.6 to resolve a package manager issue.
+### Changed
+- Change XR Management dependency to 3.0.6 to resolve a package manager issue
 
-## [1.3.2] - 2020-04-08
-### Changes
-- Fixed a breaking change involving an incompatibility with versions of XR Management earlier than 3.2.4.
+### Fixed
+- Fixed a breaking change involving an incompatibility with versions of XR Management earlier than 3.2.4
 
 ## [1.3.1] - 2020-04-03
-### Changes
+### Changed
 - Updated XR Management dependency to 3.2.4
 
 ## [1.3.0] - 2020-03-16
-### Changes
-- Bundles up 1.2.5-preview.x changes for release.
-- Minor version bump to add a loader callback API method.
-
-## [1.2.5-preview.3] - 2020-03-09
-### Changes
-- Updated XR Management dependency to 3.2.0-preview.8
-- When Oculus Android is enabled in XR Management, Vulkan is removed from the Android graphics API list. It can manually be added back in to the list.
-
-## [1.2.5-preview.2] - 2020-02-27
-### Changes
-- Updated XR Management dependency to 3.2.0-preview.3
+### Changed
+- Minor version bump to add a loader callback API method
+- Updated XR Management dependency to 3.2.0
 - Renamed Oculus loader
-
-## [1.2.5-preview.1] - 2020-02-26
-### Changes
-- Updated XR Management dependency to 3.2.0-preview.2
 - Implement XR Management Metadata interfaces
 
 ## [1.2.0] - 2020-02-25
-### Changes
+### Changed
 - Remove preview tag
+
+### Fixed
 - Add missing release notes for 1.1.5
 
 ## [1.2.0-preview.1] - 2020-02-14
-### Changes
-- Cleans up plugin graphics thread lifecylce
-- Cleans up documentation
-- Update to Oculus 1.44 plugin
-
-### Adds
+### Added
 - Public foveation setting API
 - Public Oculus statistics APIs
 - Improved recentering support
 
-### Fixes
-- There was a crash on exit when using single threaded rendering.  This has been fixed.
-- Fixed BeginFrame log spew.
+### Changed
+- Cleans up plugin graphics thread lifecylce
+- Cleans up documentation
+- Updated to Oculus plugin 1.44
+
+### Fixed
+- Fixed a crash on exit when using single threaded rendering
+- Fixed BeginFrame log spew
 
 ## [1.1.5] - 2019-12-20
-### Changes
+### Changed
 - Cleans up documentation
 
 ## [1.1.5-preview] - 2019-12-19
-### Changes
+### Changed
 - Cleans up plugin graphics thread lifecylce
+
+### Fixed
 - Fixed a manifest merging issue with the 1.44 Oculus Integration assets
 
 ## [1.1.4] - 2019-12-13
-- No changes, version rev only.
+- No changes, version rev only
 
 ## [1.1.4-preview.1] - 2019-12-12
-### Changes
+### Changed
 - Expands internal performance profiling tooling
 - Re-enables GLES2
 
-### Fixes
-- [Quest] Fixes an issue where resting then waking the device with the power button caused a black screen in the application (v12 quest runtime and up) 
+### Fixed
+- [Quest] Fixes an issue where resting then waking the device with the power button caused a black screen in the application (v12 Quest runtime and up) 
 
 ## [1.1.4-preview] - 2019-12-03
-### Fixes
-- Occlusion mesh no longer renders in the preview view unless specified by the user.
-- Fixed an issue where some entries in a custom AndroidManifest.xml were getting removed when V2 signing was enabled.
-
-## [1.1.3] - 2019-11-27
-- UNRELEASED
-- No changes version rev only.
+### Fixed
+- Occlusion mesh no longer renders in the preview view unless requested by the user
+- Fixed an issue where some entries in a custom AndroidManifest.xml were getting removed when V2 signing was enabled
 
 ## [1.1.3-preview.1] - 2019-11-27
-### Fixes
-- Fixes a crash that occured when building an app without the android loader in the XR Management list
+### Fixed
+- Fixes a crash that occured when building an app without the Android loader in the XR Management list
 
 ## [1.1.3-preview] - 2019-11-27
-### Changes
-- Adds FFR hookup for when using Quest and Vulkan 
+### Added
+- Adds FFR hookup for Quest with Vulkan 
 
 ## [1.1.2] - 2019-11-25
-### Changes
-- updates documentation
-- updates minimum Unity version required (for Vulkan support)
+### Changed
+- Updated documentation
+- Updated minimum Unity version required (for Vulkan support)
 
 ## [1.1.2-preview] - 2019-11-25
-### Fixes
+### Added
 - Enables Vulkan support on Quest and Go
-- provider now uses correct occlusion mesh
+- Provider now uses correct occlusion mesh
 
 ### Known Issues
-- Vulkan on Quest/Go does not currently support Multiview, this will be supported in a later release of the Unity Editor
-- FFR on Vulkan on Quest/Go is not currently supported, this feature will be supported in a later release of the Unity Editor
+- Vulkan on Quest does not currently support Multiview, this will be supported in a later release of the Unity Editor
+- FFR on Vulkan on Quest is not currently supported, this feature will be supported in a later release of the Unity Editor
 
 ## [1.1.1] - 2019-11-21
-### Fixes
-- viewport scale in the mirror view now uses scaled uvs
-- fixed a potential manifest collision issue when using v2 signing
+### Changed
+- Updated XR Management dependency to 3.0.4
+- Updated to Oculus plugin 1.41
+- Increased the callbackOrder on the Android build processor script so that other scripts can execute first if need be
+- Renamed plugin libraries and cleaned up various error messages
 
-### Changes
-- update XR Management dependency to 3.0.4
-- increased the callbackOrder on the Android build processor script so that other scripts can execute first if need be
-- renamed plugin libraries and cleaned up various error messages
+### Fixed
+- Viewport scale in the mirror view now uses scaled UVs
+- Fixed a potential manifest collision issue when using v2 signing
 
 ## [1.1.0] - 2019-10-17
-- version bump to 1.1.0, no code changes
+- Version bump to 1.1.0, no changes
 
 ## [1.1.0-preview] - 2019-10-17
-### Fixes
-- semver to reflect new backwards compatible functionality (color scale API, input subsystem layouts)
+### Changed
+- Minor version bump for new backwards compatible functionality (color scale API, input subsystem layouts)
 
 ## [1.0.3-preview.1] - 2019-10-15
-### Fixes
-- thread safe color scale
-- screenshot artifacts with SPI
+### Fixed
+- Thread safe color scale
+- Screenshot artifacts with SPI
 
 ## [1.0.3-preview] - 2019-09-27
-### Fixes
-- Fixed msaa issues on quest
-- Fixed side-by-side screenshot functionality
+### Added
+- Color scale and offset api and helper class
+- More Oculus statistics (accessible via display subsystem api)
+- User presence usage when using new input system 
 
-### Changes
+### Changed
 - Disables main framebuffer flag to save memory (~36MB on Quest)
 - Input subsystem layouts to package
 
-### Adds
-- Color scale and offset api and helper class
-- More oculus statistics (accessible via display subsystem api)
-- User presence usage when using new input system 
+### Fixed
+- Fixed MSAA issues on Quest
+- Fixed side-by-side screenshot functionality
 
 ## [1.0.2] - 2019-09-03
-### Changes
+### Added
+- V2 signing checkbox for properly signed APKs on Quest
+
+### Changed
 - XR Plugin Management dependency
 
-## [1.0.1] - 2019-08-28
-### Fixes
+### Fixed
 - Input bugs
   - Go reported sceondary button when it should have reported a menu button
   - Quest and Rift S reported a thumbrest when they did not have one
   - Oculus Remote would never connect
 - Timing issues upon pausing/resuming app on standalone HMDs
-- V2signing checkbox for properly signed apks on quest
 
 ## [1.0.0] - 2019-07-10
-### Changes
+### Added
+- Oculus audio spatializer plugin
+
+### Changed
 - Removed preview tag
-- Update com.unity.xr.management dependency version
-- Migrate away from experience subsystem
+- Update XR Management dependency version
+- Migrate away from the Experience subsystem
 - Update Boundary Points when recentering and changing the tracking space origin mode
 - Fixed spatializer .meta files
-
-## [0.9.0-preview] - 2019-06-17
-### Added
-- Oculus 1.37 runtime upgrade
-- Oculus audio spatializer plugin
+- Updated to Oculus plugin 1.37
 
 ## [0.8.4-preview] - 2019-06-10
 ### Added
-- Single Pass Instancing support on PC DX11
-
-## [0.8.0-preview] - 2019-06-06
-### Added
+- Single Pass Instancing support for PC DX11
 - Rendering and input support
 - Arm64 support for mobile builds
 - Depth support
@@ -197,5 +197,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Device relative eye positions
 - Recenter functionality
 - Registration of tracking references
-- Tests to package
+- Moved tests to a package
 - Haptics Functionality

@@ -37,7 +37,9 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 
 ### Android settings (Quest, Go)
 
-* **V2Signing** - Enable this if you are building for Quest. This enables application signing with the Android Package (APK) Signature Scheme v2. Disable v2 signing if building for Oculus Go.
+* **V2 Signing (Quest)** - Enable this if you are building for Quest. This enables application signing with the Android Package (APK) Signature Scheme v2. Disable v2 signing if building for Oculus Go.
+* **Low Overhead Mode** - If enabled, the GLES graphics driver will bypass validation code, potentially running faster. Disable this if you experience graphics instabilities.
+* **Protected Context** - If enabled, the Oculus SDK will create a protected graphics context. This has a slight overhead, and should only be enabled if you know that you need a protected context. For example, if you display protected video content.
 * **Stereo Rendering Mode** - You can select *Multi Pass* or *Multiview* stereo rendering mode.
 	* *Multi Pass* - Unity renders each eye independently by making two passes across the scene graph. Each pass has its own eye matrices and render target. Unity draws everything twice, which includes setting the graphics state for each pass. This is a slow and simple rendering method which doesn't require any special modification to shaders.
 	* *Multiview* - Multiview is essentially the same as the *Single Pass Instanced* option described above, except the graphics driver does the draw call conversion, requiring less work from the Unity engine. As with *Single Pass Instanced*, shaders need to be authored to enable Multiview.  Using Unity's XR shader macros will simplify custom shader development.

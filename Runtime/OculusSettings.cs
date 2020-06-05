@@ -70,6 +70,18 @@ namespace Unity.XR.Oculus
         [SerializeField, Tooltip("Configure Manifest for Oculus Quest")]
         public bool V2Signing = true;
 
+        /// <summary>
+        /// If enabled, the GLES graphics driver will bypass validation code, potentially running faster.
+        /// </summary>
+        [SerializeField, Tooltip("Enable low overhead mode")]
+        public bool LowOverheadMode = false;
+        
+        /// <summary>
+        /// If enabled, the Oculus SDK will create a protected graphics context. Has a slight overhead; only use if needed for protected content.
+        /// </summary>
+        [SerializeField, Tooltip("Enable a protected graphics context")]
+        public bool ProtectedContext = false;
+
 
         public ushort GetStereoRenderingMode()
         {
@@ -87,6 +99,5 @@ namespace Unity.XR.Oculus
 			s_Settings = this;
 		}
 #endif
-
     }
 }

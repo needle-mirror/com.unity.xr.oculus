@@ -206,11 +206,15 @@ namespace UnityEditor.XR.Oculus
             manifestDoc.Load(manifestPath);
 
             var sdkVersion = (int)PlayerSettings.Android.minSdkVersion;
-
+            
             UpdateOrCreateAttributeInTag(manifestDoc, "/", "manifest", "installLocation", "auto");
 
             var nodePath = "/manifest/application";
             UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.samsung.android.vr.application.mode", "value", "vr_only");
+
+            var settings = OculusBuildTools.GetSettings();
+            var lowOverheadModeVal = ((settings != null) && settings.LowOverheadMode) ? "true" : "false";
+            UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.unity.xr.oculus.LowOverheadMode", "value", lowOverheadModeVal);
 
             nodePath = "/manifest/application";
             UpdateOrCreateAttributeInTag(manifestDoc, nodePath, "activity", "screenOrientation", "landscape");

@@ -29,6 +29,29 @@ namespace Unity.XR.Oculus
             vrapi_SetPropertyInt(ovrJava, OvrProperty.FoveationLevel, level);
         }
 
+        /// <summary>
+        /// Returns the degree of foveation.  See [Oculus Documentation](https://developer.oculus.com/documentation/quest/latest/concepts/mobile-ffr/).
+        /// </summary>
+        /// <returns>
+        /// * -1 error retrieving foveation level
+        /// * 0 disables multi-resolution
+        /// * 1 low FFR setting
+        /// * 2 medium FFR setting
+        /// * 3 high FFR setting
+        /// * 4 high top FFR setting
+        /// </returns>
+        public static int GetFoveationLevel()
+        {
+            IntPtr ovrJava = GetOvrJava();
+            if (ovrJava == IntPtr.Zero ||
+                !vrapi_GetPropertyInt(ovrJava, OvrProperty.FoveationLevel, out var ret))
+            {
+                Debug.LogError("Can't get foveation level");
+                return -1;
+            }
+            return ret;
+        }
+
         private enum OvrProperty
         {
             FoveationLevel = 15,
@@ -36,6 +59,9 @@ namespace Unity.XR.Oculus
 
         [DllImport("vrapi", EntryPoint = "vrapi_SetPropertyInt")]
         private static extern void vrapi_SetPropertyInt(IntPtr java, OvrProperty prop, int val);
+
+        [DllImport("vrapi", EntryPoint = "vrapi_GetPropertyInt")]
+        private static extern bool vrapi_GetPropertyInt(IntPtr java, OvrProperty propType, out int intVal);
 
         [DllImport("OculusXRPlugin")]
         private static extern IntPtr GetOvrJava();

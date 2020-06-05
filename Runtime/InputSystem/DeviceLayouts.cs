@@ -11,6 +11,7 @@ namespace Unity.XR.Oculus.Input
     /// An Oculus VR headset (such as the Oculus Rift series of devices).
     /// </summary>
     [Preserve]
+    [InputControlLayout(displayName = "Oculus Headset")]
     public class OculusHMD : XRHMD
     {
         [Preserve]
@@ -18,16 +19,16 @@ namespace Unity.XR.Oculus.Input
         public ButtonControl userPresence { get; private set; }
         [Preserve]
         [InputControl(aliases = new[] { "devicetrackingstate" })]
-        public IntegerControl trackingState { get; private set; }
+        public new IntegerControl trackingState { get; private set; }
         [Preserve]
         [InputControl(aliases = new[] { "deviceistracked" })]
-        public ButtonControl isTracked { get; private set; }
+        public new ButtonControl isTracked { get; private set; }
         [Preserve]
         [InputControl]
-        public Vector3Control devicePosition { get; private set; }
+        public new Vector3Control devicePosition { get; private set; }
         [Preserve]
         [InputControl]
-        public QuaternionControl deviceRotation { get; private set; }
+        public new QuaternionControl deviceRotation { get; private set; }
         [Preserve]
         [InputControl]
         public Vector3Control deviceAngularVelocity { get; private set; }
@@ -39,10 +40,10 @@ namespace Unity.XR.Oculus.Input
         public Vector3Control deviceAngularAcceleration { get; private set; }
         [Preserve]
         [InputControl]
-        public Vector3Control leftEyePosition { get; private set; }
+        public new Vector3Control leftEyePosition { get; private set; }
         [Preserve]
         [InputControl]
-        public QuaternionControl leftEyeRotation { get; private set; }
+        public new QuaternionControl leftEyeRotation { get; private set; }
         [Preserve]
         [InputControl]
         public Vector3Control leftEyeAngularVelocity { get; private set; }
@@ -54,10 +55,10 @@ namespace Unity.XR.Oculus.Input
         public Vector3Control leftEyeAngularAcceleration { get; private set; }
         [Preserve]
         [InputControl]
-        public Vector3Control rightEyePosition { get; private set; }
+        public new Vector3Control rightEyePosition { get; private set; }
         [Preserve]
         [InputControl]
-        public QuaternionControl rightEyeRotation { get; private set; }
+        public new QuaternionControl rightEyeRotation { get; private set; }
         [Preserve]
         [InputControl]
         public Vector3Control rightEyeAngularVelocity { get; private set; }
@@ -69,10 +70,10 @@ namespace Unity.XR.Oculus.Input
         public Vector3Control rightEyeAngularAcceleration { get; private set; }
         [Preserve]
         [InputControl]
-        public Vector3Control centerEyePosition { get; private set; }
+        public new Vector3Control centerEyePosition { get; private set; }
         [Preserve]
         [InputControl]
-        public QuaternionControl centerEyeRotation { get; private set; }
+        public new QuaternionControl centerEyeRotation { get; private set; }
         [Preserve]
         [InputControl]
         public Vector3Control centerEyeAngularVelocity { get; private set; }
@@ -118,7 +119,7 @@ namespace Unity.XR.Oculus.Input
     /// An Oculus Touch controller.
     /// </summary>
     [Preserve]
-    [InputControlLayout(commonUsages = new[] { "LeftHand", "RightHand" })]
+    [InputControlLayout(displayName = "Oculus Touch Controller", commonUsages = new[] { "LeftHand", "RightHand" })]
     public class OculusTouchController : XRControllerWithRumble
     {
         [Preserve]
@@ -165,16 +166,16 @@ namespace Unity.XR.Oculus.Input
 
         [Preserve]
         [InputControl(aliases = new[] { "controllerTrackingState" })]
-        public IntegerControl trackingState { get; private set; }
+        public new IntegerControl trackingState { get; private set; }
         [Preserve]
         [InputControl(aliases = new[] { "ControllerIsTracked" })]
-        public ButtonControl isTracked { get; private set; }
+        public new ButtonControl isTracked { get; private set; }
         [Preserve]
         [InputControl(aliases = new[] { "controllerPosition" })]
-        public Vector3Control devicePosition { get; private set; }
+        public new Vector3Control devicePosition { get; private set; }
         [Preserve]
         [InputControl(aliases = new[] { "controllerRotation" })]
-        public QuaternionControl deviceRotation { get; private set; }
+        public new QuaternionControl deviceRotation { get; private set; }
         [Preserve]
         [InputControl(aliases = new[] { "controllerVelocity" })]
         public Vector3Control deviceVelocity { get; private set; }
@@ -219,6 +220,7 @@ namespace Unity.XR.Oculus.Input
     }
 
     [Preserve]
+    [InputControlLayout(displayName = "Oculus Tracking Reference")]
     public class OculusTrackingReference : InputDevice
     {
         [Preserve]
@@ -249,6 +251,7 @@ namespace Unity.XR.Oculus.Input
     /// An Oculus Remote controller.
     /// </summary>
     [Preserve]
+    [InputControlLayout(displayName = "Oculus Remote")]
     public class OculusRemote : InputDevice
     {
         [Preserve]
@@ -275,6 +278,7 @@ namespace Unity.XR.Oculus.Input
     /// A Standalone VR headset that includes on-headset controls.
     /// </summary>
     [Preserve]
+    [InputControlLayout(hideInUI = true, displayName = "Oculus Headset (w/ on-headset controls)")]
     public class OculusHMDExtended : OculusHMD
     {
         [Preserve]
@@ -297,7 +301,7 @@ namespace Unity.XR.Oculus.Input
     /// A Gear VR controller.
     /// </summary>
     [Preserve]
-    [InputControlLayout(commonUsages = new[] { "LeftHand", "RightHand" })]
+    [InputControlLayout(hideInUI = true, displayName = "GearVR Controller", commonUsages = new[] { "LeftHand", "RightHand" })]
     public class GearVRTrackedController : XRController
     {
         [Preserve]
@@ -320,16 +324,16 @@ namespace Unity.XR.Oculus.Input
         public ButtonControl touchpadTouched { get; private set; }
         [Preserve]
         [InputControl]
-        public IntegerControl trackingState { get; private set; }
+        public new IntegerControl trackingState { get; private set; }
         [Preserve]
         [InputControl]
-        public ButtonControl isTracked { get; private set; }
+        public new ButtonControl isTracked { get; private set; }
         [Preserve]
         [InputControl]
-        public Vector3Control devicePosition { get; private set; }
+        public new Vector3Control devicePosition { get; private set; }
         [Preserve]
         [InputControl]
-        public QuaternionControl deviceRotation { get; private set; }
+        public new QuaternionControl deviceRotation { get; private set; }
         [Preserve]
         [InputControl]
         public Vector3Control deviceAngularVelocity { get; private set; }

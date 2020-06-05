@@ -45,6 +45,8 @@ namespace Unity.XR.Oculus.Editor
                 settings.SharedDepthBuffer = true;
                 settings.DashSupport = true;
                 settings.V2Signing = true;
+                settings.LowOverheadMode = false;
+                settings.ProtectedContext = false;
 
                 return true;
             }

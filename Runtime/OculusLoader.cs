@@ -98,8 +98,10 @@ namespace Unity.XR.Oculus
                 UserDefinedSettings userDefinedSettings;
                 userDefinedSettings.sharedDepthBuffer = (ushort)(settings.SharedDepthBuffer ? 1 : 0);
                 userDefinedSettings.dashSupport = (ushort)(settings.DashSupport ? 1 : 0);
-                userDefinedSettings.stereoRenderingMode = (ushort) settings.GetStereoRenderingMode();
-                userDefinedSettings.colorSpace = (ushort) ((QualitySettings.activeColorSpace == ColorSpace.Linear) ? 1 : 0);
+                userDefinedSettings.stereoRenderingMode = (ushort)settings.GetStereoRenderingMode();
+                userDefinedSettings.colorSpace = (ushort)((QualitySettings.activeColorSpace == ColorSpace.Linear) ? 1 : 0);
+                userDefinedSettings.lowOverheadMode = (ushort)(settings.LowOverheadMode ? 1 : 0);
+                userDefinedSettings.protectedContext = (ushort)(settings.ProtectedContext ? 1 : 0);
                 SetUserDefinedSettings(userDefinedSettings);
             }
 
@@ -209,6 +211,8 @@ namespace Unity.XR.Oculus
             public ushort dashSupport;
             public ushort stereoRenderingMode;
             public ushort colorSpace;
+            public ushort lowOverheadMode;
+            public ushort protectedContext;
         }
 
         [DllImport("OculusXRPlugin", CharSet=CharSet.Auto)]
