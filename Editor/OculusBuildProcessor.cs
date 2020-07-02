@@ -206,7 +206,7 @@ namespace UnityEditor.XR.Oculus
             manifestDoc.Load(manifestPath);
 
             var sdkVersion = (int)PlayerSettings.Android.minSdkVersion;
-            
+
             UpdateOrCreateAttributeInTag(manifestDoc, "/", "manifest", "installLocation", "auto");
 
             var nodePath = "/manifest/application";
@@ -235,6 +235,12 @@ namespace UnityEditor.XR.Oculus
             {
                 nodePath = "/manifest";
                 CreateNameValueElementsInTag(manifestDoc, nodePath, "uses-feature", "name", "android.hardware.vr.headtracking", "required", "true", "version", "1");
+            }
+
+            if (!OculusBuildTools.GetSettings() || OculusBuildTools.GetSettings().FocusAware)
+            {
+                nodePath = "/manifest/application/activity";
+                UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.oculus.vr.focusaware", "value", "true");
             }
 
             manifestDoc.Save(manifestPath);

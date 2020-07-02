@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.XR.Management;
 using UnityEngine.XR;
-#if UNITY_INPUT_SYSTEM 
+#if UNITY_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.XR;
@@ -13,6 +13,8 @@ using Unity.XR.Oculus.Input;
 #endif
 
 #if UNITY_EDITOR
+using System.IO;
+using System.Linq;
 using UnityEditor;
 #endif
 
@@ -48,16 +50,13 @@ namespace Unity.XR.Oculus
                 matches: new InputDeviceMatcher()
                     .WithInterface(XRUtilities.InterfaceMatchAnyVersion)
                     .WithProduct(@"((Tracking Reference)|(^(Oculus Rift [a-zA-Z0-9]* \(Camera)))"));
-
-            InputSystem.RegisterLayout<OculusHMDExtended>(
-                name: "GearVR",
-                matches: new InputDeviceMatcher()
-                    .WithInterface(XRUtilities.InterfaceMatchAnyVersion)
-                    .WithProduct("Oculus HMD"));
-            InputSystem.RegisterLayout<GearVRTrackedController>(
+            InputSystem.RegisterLayout<OculusGoController>(
                 matches: new InputDeviceMatcher()
                     .WithInterface(XRUtilities.InterfaceMatchAnyVersion)
                     .WithProduct("^(Oculus Tracked Remote)"));
+
+            InputSystem.RegisterLayout<OculusHMDExtended>();
+            InputSystem.RegisterLayout<GearVRTrackedController>();
         }
     }
 #endif
@@ -88,6 +87,13 @@ namespace Unity.XR.Oculus
 
         public override bool Initialize()
         {
+#if UNITY_EDITOR
+            if (!EditorLoadOVRPlugin())
+            {
+                return false;
+            }
+#endif
+
 #if UNITY_INPUT_SYSTEM
             InputLayoutLoader.RegisterInputLayouts();
 #endif
@@ -102,12 +108,13 @@ namespace Unity.XR.Oculus
                 userDefinedSettings.colorSpace = (ushort)((QualitySettings.activeColorSpace == ColorSpace.Linear) ? 1 : 0);
                 userDefinedSettings.lowOverheadMode = (ushort)(settings.LowOverheadMode ? 1 : 0);
                 userDefinedSettings.protectedContext = (ushort)(settings.ProtectedContext ? 1 : 0);
+                userDefinedSettings.focusAware = (ushort)(settings.FocusAware ? 1 : 0);
                 SetUserDefinedSettings(userDefinedSettings);
             }
 
             CreateSubsystem<XRDisplaySubsystemDescriptor, XRDisplaySubsystem>(s_DisplaySubsystemDescriptors, "oculus display");
             CreateSubsystem<XRInputSubsystemDescriptor, XRInputSubsystem>(s_InputSubsystemDescriptors, "oculus input");
-        
+
             if (displaySubsystem == null || inputSubsystem == null)
             {
                 Debug.LogError("Unable to start Oculus XR Plugin.");
@@ -122,7 +129,6 @@ namespace Unity.XR.Oculus
             {
                 Debug.LogError("Failed to load input subsystem.");
             }
- 
 
             return displaySubsystem != null && inputSubsystem != null;
         }
@@ -148,8 +154,71 @@ namespace Unity.XR.Oculus
             DestroySubsystem<XRDisplaySubsystem>();
             DestroySubsystem<XRInputSubsystem>();
 
+            UnloadOVRPlugin();
+
             return true;
         }
+
+#if UNITY_EDITOR
+        private bool EditorLoadOVRPlugin()
+        {
+            string ovrpPath = "";
+
+            // loop over all the native plugin importers and find the OVRPlugin the editor should use
+            var importers = PluginImporter.GetAllImporters();
+            foreach (var importer in importers)
+            {
+                if (!importer.GetCompatibleWithEditor() || !importer.assetPath.Contains("OVRPlugin"))
+                    continue;
+
+                if (!importer.GetCompatibleWithPlatform(BuildTarget.StandaloneWindows64) || !importer.assetPath.EndsWith(".dll"))
+                    continue;
+
+                ovrpPath = importer.assetPath;
+
+                if (!importer.GetIsOverridable())
+                    break;
+            }
+
+            if (ovrpPath == "")
+            {
+                Debug.LogError("Couldn't locate OVRPlugin.dll");
+                return false;
+            }
+
+            if (!LoadOVRPlugin(AssetPathToAbsolutePath(ovrpPath)))
+            {
+                Debug.LogError("Failed to load OVRPlugin.dll");
+                return false;
+            }
+
+            return true;
+        }
+
+        private string AssetPathToAbsolutePath(string assetPath)
+        {
+            var path = assetPath.Replace('/', Path.DirectorySeparatorChar);
+
+            if (assetPath.StartsWith("Packages"))
+            {
+                path = String.Join(Path.DirectorySeparatorChar.ToString(), path.Split(Path.DirectorySeparatorChar).Skip(2));
+
+                return Path.Combine(UnityEditor.PackageManager.PackageInfo.FindForAssetPath(assetPath).resolvedPath, path);
+            }
+            else
+            {
+                string assetsPath = Application.dataPath;
+                assetsPath = assetsPath.Replace('/', Path.DirectorySeparatorChar);
+
+                if (assetsPath.EndsWith("Assets"))
+                {
+                    assetsPath = assetsPath.Substring(0, assetsPath.LastIndexOf("Assets"));
+                }
+
+                return Path.Combine(assetsPath, assetPath);
+            }
+        }
+#endif
 
 #if UNITY_EDITOR && XR_MGMT_GTE_320
         private void RemoveVulkanFromAndroidGraphicsAPIs()
@@ -170,7 +239,7 @@ namespace Unity.XR.Oculus
                     vulkanRemoved = true;
                     continue;
                 }
-                
+
                 newApisList.Add(dev);
             }
 
@@ -213,7 +282,14 @@ namespace Unity.XR.Oculus
             public ushort colorSpace;
             public ushort lowOverheadMode;
             public ushort protectedContext;
+            public ushort focusAware;
         }
+
+        [DllImport("OculusXRPlugin", CharSet=CharSet.Ansi)]
+        static extern bool LoadOVRPlugin(string ovrpPath);
+
+        [DllImport("OculusXRPlugin", CharSet=CharSet.Ansi)]
+        static extern void UnloadOVRPlugin();
 
         [DllImport("OculusXRPlugin", CharSet=CharSet.Auto)]
         static extern void SetUserDefinedSettings(UserDefinedSettings settings);

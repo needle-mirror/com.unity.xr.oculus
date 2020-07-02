@@ -5,6 +5,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [1.4.0-preview.2] - 2020-07-02
+### Added
+- Mobile settings now support Focus Aware mode, which is enabled by default
+
+### Changed
+- Updated to Oculus plugin 1.49
+- Oculus plugin is now dynamically loaded
+- Vulkan swapchain improvements when using Unity 2020.2+
+
+### Fixed
+- Go controller mappings weren't displaying correctly when using the Input System
+
 ## [1.4.0-preview.1] - 2020-06-05
 ### Added
 - Added `int Unity.XR.Oculus.Utils.GetFoveationLevel` to retrieve the current FFR setting for mobile

@@ -275,8 +275,20 @@ namespace Unity.XR.Oculus.Input
     }
 
     /// <summary>
+    /// An Oculus Go controller.
+    /// </summary>
+    [Preserve]
+    [InputControlLayout(displayName = "Oculus Go Controller", commonUsages = new[] { "LeftHand", "RightHand" })]
+    public class OculusGoController : GearVRTrackedController
+    {
+    }
+
+    /// <summary>
     /// A Standalone VR headset that includes on-headset controls.
     /// </summary>
+    /// <remarks>
+    /// This device was never supported by the Oculus XR Plugin and will be removed in Oculus XR Plugin 2.0.0.
+    /// </remarks>
     [Preserve]
     [InputControlLayout(hideInUI = true, displayName = "Oculus Headset (w/ on-headset controls)")]
     public class OculusHMDExtended : OculusHMD
@@ -300,6 +312,10 @@ namespace Unity.XR.Oculus.Input
     /// <summary>
     /// A Gear VR controller.
     /// </summary>
+    /// <remarks>
+    /// This device was never supported by the Oculus XR Plugin and will be removed in Oculus XR Plugin 2.0.0.
+    /// Use OculusGoController instead if targeting the Oculus Go.
+    /// </remarks>
     [Preserve]
     [InputControlLayout(hideInUI = true, displayName = "GearVR Controller", commonUsages = new[] { "LeftHand", "RightHand" })]
     public class GearVRTrackedController : XRController

@@ -29,20 +29,21 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 
 ### Windows standalone settings (Rift, Rift S)
 
-* **Shared Depth Buffer** - Enable or disable support for using a shared depth buffer. This allows Unity and Oculus to use a common depth buffer, which enables Oculus to composite the Oculus Dash and other utilities over the Unity application.
-* **Dash Support** - Enable or disable Dash support. This inintializes the Oculus Plugin with Dash support, which enables the Oculus Dash to composite over the Unity application.
 * **Stereo Rendering Mode** - You can select *Multi Pass* or *Single Pass Instanced* stereo rendering mode.
 	* *Multi Pass* - Unity renders each eye independently by making two passes across the scene graph. Each pass has its own eye matrices and render target. Unity draws everything twice, which includes setting the graphics state for each pass. This is a slow and simple rendering method which doesn't require any special modification to shaders.
 	* *Single Pass Instanced* - Unity uses a texture array with two slices, and uses instanced draw calls (converting non-instanced draws call to instanced versions when necessary) to direct rendering to the appropriate texture slice.  Custom shaders need to be modified for rendering in this mode.  Use Unity's XR shader macros to simplify authoring custom shaders. 
+* **Shared Depth Buffer** - Enable or disable support for using a shared depth buffer. This allows Unity and Oculus to use a common depth buffer, which enables Oculus to composite the Oculus Dash and other utilities over the Unity application.
+* **Dash Support** - Enable or disable Dash support. This inintializes the Oculus Plugin with Dash support, which enables the Oculus Dash to composite over the Unity application.
 
 ### Android settings (Quest, Go)
 
-* **V2 Signing (Quest)** - Enable this if you are building for Quest. This enables application signing with the Android Package (APK) Signature Scheme v2. Disable v2 signing if building for Oculus Go.
-* **Low Overhead Mode** - If enabled, the GLES graphics driver will bypass validation code, potentially running faster. Disable this if you experience graphics instabilities.
-* **Protected Context** - If enabled, the Oculus SDK will create a protected graphics context. This has a slight overhead, and should only be enabled if you know that you need a protected context. For example, if you display protected video content.
 * **Stereo Rendering Mode** - You can select *Multi Pass* or *Multiview* stereo rendering mode.
 	* *Multi Pass* - Unity renders each eye independently by making two passes across the scene graph. Each pass has its own eye matrices and render target. Unity draws everything twice, which includes setting the graphics state for each pass. This is a slow and simple rendering method which doesn't require any special modification to shaders.
 	* *Multiview* - Multiview is essentially the same as the *Single Pass Instanced* option described above, except the graphics driver does the draw call conversion, requiring less work from the Unity engine. As with *Single Pass Instanced*, shaders need to be authored to enable Multiview.  Using Unity's XR shader macros will simplify custom shader development.
+* **V2 Signing (Quest)** - Enable this if you are building for Quest. This enables application signing with the Android Package (APK) Signature Scheme v2. Disable v2 signing if building for Oculus Go.
+* **Low Overhead Mode** - If enabled, the GLES graphics driver will bypass validation code, potentially running faster. Disable this if you experience graphics instabilities.
+* **Protected Context** - If enabled, the Oculus SDK will create a protected graphics context. This has a slight overhead, and should only be enabled if you know that you need a protected context. For example, if you display protected video content.
+* **Focus Aware** - If enabled, the application will continue running when system overlays and menus are present.
 
 ## Technical details
 

@@ -47,6 +47,7 @@ namespace Unity.XR.Oculus.Editor
                 settings.V2Signing = true;
                 settings.LowOverheadMode = false;
                 settings.ProtectedContext = false;
+                settings.FocusAware = true;
 
                 return true;
             }

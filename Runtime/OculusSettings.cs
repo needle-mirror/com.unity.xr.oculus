@@ -82,6 +82,12 @@ namespace Unity.XR.Oculus
         [SerializeField, Tooltip("Enable a protected graphics context")]
         public bool ProtectedContext = false;
 
+        /// <summary>
+        /// If enabled, the application will continue running when system overlays appear.
+        /// </summary>
+        [SerializeField, Tooltip("Enable Focus Aware mode")]
+        public bool FocusAware = true;
+
 
         public ushort GetStereoRenderingMode()
         {

@@ -16,6 +16,7 @@ namespace Unity.XR.Oculus.Editor
         private const string kV2Signing = "V2Signing";
         private const string kLowOverheadMode = "LowOverheadMode";
         private const string kProtectedContext = "ProtectedContext";
+        private const string kFocusAware = "FocusAware";
 
         static GUIContent s_SharedDepthBufferLabel = EditorGUIUtility.TrTextContent("Shared Depth Buffer");
         static GUIContent s_DashSupportLabel = EditorGUIUtility.TrTextContent("Dash Support");
@@ -23,6 +24,7 @@ namespace Unity.XR.Oculus.Editor
         static GUIContent s_V2SigningLabel = EditorGUIUtility.TrTextContent("V2 Signing (Quest)");
         static GUIContent s_LowOverheadModeLabel = EditorGUIUtility.TrTextContent("Low Overhead Mode");
         static GUIContent s_ProtectedContextLabel = EditorGUIUtility.TrTextContent("Protected Context");
+        static GUIContent s_FocusAwareLabel = EditorGUIUtility.TrTextContent("Focus Aware");
 
         private SerializedProperty m_SharedDepthBuffer;
         private SerializedProperty m_DashSupport;
@@ -31,6 +33,7 @@ namespace Unity.XR.Oculus.Editor
         private SerializedProperty m_V2Signing;
         private SerializedProperty m_LowOverheadMode;
         private SerializedProperty m_ProtectedContext;
+        private SerializedProperty m_FocusAware;
 
         public override void OnInspectorGUI()
         {
@@ -44,6 +47,7 @@ namespace Unity.XR.Oculus.Editor
             if (m_V2Signing == null) m_V2Signing = serializedObject.FindProperty(kV2Signing);
             if (m_LowOverheadMode == null) m_LowOverheadMode = serializedObject.FindProperty(kLowOverheadMode);
             if (m_ProtectedContext == null) m_ProtectedContext = serializedObject.FindProperty(kProtectedContext);
+            if (m_FocusAware == null) m_FocusAware = serializedObject.FindProperty(kFocusAware);
 
             serializedObject.Update();
 
@@ -68,6 +72,7 @@ namespace Unity.XR.Oculus.Editor
                 EditorGUILayout.PropertyField(m_StereoRenderingModeAndroid, s_StereoRenderingModeLabel);
                 EditorGUILayout.PropertyField(m_LowOverheadMode, s_LowOverheadModeLabel);
                 EditorGUILayout.PropertyField(m_ProtectedContext, s_ProtectedContextLabel);
+                EditorGUILayout.PropertyField(m_FocusAware, s_FocusAwareLabel);
                 EditorGUILayout.PropertyField(m_V2Signing, s_V2SigningLabel);
             }
             EditorGUI.EndDisabledGroup();
