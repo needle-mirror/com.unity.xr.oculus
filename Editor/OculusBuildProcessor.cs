@@ -86,10 +86,9 @@ namespace UnityEditor.XR.Oculus
                 {
                     throw new BuildFailedException("OpenGLES2, OpenGLES3, and Vulkan are currently the only graphics APIs compatible with the Oculus XR Plugin on mobile platforms.");
                 }
-                if (PlayerSettings.Android.minSdkVersion < AndroidSdkVersions.AndroidApiLevel19)
+                if (PlayerSettings.Android.minSdkVersion < AndroidSdkVersions.AndroidApiLevel23)
                 {
-                    throw new BuildFailedException("Minimum API must be set to 19 or higher for Oculus XR Plugin.");
-
+                    throw new BuildFailedException("Android Minimum API Level must be set to 23 or higher for the Oculus XR Plugin.");
                 }
             }
 
@@ -163,7 +162,7 @@ namespace UnityEditor.XR.Oculus
 
         // same as above, but don't create if the node already exists
         void CreateNameValueElementsInTag(XmlDocument doc, string parentPath, string tag,
-            string firstName, string firstValue, string secondName, string secondValue, string thirdName=null, string thirdValue=null)
+            string firstName, string firstValue, string secondName=null, string secondValue=null, string thirdName=null, string thirdValue=null)
         {
             var xmlNodeList = doc.SelectNodes(parentPath + "/" + tag);
 
@@ -181,7 +180,11 @@ namespace UnityEditor.XR.Oculus
             
             XmlElement childElement = doc.CreateElement(tag);
             childElement.SetAttribute(firstName, k_AndroidURI, firstValue);
-            childElement.SetAttribute(secondName, k_AndroidURI, secondValue);
+
+            if (secondValue != null)
+            {
+                childElement.SetAttribute(secondName, k_AndroidURI, secondValue);
+            }
 
             if (thirdValue != null)
             {
@@ -242,6 +245,9 @@ namespace UnityEditor.XR.Oculus
                 nodePath = "/manifest/application/activity";
                 UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.oculus.vr.focusaware", "value", "true");
             }
+
+            nodePath = "/manifest/application/activity/intent-filter";
+            CreateNameValueElementsInTag(manifestDoc, nodePath, "category", "name", "com.oculus.intent.category.VR");
 
             manifestDoc.Save(manifestPath);
         }

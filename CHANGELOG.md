@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [1.4.0] - 2020-07-07
+### Added
+- Added Oculus intent filter to the Android manifest
+
+### Changed
+- Bumped the Minimum API Level check up to 23
+
+### Fixed
+- Fixed a crash when initializing/deinitializing the loader multiple times at runtime.
+
 ## [1.4.0-preview.2] - 2020-07-02
 ### Added
 - Mobile settings now support Focus Aware mode, which is enabled by default
@@ -12,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Updated to Oculus plugin 1.49
 - Oculus plugin is now dynamically loaded
-- Vulkan swapchain improvements when using Unity 2020.2+
+- Vulkan swapchain improvements
 
 ### Fixed
 - Go controller mappings weren't displaying correctly when using the Input System

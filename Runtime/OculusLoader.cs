@@ -92,6 +92,12 @@ namespace Unity.XR.Oculus
             {
                 return false;
             }
+#else
+            if (!LoadOVRPlugin(""))
+            {
+                Debug.LogError("Failed to load OVRPlugin.dll");
+                return false;
+            }
 #endif
 
 #if UNITY_INPUT_SYSTEM
