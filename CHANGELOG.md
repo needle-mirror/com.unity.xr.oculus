@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [1.4.3] - 2020-08-07
+### Changed
+- Updated to Oculus plugin 1.51.1
+- Changed the timing of loading and initializing the Oculus plugin
+
+### Fixed
+- Fixed `ScreenCapture.CaptureScreenshot()`
+- Fixed a potential crash in eye texture creation
+
 ## [1.4.0] - 2020-07-07
 ### Added
 - Added Oculus intent filter to the Android manifest
@@ -13,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Bumped the Minimum API Level check up to 23
 
 ### Fixed
-- Fixed a crash when initializing/deinitializing the loader multiple times at runtime.
+- Fixed a crash when initializing/deinitializing the loader multiple times at runtime
 
 ## [1.4.0-preview.2] - 2020-07-02
 ### Added
@@ -45,10 +54,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [1.3.4] - 2020-05-12
 ### Changed
-- When Oculus Android is enabled in XR Management, Vulkan is removed from the Android graphics API list. It can manually be added back in to the list.
+- When Oculus Android is enabled in XR Management, Vulkan is removed from the Android graphics API list. It can manually be added back in to the list
 
 ### Fixed
-- Stats.PluginVersion wasn't properly null terminating the version string. It is now the correct length.
+- Stats.PluginVersion wasn't properly null terminating the version string. It is now the correct length
 
 ## [1.3.3] - 2020-04-08
 ### Changed

@@ -87,19 +87,6 @@ namespace Unity.XR.Oculus
 
         public override bool Initialize()
         {
-#if UNITY_EDITOR
-            if (!EditorLoadOVRPlugin())
-            {
-                return false;
-            }
-#else
-            if (!LoadOVRPlugin(""))
-            {
-                Debug.LogError("Failed to load OVRPlugin.dll");
-                return false;
-            }
-#endif
-
 #if UNITY_INPUT_SYSTEM
             InputLayoutLoader.RegisterInputLayouts();
 #endif
@@ -160,13 +147,12 @@ namespace Unity.XR.Oculus
             DestroySubsystem<XRDisplaySubsystem>();
             DestroySubsystem<XRInputSubsystem>();
 
-            UnloadOVRPlugin();
-
             return true;
         }
 
-#if UNITY_EDITOR
-        private bool EditorLoadOVRPlugin()
+#if UNITY_EDITOR_WIN
+        [InitializeOnLoadMethod]
+        static void EditorLoadOVRPlugin()
         {
             string ovrpPath = "";
 
@@ -189,19 +175,17 @@ namespace Unity.XR.Oculus
             if (ovrpPath == "")
             {
                 Debug.LogError("Couldn't locate OVRPlugin.dll");
-                return false;
+                return;
             }
 
             if (!LoadOVRPlugin(AssetPathToAbsolutePath(ovrpPath)))
             {
                 Debug.LogError("Failed to load OVRPlugin.dll");
-                return false;
+                return;
             }
-
-            return true;
         }
 
-        private string AssetPathToAbsolutePath(string assetPath)
+        static string AssetPathToAbsolutePath(string assetPath)
         {
             var path = assetPath.Replace('/', Path.DirectorySeparatorChar);
 
@@ -222,6 +206,15 @@ namespace Unity.XR.Oculus
                 }
 
                 return Path.Combine(assetsPath, assetPath);
+            }
+        }
+#elif UNITY_STANDALONE_WIN || UNITY_ANDROID
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
+        static void RuntimeLoadOVRPlugin()
+        {
+            if (!LoadOVRPlugin(""))
+            {
+                Debug.LogError("Failed to load OVRPlugin.dll");
             }
         }
 #endif
