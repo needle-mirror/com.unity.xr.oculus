@@ -16,6 +16,95 @@ namespace UnityEditor.XR.Oculus
     public class OculusBuildProcessor : XRBuildHelper<OculusSettings>
     {
         public override string BuildSettingsKey { get {return "Unity.XR.Oculus.Settings";} }
+
+        private static List<BuildTarget> s_ValidStandaloneBuildTargets = new List<BuildTarget>()
+        {
+            BuildTarget.StandaloneWindows,
+            BuildTarget.StandaloneWindows64,
+        };
+
+        private bool IsCurrentBuildTargetVaild(BuildReport report)
+        {
+            return report.summary.platformGroup == BuildTargetGroup.Android ||
+                (report.summary.platformGroup == BuildTargetGroup.Standalone && s_ValidStandaloneBuildTargets.Contains(report.summary.platform));
+        }
+
+        private bool HasLoaderEnabledForTarget(BuildTargetGroup buildTargetGroup)
+        {
+            if (buildTargetGroup != BuildTargetGroup.Standalone && buildTargetGroup != BuildTargetGroup.Android)
+                return false;
+
+            XRGeneralSettings settings = XRGeneralSettingsPerBuildTarget.XRGeneralSettingsForBuildTarget(buildTargetGroup);
+            if (settings == null)
+                return false;
+
+            bool loaderFound = false;
+            for (int i = 0; i < settings.Manager.loaders.Count; ++i)
+            {
+                if (settings.Manager.loaders[i] as OculusLoader != null)
+                {
+                    loaderFound = true;
+                    break;
+                }
+            }
+
+            return loaderFound;
+        }
+
+        private readonly string spatializerPluginName = "AudioPluginOculusSpatializer";
+        private readonly string spatializerReadableName = "OculusSpatializer";
+
+        private readonly string[] runtimePluginNames = new string[]
+        {
+            "OculusXRPlugin.dll",
+            "OVRPlugin.dll",
+            "libOculusXRPlugin.so",
+            "OVRPlugin.aar"
+        };
+
+        private bool ShouldIncludeRuntimePluginsInBuild(string path)
+        {
+            return HasLoaderEnabledForTarget(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget));
+        }
+
+        private bool ShouldIncludeSpatializerPluginsInBuild(string path)
+        {
+            string currentSpatializerPluginName = AudioSettings.GetSpatializerPluginName();
+
+            if (string.Compare(spatializerReadableName, currentSpatializerPluginName, true) == 0)
+                return true;
+
+            return false;
+        }
+
+        /// <summary>OnPreprocessBuild override to provide XR Plugin specific build actions.</summary>
+        /// <param name="report">The build report.</param>
+        public override void OnPreprocessBuild(BuildReport report)
+        {
+            if (IsCurrentBuildTargetVaild(report) && HasLoaderEnabledForTarget(report.summary.platformGroup))
+                base.OnPreprocessBuild(report);
+
+            var allPlugins = PluginImporter.GetAllImporters();
+            foreach (var plugin in allPlugins)
+            {
+                if (plugin.isNativePlugin)
+                {
+                    foreach (var pluginName in runtimePluginNames)
+                    {
+                        if (plugin.assetPath.Contains(pluginName))
+                        {
+                            plugin.SetIncludeInBuildDelegate(ShouldIncludeRuntimePluginsInBuild);
+                            break;
+                        }
+                    }
+                    //exlude Spatializer related plugins if OculusSpatializer not selected under Audio setting
+                    if (plugin.assetPath.Contains(spatializerPluginName))
+                    {
+                        plugin.SetIncludeInBuildDelegate(ShouldIncludeSpatializerPluginsInBuild);
+                    }
+                }
+            }
+        }
     }
 
     public static class OculusBuildTools
@@ -199,6 +288,24 @@ namespace UnityEditor.XR.Oculus
             }
         }
 
+        void RemoveNameValueElementInTag(XmlDocument doc, string parentPath, string tag, string name, string value)
+        {
+            var xmlNodeList = doc.SelectNodes(parentPath + "/" + tag);
+
+            foreach (XmlNode node in xmlNodeList)
+            {
+                var attributeList = ((XmlElement)node).Attributes;
+
+                foreach (XmlAttribute attrib in attributeList)
+                {
+                    if (attrib.Name == name && attrib.Value == value)
+                    {
+                        node.ParentNode?.RemoveChild(node);
+                    }
+                }
+            }
+        }
+
         public void OnPostGenerateGradleAndroidProject(string path)
         {
             if(!OculusBuildTools.OculusLoaderPresentInSettingsForBuildTarget(BuildTargetGroup.Android))
@@ -248,6 +355,12 @@ namespace UnityEditor.XR.Oculus
 
             nodePath = "/manifest/application/activity/intent-filter";
             CreateNameValueElementsInTag(manifestDoc, nodePath, "category", "name", "com.oculus.intent.category.VR");
+
+            // if the Microphone class is used in a project, the BLUETOOTH permission is automatically added to the manifest
+            // we remove it here since it will cause projects to fail Oculus cert
+            // this shouldn't affect Bluetooth HID devices, which don't need the permission
+            nodePath = "/manifest";
+            RemoveNameValueElementInTag(manifestDoc, nodePath, "uses-permission", "android:name", "android.permission.BLUETOOTH");
 
             manifestDoc.Save(manifestPath);
         }

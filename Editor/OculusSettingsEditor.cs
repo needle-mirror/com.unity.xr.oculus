@@ -17,14 +17,16 @@ namespace Unity.XR.Oculus.Editor
         private const string kLowOverheadMode = "LowOverheadMode";
         private const string kProtectedContext = "ProtectedContext";
         private const string kFocusAware = "FocusAware";
+        private const string kOptimizeBufferDiscards = "OptimizeBufferDiscards";
 
         static GUIContent s_SharedDepthBufferLabel = EditorGUIUtility.TrTextContent("Shared Depth Buffer");
         static GUIContent s_DashSupportLabel = EditorGUIUtility.TrTextContent("Dash Support");
         static GUIContent s_StereoRenderingModeLabel = EditorGUIUtility.TrTextContent("Stereo Rendering Mode");
         static GUIContent s_V2SigningLabel = EditorGUIUtility.TrTextContent("V2 Signing (Quest)");
-        static GUIContent s_LowOverheadModeLabel = EditorGUIUtility.TrTextContent("Low Overhead Mode");
+        static GUIContent s_LowOverheadModeLabel = EditorGUIUtility.TrTextContent("Low Overhead Mode (GLES)");
         static GUIContent s_ProtectedContextLabel = EditorGUIUtility.TrTextContent("Protected Context");
         static GUIContent s_FocusAwareLabel = EditorGUIUtility.TrTextContent("Focus Aware");
+        static GUIContent s_OptimizeBufferDiscardsLabel = EditorGUIUtility.TrTextContent("Optimize Buffer Discards (Vulkan)");
 
         private SerializedProperty m_SharedDepthBuffer;
         private SerializedProperty m_DashSupport;
@@ -34,6 +36,7 @@ namespace Unity.XR.Oculus.Editor
         private SerializedProperty m_LowOverheadMode;
         private SerializedProperty m_ProtectedContext;
         private SerializedProperty m_FocusAware;
+        private SerializedProperty m_OptimizeBufferDiscards;
 
         public override void OnInspectorGUI()
         {
@@ -48,8 +51,11 @@ namespace Unity.XR.Oculus.Editor
             if (m_LowOverheadMode == null) m_LowOverheadMode = serializedObject.FindProperty(kLowOverheadMode);
             if (m_ProtectedContext == null) m_ProtectedContext = serializedObject.FindProperty(kProtectedContext);
             if (m_FocusAware == null) m_FocusAware = serializedObject.FindProperty(kFocusAware);
+            if (m_OptimizeBufferDiscards == null) m_OptimizeBufferDiscards = serializedObject.FindProperty(kOptimizeBufferDiscards);
 
             serializedObject.Update();
+
+            EditorGUIUtility.labelWidth = 220.0f;
 
             BuildTargetGroup selectedBuildTargetGroup = EditorGUILayout.BeginBuildTargetSelectionGrouping();
             EditorGUILayout.Space();
@@ -72,6 +78,7 @@ namespace Unity.XR.Oculus.Editor
                 EditorGUILayout.PropertyField(m_StereoRenderingModeAndroid, s_StereoRenderingModeLabel);
                 EditorGUILayout.PropertyField(m_LowOverheadMode, s_LowOverheadModeLabel);
                 EditorGUILayout.PropertyField(m_ProtectedContext, s_ProtectedContextLabel);
+                EditorGUILayout.PropertyField(m_OptimizeBufferDiscards, s_OptimizeBufferDiscardsLabel);
                 EditorGUILayout.PropertyField(m_FocusAware, s_FocusAwareLabel);
                 EditorGUILayout.PropertyField(m_V2Signing, s_V2SigningLabel);
             }
@@ -80,6 +87,8 @@ namespace Unity.XR.Oculus.Editor
             EditorGUILayout.EndBuildTargetSelectionGrouping();
 
             serializedObject.ApplyModifiedProperties();
+
+            EditorGUIUtility.labelWidth = 0.0f;
         }
     }
 }

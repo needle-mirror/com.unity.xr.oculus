@@ -73,7 +73,7 @@ namespace Unity.XR.Oculus
         /// <summary>
         /// If enabled, the GLES graphics driver will bypass validation code, potentially running faster.
         /// </summary>
-        [SerializeField, Tooltip("Enable low overhead mode")]
+        [SerializeField, Tooltip("Enable low overhead mode (GLES)")]
         public bool LowOverheadMode = false;
         
         /// <summary>
@@ -87,6 +87,12 @@ namespace Unity.XR.Oculus
         /// </summary>
         [SerializeField, Tooltip("Enable Focus Aware mode")]
         public bool FocusAware = true;
+
+        /// <summary>
+        /// If enabled, the depth buffer contents will be discarded rather than resolved. This is an optimization that can possibly break rendering in certain cases.  Vulkan only.
+        /// </summary>
+        [SerializeField, Tooltip("Don't resolve the depth buffer and don't store MSAA color buffer after rendering (Vulkan)")]
+        public bool OptimizeBufferDiscards = true;
 
 
         public ushort GetStereoRenderingMode()

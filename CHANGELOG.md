@@ -4,6 +4,19 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2020-09-23
+### Added
+- Added **Optimize Buffer Discards** setting for Vulkan.  This prevents depth and MSAA buffers from being resolved, improving GPU performance
+
+### Changed
+- Added support for detecting if the application has been closed via the Oculus Dash
+
+### Fixed
+- Oculus libraries are no longer added to player builds when Oculus loader isn't enabled for the target
+- The BLUETOOTH permission is no longer added to the Android manifest when the Microphone class is used in a project
+- The plugin no longer attempts to initialize when playing in editor on unsupported platforms (Mac/Linux)
+- User audio configuration changes at runtime on PC are now respected
+- Fixed incorrect manufacturer and removed placeholder serial number information on tracked devices
 
 ## [1.4.3] - 2020-08-07
 ### Changed

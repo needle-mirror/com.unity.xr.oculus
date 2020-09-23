@@ -87,9 +87,13 @@ namespace Unity.XR.Oculus
 
         public override bool Initialize()
         {
+#if (UNITY_EDITOR && !UNITY_EDITOR_WIN) || (UNITY_STANDALONE && !UNITY_STANDALONE_WIN)
+            return false;
+#else
+
 #if UNITY_INPUT_SYSTEM
             InputLayoutLoader.RegisterInputLayouts();
-#endif
+#endif // UNITY_INPUT_SYSTEM
 
             OculusSettings settings = GetSettings();
             if (settings != null)
@@ -102,6 +106,7 @@ namespace Unity.XR.Oculus
                 userDefinedSettings.lowOverheadMode = (ushort)(settings.LowOverheadMode ? 1 : 0);
                 userDefinedSettings.protectedContext = (ushort)(settings.ProtectedContext ? 1 : 0);
                 userDefinedSettings.focusAware = (ushort)(settings.FocusAware ? 1 : 0);
+                userDefinedSettings.optimizeBufferDiscards = (ushort)(settings.OptimizeBufferDiscards ? 1 : 0);
                 SetUserDefinedSettings(userDefinedSettings);
             }
 
@@ -124,6 +129,7 @@ namespace Unity.XR.Oculus
             }
 
             return displaySubsystem != null && inputSubsystem != null;
+#endif // (UNITY_EDITOR && !UNITY_EDITOR_WIN) || (UNITY_STANDALONE && !UNITY_STANDALONE_WIN)
         }
 
         public override bool Start()
@@ -208,7 +214,7 @@ namespace Unity.XR.Oculus
                 return Path.Combine(assetsPath, assetPath);
             }
         }
-#elif UNITY_STANDALONE_WIN || UNITY_ANDROID
+#elif UNITY_STANDALONE_WIN || (UNITY_ANDROID && !UNITY_EDITOR)
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
         static void RuntimeLoadOVRPlugin()
         {
@@ -282,6 +288,7 @@ namespace Unity.XR.Oculus
             public ushort lowOverheadMode;
             public ushort protectedContext;
             public ushort focusAware;
+            public ushort optimizeBufferDiscards;
         }
 
         [DllImport("OculusXRPlugin", CharSet=CharSet.Ansi)]
