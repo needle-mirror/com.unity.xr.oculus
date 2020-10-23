@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Build;
+import java.util.Locale;
 import com.unity3d.player.UnityPlayer;
 
 public class OculusUnity
@@ -95,5 +97,10 @@ public class OculusUnity
         }
 
         return ret;
+    }
+
+    public static boolean getIsOnOculusHardware() {
+        String manufacturer = android.os.Build.MANUFACTURER;
+        return manufacturer.toLowerCase(Locale.ENGLISH).contains("oculus");
     }
 }

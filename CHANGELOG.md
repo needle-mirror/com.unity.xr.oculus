@@ -4,6 +4,28 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.6.0-preview.1] - 2020-10-23
+### Added
+- Added `bool Unity.XR.Oculus.Boundary.GetBoundaryConfigured()`
+- Added `bool Unity.XR.Oculus.Boundary.GetBoundaryDimensions(BoundaryType boundaryType, out Vector3 dimensions)`
+- Added `bool Unity.XR.Oculus.Boundary.GetBoundaryVisible()`
+- Added `void Unity.XR.Oculus.Boundary.SetBoundaryVisible(bool boundaryVisible)`
+- Added `void Unity.XR.Oculus.Development.TrySetDeveloperMode(bool enable)` to enable extra Oculus runtime stats.  This is enabled by default in development builds
+
+### Changed
+- Updated to Oculus plugin 1.52.0.  Note that this removes support for Go.  If you still need to support Go, please use the integrated VR support in 2019.4 LTS, or use package version 1.5.0.
+- Removed the Android V2 signing setting
+- If the Oculus provider is enabled for Android, generated .apk files will no longer attempt to run on non-Oculus Android devices.  If you need this to work, consider scripting general Android builds to disable Oculus for that build
+
+### Fixed
+- Important classes are no longer stripped from Android builds if Minify is set to Proguard in the Android player settings
+- Fixed DllImport errors by guarding dllimport calls on unsupported platforms
+- Fixed Quest haptics not lasting for their intended duration
+- Made the Oculus Dash app termination code more cross platform friendly
+- Fixed the build processor to handle scripted build targets correctly
+- Fixed `GetLocalTrackingSpaceRecenterCount` log spam
+- Fixed incorrect check for DX11 setting when building Mac standalone
+
 ## [1.5.0] - 2020-09-23
 ### Added
 - Added **Optimize Buffer Discards** setting for Vulkan.  This prevents depth and MSAA buffers from being resolved, improving GPU performance

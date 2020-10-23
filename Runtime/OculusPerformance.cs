@@ -3,20 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.XR;
-using System.Runtime.InteropServices;
 using XRStats = UnityEngine.XR.Provider.XRStats;
 
 namespace Unity.XR.Oculus
 {
-    public static partial class NativeMethods
-    {
-        [DllImport("OculusXRPlugin", CharSet = CharSet.Auto)]
-        internal static extern int SetCPULevel(int cpuLevel);
-
-        [DllImport("OculusXRPlugin", CharSet = CharSet.Auto)]
-        internal static extern int SetGPULevel(int gpuLevel);
-    }
-
     public static class Performance
     {
         /// <summary>
@@ -27,8 +17,8 @@ namespace Unity.XR.Oculus
         /// Please note: as this is a hint, it may not be immediately reflected by the system.
         /// </param>
         /// <returns>
-        /// True if we have no errors returned by the native function. We return false when the native function returns a failure condition. Check 
-        /// the log for more information.
+        /// True if we have no errors returned by the native function. We return false when the native function returns a failure condition.
+        ///  Check the log for more information.
         /// </returns>
         public static bool TrySetCPULevel(int level)
         {
@@ -36,19 +26,19 @@ namespace Unity.XR.Oculus
         }
 
         /// <summary>
-        /// Set the GPU performance level 
+        /// Set the GPU performance level
         /// </summary>
-        /// <param name="level"> 
+        /// <param name="level">
         /// Allowable values are integers in the range 0 - 4 (inclusive). A value of 0 is the lowest performance level but is the most power efficient.
         /// Please note: as this is a hint, it may not be immediately reflected by the system.
         /// </param>
         /// <returns>
-        /// True if we have no errors returned by the native function. We return false when the native function returns a failure condition. Check 
+        /// True if we have no errors returned by the native function. We return false when the native function returns a failure condition. Check
         /// the log for more information.
         /// </returns>
         public static bool TrySetGPULevel(int level)
         {
-            return (NativeMethods.SetGPULevel(level) == 0);            
+            return (NativeMethods.SetGPULevel(level) == 0);
         }
     }
 
@@ -56,9 +46,6 @@ namespace Unity.XR.Oculus
     {
         private static IntegratedSubsystem m_Display;
         private static string m_PluginVersion = string.Empty;
-
-        [DllImport("OculusXRPlugin", CharSet=CharSet.Auto)]
-        private static extern void GetOVRPVersion(byte[] version);
 
         /// <summary>
         /// Gets the version of OVRPlugin currently in use. Format: "major.minor.release"
@@ -70,7 +57,7 @@ namespace Unity.XR.Oculus
                 if (string.Equals(string.Empty, m_PluginVersion))
                 {
                     byte[] buf = new byte[256];
-                    GetOVRPVersion(buf);
+                    NativeMethods.GetOVRPVersion(buf);
                     var end = Array.IndexOf<byte>(buf, 0);
                     m_PluginVersion = System.Text.Encoding.ASCII.GetString(buf, 0, end);
                 }
@@ -97,7 +84,7 @@ namespace Unity.XR.Oculus
             }
 
             /// <summary>
-            /// Reports the time the compositor spent on the GPU last frame in seconds. 
+            /// Reports the time the compositor spent on the GPU last frame in seconds.
             /// </summary>
             public static float GPUCompositorTime
             {
@@ -340,8 +327,10 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Enable or disable provider tracking perf metrics. Perf metrics are disabled by default.
             /// </summary>
-            [DllImport("OculusXRPlugin", CharSet = CharSet.Auto)]
-            public static extern void EnablePerfMetrics(bool enable);
+            public static void EnablePerfMetrics(bool enable)
+            {
+                NativeMethods.EnablePerfMetrics(enable);
+            }
         }
 
         /// <summary>
@@ -431,8 +420,10 @@ namespace Unity.XR.Oculus
                 }
             }
 
-            [DllImport("OculusXRPlugin", CharSet = CharSet.Auto)]
-            public static extern void EnableAppMetrics(bool enable);
+            public static void EnableAppMetrics(bool enable)
+            {
+                NativeMethods.EnableAppMetrics(enable);
+            }
         }
 
 

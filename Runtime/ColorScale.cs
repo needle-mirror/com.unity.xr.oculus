@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Unity.XR.Oculus
 {
@@ -12,14 +11,8 @@ namespace Unity.XR.Oculus
         /// <param name="colorOffset">Offsets the eye layer texture color by this Vector4</param>
         public static void SetColorScaleAndOffset(Vector4 colorScale, Vector4 colorOffset)
         {
-            SetColorScale(colorScale.x, colorScale.y, colorScale.z, colorScale.w);
-            SetColorOffset(colorOffset.x, colorOffset.y, colorOffset.z, colorOffset.w);
+            NativeMethods.SetColorScale(colorScale.x, colorScale.y, colorScale.z, colorScale.w);
+            NativeMethods.SetColorOffset(colorOffset.x, colorOffset.y, colorOffset.z, colorOffset.w);
         }
-
-        [DllImport("OculusXRPlugin", CharSet=CharSet.Auto)]
-        static extern void SetColorScale(float x, float y, float z, float w);
-
-        [DllImport("OculusXRPlugin", CharSet=CharSet.Auto)]
-        static extern void SetColorOffset(float x, float y, float z, float w);
     }
 }

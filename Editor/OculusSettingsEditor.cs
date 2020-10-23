@@ -13,7 +13,6 @@ namespace Unity.XR.Oculus.Editor
         private const string kDashSupport = "DashSupport";
         private const string kStereoRenderingModeDesktop = "m_StereoRenderingModeDesktop";
         private const string kStereoRenderingModeAndroid = "m_StereoRenderingModeAndroid";
-        private const string kV2Signing = "V2Signing";
         private const string kLowOverheadMode = "LowOverheadMode";
         private const string kProtectedContext = "ProtectedContext";
         private const string kFocusAware = "FocusAware";
@@ -22,7 +21,6 @@ namespace Unity.XR.Oculus.Editor
         static GUIContent s_SharedDepthBufferLabel = EditorGUIUtility.TrTextContent("Shared Depth Buffer");
         static GUIContent s_DashSupportLabel = EditorGUIUtility.TrTextContent("Dash Support");
         static GUIContent s_StereoRenderingModeLabel = EditorGUIUtility.TrTextContent("Stereo Rendering Mode");
-        static GUIContent s_V2SigningLabel = EditorGUIUtility.TrTextContent("V2 Signing (Quest)");
         static GUIContent s_LowOverheadModeLabel = EditorGUIUtility.TrTextContent("Low Overhead Mode (GLES)");
         static GUIContent s_ProtectedContextLabel = EditorGUIUtility.TrTextContent("Protected Context");
         static GUIContent s_FocusAwareLabel = EditorGUIUtility.TrTextContent("Focus Aware");
@@ -32,7 +30,6 @@ namespace Unity.XR.Oculus.Editor
         private SerializedProperty m_DashSupport;
         private SerializedProperty m_StereoRenderingModeDesktop;
         private SerializedProperty m_StereoRenderingModeAndroid;
-        private SerializedProperty m_V2Signing;
         private SerializedProperty m_LowOverheadMode;
         private SerializedProperty m_ProtectedContext;
         private SerializedProperty m_FocusAware;
@@ -47,7 +44,6 @@ namespace Unity.XR.Oculus.Editor
             if (m_DashSupport == null) m_DashSupport = serializedObject.FindProperty(kDashSupport);
             if (m_StereoRenderingModeDesktop == null) m_StereoRenderingModeDesktop = serializedObject.FindProperty(kStereoRenderingModeDesktop);
             if (m_StereoRenderingModeAndroid == null) m_StereoRenderingModeAndroid = serializedObject.FindProperty(kStereoRenderingModeAndroid);
-            if (m_V2Signing == null) m_V2Signing = serializedObject.FindProperty(kV2Signing);
             if (m_LowOverheadMode == null) m_LowOverheadMode = serializedObject.FindProperty(kLowOverheadMode);
             if (m_ProtectedContext == null) m_ProtectedContext = serializedObject.FindProperty(kProtectedContext);
             if (m_FocusAware == null) m_FocusAware = serializedObject.FindProperty(kFocusAware);
@@ -80,7 +76,6 @@ namespace Unity.XR.Oculus.Editor
                 EditorGUILayout.PropertyField(m_ProtectedContext, s_ProtectedContextLabel);
                 EditorGUILayout.PropertyField(m_OptimizeBufferDiscards, s_OptimizeBufferDiscardsLabel);
                 EditorGUILayout.PropertyField(m_FocusAware, s_FocusAwareLabel);
-                EditorGUILayout.PropertyField(m_V2Signing, s_V2SigningLabel);
             }
             EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndVertical();

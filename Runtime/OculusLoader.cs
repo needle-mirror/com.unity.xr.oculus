@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.XR.Management;
@@ -66,6 +65,37 @@ namespace Unity.XR.Oculus
     , IXRLoaderPreInit
 #endif
     {
+        private enum DeviceSupportedResult
+        {
+            Supported,             // we should attempt to initialize and run in VR
+            NotSupported,          // we shouldn't attempt to initialize on this device, and should run in non-VR
+            ExitApplication        // we're built for VR, but are on a non-Oculus Android device and should exit the application
+        };
+
+        static DeviceSupportedResult IsDeviceSupported()
+        {
+#if UNITY_EDITOR_WIN
+            return DeviceSupportedResult.Supported;
+#elif (UNITY_STANDALONE_WIN && !UNITY_EDITOR)
+            return DeviceSupportedResult.Supported;
+#elif (UNITY_ANDROID && !UNITY_EDITOR)
+            try
+            {
+                if (NativeMethods.GetIsSupportedDevice())
+                    return DeviceSupportedResult.Supported;
+                else
+                    return DeviceSupportedResult.ExitApplication;
+            }
+            catch(DllNotFoundException)
+            {
+                // return NotSupported since we've been built with Oculus XR Plugin disabled
+                return DeviceSupportedResult.NotSupported;
+            }
+#else
+            return DeviceSupportedResult.NotSupported;
+#endif
+        }
+
         private static List<XRDisplaySubsystemDescriptor> s_DisplaySubsystemDescriptors = new List<XRDisplaySubsystemDescriptor>();
         private static List<XRInputSubsystemDescriptor> s_InputSubsystemDescriptors = new List<XRInputSubsystemDescriptor>();
 
@@ -87,9 +117,10 @@ namespace Unity.XR.Oculus
 
         public override bool Initialize()
         {
-#if (UNITY_EDITOR && !UNITY_EDITOR_WIN) || (UNITY_STANDALONE && !UNITY_STANDALONE_WIN)
-            return false;
-#else
+            if (IsDeviceSupported() != DeviceSupportedResult.Supported)
+            {
+                return false;
+            }
 
 #if UNITY_INPUT_SYSTEM
             InputLayoutLoader.RegisterInputLayouts();
@@ -98,7 +129,7 @@ namespace Unity.XR.Oculus
             OculusSettings settings = GetSettings();
             if (settings != null)
             {
-                UserDefinedSettings userDefinedSettings;
+                NativeMethods.UserDefinedSettings userDefinedSettings;
                 userDefinedSettings.sharedDepthBuffer = (ushort)(settings.SharedDepthBuffer ? 1 : 0);
                 userDefinedSettings.dashSupport = (ushort)(settings.DashSupport ? 1 : 0);
                 userDefinedSettings.stereoRenderingMode = (ushort)settings.GetStereoRenderingMode();
@@ -107,35 +138,35 @@ namespace Unity.XR.Oculus
                 userDefinedSettings.protectedContext = (ushort)(settings.ProtectedContext ? 1 : 0);
                 userDefinedSettings.focusAware = (ushort)(settings.FocusAware ? 1 : 0);
                 userDefinedSettings.optimizeBufferDiscards = (ushort)(settings.OptimizeBufferDiscards ? 1 : 0);
-                SetUserDefinedSettings(userDefinedSettings);
+                NativeMethods.SetUserDefinedSettings(userDefinedSettings);
             }
 
             CreateSubsystem<XRDisplaySubsystemDescriptor, XRDisplaySubsystem>(s_DisplaySubsystemDescriptors, "oculus display");
             CreateSubsystem<XRInputSubsystemDescriptor, XRInputSubsystem>(s_InputSubsystemDescriptors, "oculus input");
 
-            if (displaySubsystem == null || inputSubsystem == null)
+            if (displaySubsystem == null && inputSubsystem == null)
             {
-                Debug.LogError("Unable to start Oculus XR Plugin.");
+                Debug.LogWarning("Unable to start Oculus XR Plugin. Possible causes include a headset not being attached, or the Oculus runtime is not installed or up to date.");
+            }
+            else if (displaySubsystem == null)
+            {
+                Debug.LogError("Unable to start Oculus XR Plugin. Failed to load display subsystem.");
+            }
+            else if (inputSubsystem == null)
+            {
+                Debug.LogError("Unable to start Oculus XR Plugin. Failed to load input subsystem.");
             }
 
-            if (displaySubsystem == null)
-            {
-                Debug.LogError("Failed to load display subsystem.");
-            }
-
-            if (inputSubsystem == null)
-            {
-                Debug.LogError("Failed to load input subsystem.");
-            }
+            ShutdownMonitor.Initialize();
 
             return displaySubsystem != null && inputSubsystem != null;
-#endif // (UNITY_EDITOR && !UNITY_EDITOR_WIN) || (UNITY_STANDALONE && !UNITY_STANDALONE_WIN)
         }
 
         public override bool Start()
         {
             StartSubsystem<XRDisplaySubsystem>();
             StartSubsystem<XRInputSubsystem>();
+            Development.OverrideDeveloperModeStart();
 
             return true;
         }
@@ -144,12 +175,15 @@ namespace Unity.XR.Oculus
         {
             StopSubsystem<XRDisplaySubsystem>();
             StopSubsystem<XRInputSubsystem>();
+            Development.OverrideDeveloperModeStop();
 
             return true;
         }
 
         public override bool Deinitialize()
         {
+            ShutdownMonitor.Deinitialize();
+
             DestroySubsystem<XRDisplaySubsystem>();
             DestroySubsystem<XRInputSubsystem>();
 
@@ -184,7 +218,7 @@ namespace Unity.XR.Oculus
                 return;
             }
 
-            if (!LoadOVRPlugin(AssetPathToAbsolutePath(ovrpPath)))
+            if (!NativeMethods.LoadOVRPlugin(AssetPathToAbsolutePath(ovrpPath)))
             {
                 Debug.LogError("Failed to load OVRPlugin.dll");
                 return;
@@ -214,13 +248,33 @@ namespace Unity.XR.Oculus
                 return Path.Combine(assetsPath, assetPath);
             }
         }
-#elif UNITY_STANDALONE_WIN || (UNITY_ANDROID && !UNITY_EDITOR)
+#elif (UNITY_STANDALONE_WIN && !UNITY_EDITOR)
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
         static void RuntimeLoadOVRPlugin()
         {
-            if (!LoadOVRPlugin(""))
+            if (!NativeMethods.LoadOVRPlugin(""))
             {
                 Debug.LogError("Failed to load OVRPlugin.dll");
+            }
+        }
+#elif (UNITY_ANDROID && !UNITY_EDITOR)
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
+        static void RuntimeLoadOVRPlugin()
+        {
+            var supported = IsDeviceSupported();
+
+            if (supported == DeviceSupportedResult.ExitApplication)
+            {
+                Debug.LogError("\n\nExiting application:\n\nThis .apk was built with the Oculus XR Plugin loader enabled, but is attempting to run on a non-Oculus device.\nTo build for general Android devices, please disable the Oculus XR Plugin before building the Android player.\n\n\n");
+                Application.Quit();
+            }
+
+            if (supported != DeviceSupportedResult.Supported)
+                return;
+
+            if (!NativeMethods.LoadOVRPlugin(""))
+            {
+                Debug.LogError("Failed to load libOVRPlugin.so");
             }
         }
 #endif
@@ -277,29 +331,6 @@ namespace Unity.XR.Oculus
             }
         }
 #endif
-
-        [StructLayout(LayoutKind.Sequential)]
-        struct UserDefinedSettings
-        {
-            public ushort sharedDepthBuffer;
-            public ushort dashSupport;
-            public ushort stereoRenderingMode;
-            public ushort colorSpace;
-            public ushort lowOverheadMode;
-            public ushort protectedContext;
-            public ushort focusAware;
-            public ushort optimizeBufferDiscards;
-        }
-
-        [DllImport("OculusXRPlugin", CharSet=CharSet.Ansi)]
-        static extern bool LoadOVRPlugin(string ovrpPath);
-
-        [DllImport("OculusXRPlugin", CharSet=CharSet.Ansi)]
-        static extern void UnloadOVRPlugin();
-
-        [DllImport("OculusXRPlugin", CharSet=CharSet.Auto)]
-        static extern void SetUserDefinedSettings(UserDefinedSettings settings);
-
         public OculusSettings GetSettings()
         {
             OculusSettings settings = null;

@@ -43,55 +43,55 @@ namespace Unity.XR.Oculus
         /// <summary>
         /// The current stereo rendering mode selected for desktop-based Oculus platforms
         /// </summary>
-        [SerializeField, Tooltip("Set the Stereo Rendering Method")]
+        [SerializeField, Tooltip("The current stereo rendering mode selected for desktop-based Oculus platforms.")]
         public StereoRenderingModeDesktop m_StereoRenderingModeDesktop;
 
         /// <summary>
         /// The current stereo rendering mode selected for Android-based Oculus platforms
         /// </summary>
-        [SerializeField, Tooltip("Set the Stereo Rendering Method")]
+        [SerializeField, Tooltip("The current stereo rendering mode selected for Android-based Oculus platforms.")]
         public StereoRenderingModeAndroid m_StereoRenderingModeAndroid;
 
         /// <summary>
         /// Enable or disable support for using a shared depth buffer. This allows Unity and Oculus to use a common depth buffer which enables Oculus to composite the Oculus Dash and other utilities over the Unity application.
         /// </summary>
-        [SerializeField, Tooltip("Enable a shared depth buffer")]
+        [SerializeField, Tooltip("Allows Unity and the Oculus runtime to share a common depth buffer for better scene integration with the Dash.")]
         public bool SharedDepthBuffer = true;
 
         /// <summary>
         /// Enable or disable Dash support. This inintializes the Oculus Plugin with Dash support which enables the Oculus Dash to composite over the Unity application.
         /// </summary>
-        [SerializeField, Tooltip("Enable Oculus Dash Support")]
+        [SerializeField, Tooltip("Initialize the Oculus Plugin with Dash support which allows the Oculus Dash to composite over the Unity application.")]
         public bool DashSupport = true;
 
         /// <summary>
         /// Enable this if you are building for Quest. This enables application signing with the Android Package (APK) Signature Scheme v2. Disable v2 signing if building for Oculus Go.
         /// </summary>
-        [SerializeField, Tooltip("Configure Manifest for Oculus Quest")]
+        [SerializeField, Tooltip("Configure Manifest for Oculus Quest. This is deprecated and will be removed in Oculus XR Plugin 2.0.0")]
         public bool V2Signing = true;
 
         /// <summary>
         /// If enabled, the GLES graphics driver will bypass validation code, potentially running faster.
         /// </summary>
-        [SerializeField, Tooltip("Enable low overhead mode (GLES)")]
+        [SerializeField, Tooltip("If enabled, the GLES graphics driver will bypass validation code, potentially running faster at the expense of detecting and reporting errors. GLES only.")]
         public bool LowOverheadMode = false;
         
         /// <summary>
         /// If enabled, the Oculus SDK will create a protected graphics context. Has a slight overhead; only use if needed for protected content.
         /// </summary>
-        [SerializeField, Tooltip("Enable a protected graphics context")]
+        [SerializeField, Tooltip("If enabled, the Oculus runtime will create a protected graphics context. Has a slight overhead; only use if needed for protected content.")]
         public bool ProtectedContext = false;
 
         /// <summary>
         /// If enabled, the application will continue running when system overlays appear.
         /// </summary>
-        [SerializeField, Tooltip("Enable Focus Aware mode")]
+        [SerializeField, Tooltip("If enabled, the application will continue running when system overlays appear.")]
         public bool FocusAware = true;
 
         /// <summary>
-        /// If enabled, the depth buffer contents will be discarded rather than resolved. This is an optimization that can possibly break rendering in certain cases.  Vulkan only.
+        /// If enabled, the depth buffer and MSAA contents will be discarded rather than resolved. This is an optimization that can possibly break rendering in certain cases.  Vulkan only.
         /// </summary>
-        [SerializeField, Tooltip("Don't resolve the depth buffer and don't store MSAA color buffer after rendering (Vulkan)")]
+        [SerializeField, Tooltip("If enabled, the depth buffer and MSAA contents will be discarded rather than resolved. This is an optimization that can possibly break rendering in certain cases. Vulkan only.")]
         public bool OptimizeBufferDiscards = true;
 
 

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Xml;
 using UnityEngine;
@@ -62,9 +64,9 @@ namespace UnityEditor.XR.Oculus
             "OVRPlugin.aar"
         };
 
-        private bool ShouldIncludeRuntimePluginsInBuild(string path)
+        private bool ShouldIncludeRuntimePluginsInBuild(string path, BuildTargetGroup platformGroup)
         {
-            return HasLoaderEnabledForTarget(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget));
+            return HasLoaderEnabledForTarget(platformGroup);
         }
 
         private bool ShouldIncludeSpatializerPluginsInBuild(string path)
@@ -93,11 +95,12 @@ namespace UnityEditor.XR.Oculus
                     {
                         if (plugin.assetPath.Contains(pluginName))
                         {
-                            plugin.SetIncludeInBuildDelegate(ShouldIncludeRuntimePluginsInBuild);
+                            plugin.SetIncludeInBuildDelegate((path) => { return ShouldIncludeRuntimePluginsInBuild(path, report.summary.platformGroup); });
                             break;
                         }
                     }
-                    //exlude Spatializer related plugins if OculusSpatializer not selected under Audio setting
+
+                    // exlude spatializer related plugins if OculusSpatializer not selected under Audio setting
                     if (plugin.assetPath.Contains(spatializerPluginName))
                     {
                         plugin.SetIncludeInBuildDelegate(ShouldIncludeSpatializerPluginsInBuild);
@@ -170,7 +173,7 @@ namespace UnityEditor.XR.Oculus
 
             if (report.summary.platformGroup == BuildTargetGroup.Android)
             {
-                GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget)[0];
+                GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0];
                 if (firstGfxType != GraphicsDeviceType.OpenGLES3 && firstGfxType != GraphicsDeviceType.Vulkan && firstGfxType != GraphicsDeviceType.OpenGLES2)
                 {
                     throw new BuildFailedException("OpenGLES2, OpenGLES3, and Vulkan are currently the only graphics APIs compatible with the Oculus XR Plugin on mobile platforms.");
@@ -181,9 +184,9 @@ namespace UnityEditor.XR.Oculus
                 }
             }
 
-            if (report.summary.platformGroup == BuildTargetGroup.Standalone)
+            if (report.summary.platform == BuildTarget.StandaloneWindows || report.summary.platform == BuildTarget.StandaloneWindows64)
             {
-                if (PlayerSettings.GetGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget)[0] !=
+                if (PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0] !=
                     GraphicsDeviceType.Direct3D11)
                 {
                     throw new BuildFailedException("D3D11 is currently the only graphics API compatible with the Oculus XR Plugin on desktop platforms. Please change the Graphics API setting in Player Settings.");
@@ -196,8 +199,9 @@ namespace UnityEditor.XR.Oculus
     internal class OculusManifest : IPostGenerateGradleAndroidProject
     {
         static readonly string k_AndroidURI = "http://schemas.android.com/apk/res/android";
-
         static readonly string k_AndroidManifestPath = "/src/main/AndroidManifest.xml";
+        static readonly string k_AndroidProGuardPath = "/proguard-unity.txt";
+        static readonly string k_OculusProGuardRule = Environment.NewLine + "-keep class com.unity.oculus.OculusUnity { *; }" + Environment.NewLine;
 
         void UpdateOrCreateAttributeInTag(XmlDocument doc, string parentPath, string tag, string name, string value)
         {
@@ -306,10 +310,30 @@ namespace UnityEditor.XR.Oculus
             }
         }
 
+        // disable ProGuard on Oculus Java files
+        void AddProGuardRule(string path)
+        {
+            try
+            {
+                var proguardPath = path + k_AndroidProGuardPath;
+
+                if (File.Exists(proguardPath))
+                {
+                    File.AppendAllText(proguardPath, k_OculusProGuardRule);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("Failed to append Oculus rule to ProGuard file: " + e.ToString());
+            }
+        }
+
         public void OnPostGenerateGradleAndroidProject(string path)
         {
             if(!OculusBuildTools.OculusLoaderPresentInSettingsForBuildTarget(BuildTargetGroup.Android))
                 return;
+
+            AddProGuardRule(path);
 
             var manifestPath = path + k_AndroidManifestPath;
             var manifestDoc = new XmlDocument();
@@ -341,11 +365,8 @@ namespace UnityEditor.XR.Oculus
 
             UpdateOrCreateAttributeInTag(manifestDoc, nodePath, "activity", "launchMode", "singleTask");
 
-            if (!OculusBuildTools.GetSettings() || OculusBuildTools.GetSettings().V2Signing)
-            {
-                nodePath = "/manifest";
-                CreateNameValueElementsInTag(manifestDoc, nodePath, "uses-feature", "name", "android.hardware.vr.headtracking", "required", "true", "version", "1");
-            }
+            nodePath = "/manifest";
+            CreateNameValueElementsInTag(manifestDoc, nodePath, "uses-feature", "name", "android.hardware.vr.headtracking", "required", "true", "version", "1");
 
             if (!OculusBuildTools.GetSettings() || OculusBuildTools.GetSettings().FocusAware)
             {

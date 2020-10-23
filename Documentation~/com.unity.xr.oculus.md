@@ -1,6 +1,6 @@
 # About the Oculus XR Plugin
 
-The Oculus XR Plugin enables you to build applications for a variety of Oculus devices including the Rift, Rift S, Quest, and Go.
+The Oculus XR Plugin enables you to build applications for a variety of Oculus devices including the Rift, Rift S, Quest, and Quest 2.
 
 ## Supported XR plugin subsystems
 
@@ -10,9 +10,9 @@ The display subsystem provides stereo rendering support for the XR Plugin. It su
 
 * Windows (Rift, Rift S)
     * DX11
-* Android (Quest, Go)
+* Android (Quest, Quest 2)
     * OpenGL ES 3.0
-    * Vulkan (Experimental, Quest only)
+    * Vulkan (Experimental, Quest/Quest 2 only)
 
 ### Input 
 
@@ -35,7 +35,7 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 * **Shared Depth Buffer** - Enable or disable support for using a shared depth buffer. This allows Unity and Oculus to use a common depth buffer, which enables Oculus to composite the Oculus Dash and other utilities over the Unity application.
 * **Dash Support** - Enable or disable Dash support. This inintializes the Oculus Plugin with Dash support, which enables the Oculus Dash to composite over the Unity application.
 
-### Android settings (Quest, Go)
+### Android settings (Quest, Quest 2)
 
 * **Stereo Rendering Mode** - You can select *Multi Pass* or *Multiview* stereo rendering mode.
 	* *Multi Pass* - Unity renders each eye independently by making two passes across the scene graph. Each pass has its own eye matrices and render target. Unity draws everything twice, which includes setting the graphics state for each pass. This is a slow and simple rendering method which doesn't require any special modification to shaders.
@@ -44,19 +44,18 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 * **Protected Context** - If enabled, the Oculus SDK will create a protected graphics context. This has a slight overhead, and should only be enabled if you know that you need a protected context. For example, if you display protected video content.
 * **Optimize Buffer Discards** - If enabled, the depth buffer contents will be discarded rather than resolved and the MSAA color buffer will be resolved rather than stored after rendering. This is a performance optimization that can possibly break rendering effects that sample from the depth buffer, such as camera stacking. Vulkan only.
 * **Focus Aware** - If enabled, the application will continue running when system overlays and menus are present.
-* **V2 Signing (Quest)** - Enable this if you are building for Quest. This enables application signing with the Android Package (APK) Signature Scheme v2. Disable v2 signing if building for Oculus Go.
 
 ## Technical details
 
 ### Fixed-Foveated Rendering (FFR)
 
-Both Quest and Go support [fixed-foveated rendering](https://developer.oculus.com/documentation/quest/latest/concepts/mobile-ffr/) to provide better performance for [pixel-fill limited](https://en.wikipedia.org/wiki/Fillrate) applications.  Controlling the level of foveation is made available through APIs in the Oculus XR Plugin.
+Quest and Quest 2 support [fixed-foveated rendering](https://developer.oculus.com/documentation/quest/latest/concepts/mobile-ffr/) to provide better performance for [pixel-fill limited](https://en.wikipedia.org/wiki/Fillrate) applications.  Controlling the level of foveation is made available through APIs in the Oculus XR Plugin.
 
 FFR works best when rendering directly into the *eye textures* using the [foward rendering mode](https://docs.unity3d.com/Manual/RenderTech-ForwardRendering.html).  [*Deferred rendering* mode](https://docs.unity3d.com/Manual/RenderTech-DeferredShading.html), which is characterized by rendering into an intermediate render texture, is not recommended for use with FFR.  This situation arises often when using the default *Universal Rendering Pipeline*, which included a blit operation by default at the end of the frame. 
 
 ### Vulkan
 
-Currently, using the Vulkan graphics API is supported in an experimental release and only for the Quest platform.  The implementation supports multiview rendering and fixed-foveated rendering.
+Currently, using the Vulkan graphics API is supported in an experimental release and only for the Quest and Quest 2 platforms.  The implementation supports multiview rendering and fixed-foveated rendering.
 
 To enable Vulkan, follow the steps below:
 

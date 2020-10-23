@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace Unity.XR.Oculus
@@ -20,13 +19,13 @@ namespace Unity.XR.Oculus
         /// </param>
         public static void SetFoveationLevel(int level)
         {
-            IntPtr ovrJava = GetOvrJava();
+            IntPtr ovrJava = NativeMethods.GetOvrJava();
             if (ovrJava == IntPtr.Zero)
             {
                 Debug.LogError("Can't set foveation level");
                 return;
             }
-            vrapi_SetPropertyInt(ovrJava, OvrProperty.FoveationLevel, level);
+            NativeMethods.SetPropertyInt(ovrJava, NativeMethods.OvrProperty.FoveationLevel, level);
         }
 
         /// <summary>
@@ -42,28 +41,14 @@ namespace Unity.XR.Oculus
         /// </returns>
         public static int GetFoveationLevel()
         {
-            IntPtr ovrJava = GetOvrJava();
+            IntPtr ovrJava = NativeMethods.GetOvrJava();
             if (ovrJava == IntPtr.Zero ||
-                !vrapi_GetPropertyInt(ovrJava, OvrProperty.FoveationLevel, out var ret))
+                !NativeMethods.GetPropertyInt(ovrJava, NativeMethods.OvrProperty.FoveationLevel, out var ret))
             {
                 Debug.LogError("Can't get foveation level");
                 return -1;
             }
             return ret;
         }
-
-        private enum OvrProperty
-        {
-            FoveationLevel = 15,
-        }
-
-        [DllImport("vrapi", EntryPoint = "vrapi_SetPropertyInt")]
-        private static extern void vrapi_SetPropertyInt(IntPtr java, OvrProperty prop, int val);
-
-        [DllImport("vrapi", EntryPoint = "vrapi_GetPropertyInt")]
-        private static extern bool vrapi_GetPropertyInt(IntPtr java, OvrProperty propType, out int intVal);
-
-        [DllImport("OculusXRPlugin")]
-        private static extern IntPtr GetOvrJava();
     }
 }
