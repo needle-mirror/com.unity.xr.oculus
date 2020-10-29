@@ -146,7 +146,13 @@ namespace Unity.XR.Oculus
 
             if (displaySubsystem == null && inputSubsystem == null)
             {
-                Debug.LogWarning("Unable to start Oculus XR Plugin. Possible causes include a headset not being attached, or the Oculus runtime is not installed or up to date.");
+#if (UNITY_ANDROID && !UNITY_EDITOR)
+                Debug.LogWarning("Unable to start Oculus XR Plugin.");
+#else
+                Debug.LogWarning("Unable to start Oculus XR Plugin.\n" +
+                                 "Possible causes include a headset not being attached, or the Oculus runtime is not installed or up to date.\n" +
+                                 "If you've recently installed or updated the Oculus runtime, you may need to reboot or close Unity and the Unity Hub and try again.");
+#endif
             }
             else if (displaySubsystem == null)
             {

@@ -4,6 +4,14 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.6.0-preview.2] - 2020-10-29
+### Changed
+- Updated AudioSpatializer plugins to 1.52.0
+- Added more clarifying text if the Oculus XR Plugin fails to initialize on Windows
+
+### Fixed
+- Fixed various AudioSpatializer .meta settings and Mac editor support
+
 ## [1.6.0-preview.1] - 2020-10-23
 ### Added
 - Added `bool Unity.XR.Oculus.Boundary.GetBoundaryConfigured()`
@@ -13,7 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added `void Unity.XR.Oculus.Development.TrySetDeveloperMode(bool enable)` to enable extra Oculus runtime stats.  This is enabled by default in development builds
 
 ### Changed
-- Updated to Oculus plugin 1.52.0.  Note that this removes support for Go.  If you still need to support Go, please use the integrated VR support in 2019.4 LTS, or use package version 1.5.0.
+- Updated to Oculus plugin 1.52.0.  Note that this removes support for Go.  If you still need to support Go, please use the integrated VR support in 2019.4 LTS, or use package version 1.5.0
 - Removed the Android V2 signing setting
 - If the Oculus provider is enabled for Android, generated .apk files will no longer attempt to run on non-Oculus Android devices.  If you need this to work, consider scripting general Android builds to disable Oculus for that build
 

@@ -43,7 +43,7 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 * **Low Overhead Mode** - If enabled, the GLES graphics driver will bypass validation code, potentially running faster. Disable this if you experience graphics instabilities. GLES only.
 * **Protected Context** - If enabled, the Oculus SDK will create a protected graphics context. This has a slight overhead, and should only be enabled if you know that you need a protected context. For example, if you display protected video content.
 * **Optimize Buffer Discards** - If enabled, the depth buffer contents will be discarded rather than resolved and the MSAA color buffer will be resolved rather than stored after rendering. This is a performance optimization that can possibly break rendering effects that sample from the depth buffer, such as camera stacking. Vulkan only.
-* **Focus Aware** - If enabled, the application will continue running when system overlays and menus are present.
+* **Focus Aware** - If enabled, whenever system overlays and menus are present, the application will continue running and disconnect from the controllers. Controllers will reconnect when the application regains focus.
 
 ## Technical details
 
