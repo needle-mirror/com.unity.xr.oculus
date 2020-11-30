@@ -22,9 +22,10 @@ namespace Unity.XR.Oculus
             public ushort stereoRenderingMode;
             public ushort colorSpace;
             public ushort lowOverheadMode;
-            public ushort protectedContext;
-            public ushort focusAware;
+            public ushort protectedContext;         // remove in 2.0.0
+            public ushort focusAware;               // remove in 2.0.0
             public ushort optimizeBufferDiscards;
+            public ushort phaseSync;
         }
 
         internal enum OvrProperty

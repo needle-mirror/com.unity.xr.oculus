@@ -368,11 +368,8 @@ namespace UnityEditor.XR.Oculus
             nodePath = "/manifest";
             CreateNameValueElementsInTag(manifestDoc, nodePath, "uses-feature", "name", "android.hardware.vr.headtracking", "required", "true", "version", "1");
 
-            if (!OculusBuildTools.GetSettings() || OculusBuildTools.GetSettings().FocusAware)
-            {
-                nodePath = "/manifest/application/activity";
-                UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.oculus.vr.focusaware", "value", "true");
-            }
+            nodePath = "/manifest/application/activity";
+            UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.oculus.vr.focusaware", "value", "true");
 
             nodePath = "/manifest/application/activity/intent-filter";
             CreateNameValueElementsInTag(manifestDoc, nodePath, "category", "name", "com.oculus.intent.category.VR");

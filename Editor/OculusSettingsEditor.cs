@@ -14,26 +14,23 @@ namespace Unity.XR.Oculus.Editor
         private const string kStereoRenderingModeDesktop = "m_StereoRenderingModeDesktop";
         private const string kStereoRenderingModeAndroid = "m_StereoRenderingModeAndroid";
         private const string kLowOverheadMode = "LowOverheadMode";
-        private const string kProtectedContext = "ProtectedContext";
-        private const string kFocusAware = "FocusAware";
         private const string kOptimizeBufferDiscards = "OptimizeBufferDiscards";
+        private const string kPhaseSync = "PhaseSync";
 
         static GUIContent s_SharedDepthBufferLabel = EditorGUIUtility.TrTextContent("Shared Depth Buffer");
         static GUIContent s_DashSupportLabel = EditorGUIUtility.TrTextContent("Dash Support");
         static GUIContent s_StereoRenderingModeLabel = EditorGUIUtility.TrTextContent("Stereo Rendering Mode");
         static GUIContent s_LowOverheadModeLabel = EditorGUIUtility.TrTextContent("Low Overhead Mode (GLES)");
-        static GUIContent s_ProtectedContextLabel = EditorGUIUtility.TrTextContent("Protected Context");
-        static GUIContent s_FocusAwareLabel = EditorGUIUtility.TrTextContent("Focus Aware");
         static GUIContent s_OptimizeBufferDiscardsLabel = EditorGUIUtility.TrTextContent("Optimize Buffer Discards (Vulkan)");
+        static GUIContent s_PhaseSyncLabel = EditorGUIUtility.TrTextContent("Phase Sync");
 
         private SerializedProperty m_SharedDepthBuffer;
         private SerializedProperty m_DashSupport;
         private SerializedProperty m_StereoRenderingModeDesktop;
         private SerializedProperty m_StereoRenderingModeAndroid;
         private SerializedProperty m_LowOverheadMode;
-        private SerializedProperty m_ProtectedContext;
-        private SerializedProperty m_FocusAware;
         private SerializedProperty m_OptimizeBufferDiscards;
+        private SerializedProperty m_PhaseSync;
 
         public override void OnInspectorGUI()
         {
@@ -45,9 +42,8 @@ namespace Unity.XR.Oculus.Editor
             if (m_StereoRenderingModeDesktop == null) m_StereoRenderingModeDesktop = serializedObject.FindProperty(kStereoRenderingModeDesktop);
             if (m_StereoRenderingModeAndroid == null) m_StereoRenderingModeAndroid = serializedObject.FindProperty(kStereoRenderingModeAndroid);
             if (m_LowOverheadMode == null) m_LowOverheadMode = serializedObject.FindProperty(kLowOverheadMode);
-            if (m_ProtectedContext == null) m_ProtectedContext = serializedObject.FindProperty(kProtectedContext);
-            if (m_FocusAware == null) m_FocusAware = serializedObject.FindProperty(kFocusAware);
             if (m_OptimizeBufferDiscards == null) m_OptimizeBufferDiscards = serializedObject.FindProperty(kOptimizeBufferDiscards);
+            if (m_PhaseSync == null) m_PhaseSync = serializedObject.FindProperty(kPhaseSync);
 
             serializedObject.Update();
 
@@ -73,9 +69,8 @@ namespace Unity.XR.Oculus.Editor
             {
                 EditorGUILayout.PropertyField(m_StereoRenderingModeAndroid, s_StereoRenderingModeLabel);
                 EditorGUILayout.PropertyField(m_LowOverheadMode, s_LowOverheadModeLabel);
-                EditorGUILayout.PropertyField(m_ProtectedContext, s_ProtectedContextLabel);
                 EditorGUILayout.PropertyField(m_OptimizeBufferDiscards, s_OptimizeBufferDiscardsLabel);
-                EditorGUILayout.PropertyField(m_FocusAware, s_FocusAwareLabel);
+                EditorGUILayout.PropertyField(m_PhaseSync, s_PhaseSyncLabel);
             }
             EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndVertical();

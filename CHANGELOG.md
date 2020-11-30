@@ -4,6 +4,19 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.7.0-preview.1] - 2020-11-30
+### Added
+- Added `Phase Sync` option on Android. This enables a latency optimization technique which can reduce simulation latency by several ms, depending on application workload. This is currently disabled by default, but we encourage trying it with your projects
+- Added Unity Profiler marker for `OculusRuntime.WaitToBeginFrame` to clarify time spent waiting for frame sync.
+
+### Changed
+- Updated to Oculus plugin 1.55.0
+- Updated AudioSpatializer plugins to 1.55.0
+
+### Removed
+- Removed `Focus Aware` option since it's now always on by default
+- Removed `Protected Context` option since it only applied to Go
+
 ## [1.6.1] - 2020-11-09
 ### Changed
 - XR Management dependency changed to 3.2.16

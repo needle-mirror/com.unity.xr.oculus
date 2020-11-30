@@ -49,6 +49,7 @@ namespace Unity.XR.Oculus.Editor
                 settings.ProtectedContext = false;
                 settings.FocusAware = true;
                 settings.OptimizeBufferDiscards = true;
+                settings.PhaseSync = false;
 
                 return true;
             }

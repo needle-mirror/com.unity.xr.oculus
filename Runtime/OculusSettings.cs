@@ -66,6 +66,7 @@ namespace Unity.XR.Oculus
 
         /// <summary>
         /// Enable this if you are building for Quest. This enables application signing with the Android Package (APK) Signature Scheme v2. Disable v2 signing if building for Oculus Go.
+        /// This is deprecated and will be removed in Oculus XR Plugin 2.0.0
         /// </summary>
         [SerializeField, Tooltip("Configure Manifest for Oculus Quest. This is deprecated and will be removed in Oculus XR Plugin 2.0.0")]
         public bool V2Signing = true;
@@ -78,14 +79,16 @@ namespace Unity.XR.Oculus
         
         /// <summary>
         /// If enabled, the Oculus SDK will create a protected graphics context. Has a slight overhead; only use if needed for protected content.
+        /// This is deprecated and will be removed in Oculus XR Plugin 2.0.0
         /// </summary>
-        [SerializeField, Tooltip("If enabled, the Oculus runtime will create a protected graphics context. Has a slight overhead; only use if needed for protected content.")]
+        [SerializeField, Tooltip("If enabled, the Oculus runtime will create a protected graphics context. Has a slight overhead; only use if needed for protected content. This is deprecated and will be removed in Oculus XR Plugin 2.0.0")]
         public bool ProtectedContext = false;
 
         /// <summary>
         /// If enabled, the application will continue running when system overlays appear.
+        /// This is deprecated and will be removed in Oculus XR Plugin 2.0.0
         /// </summary>
-        [SerializeField, Tooltip("If enabled, the application will continue running when system overlays appear.")]
+        [SerializeField, Tooltip("If enabled, the application will continue running when system overlays appear. This is deprecated and will be removed in Oculus XR Plugin 2.0.0")]
         public bool FocusAware = true;
 
         /// <summary>
@@ -93,6 +96,12 @@ namespace Unity.XR.Oculus
         /// </summary>
         [SerializeField, Tooltip("If enabled, the depth buffer and MSAA contents will be discarded rather than resolved. This is an optimization that can possibly break rendering in certain cases. Vulkan only.")]
         public bool OptimizeBufferDiscards = true;
+
+        /// <summary>
+        /// Enables a latency optimization technique which can reduce simulation latency by several ms, depending on application workload.
+        /// </summary>
+        [SerializeField, Tooltip("Enables a latency optimization technique which can reduce simulation latency by several ms, depending on application workload.")]
+        public bool PhaseSync = false;
 
 
         public ushort GetStereoRenderingMode()
