@@ -212,6 +212,33 @@ namespace Unity.XR.Oculus
             return found;
         }
 
+        internal static bool GetDisplayAvailableFrequencies(IntPtr ptr, ref int numFrequencies)
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            return Internal.GetDisplayAvailableFrequencies(ptr, ref numFrequencies);
+#else
+            return false;
+#endif
+        }
+
+        internal static bool SetDisplayFrequency(float refreshRate)
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            return Internal.SetDisplayFrequency(refreshRate);
+#else
+            return false;
+#endif
+        }
+
+        internal static bool GetDisplayFrequency(out float refreshRate)
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            return Internal.GetDisplayFrequency(out refreshRate);
+#else
+            refreshRate = 0.0f;
+            return false;
+#endif
+        }
 
         private static class Internal
         {
@@ -274,6 +301,15 @@ namespace Unity.XR.Oculus
 
             [DllImport("OculusXRPlugin")]
             internal static extern bool GetAppShouldQuit();
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern bool GetDisplayAvailableFrequencies(IntPtr ptr, ref int numFrequencies);
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern bool SetDisplayFrequency(float refreshRate);
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern bool GetDisplayFrequency(out float refreshRate);
         }
     }
 }

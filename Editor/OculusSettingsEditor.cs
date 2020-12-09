@@ -16,6 +16,8 @@ namespace Unity.XR.Oculus.Editor
         private const string kLowOverheadMode = "LowOverheadMode";
         private const string kOptimizeBufferDiscards = "OptimizeBufferDiscards";
         private const string kPhaseSync = "PhaseSync";
+        private const string kTargetQuest = "TargetQuest";
+        private const string kTargetQuest2 = "TargetQuest2";
 
         static GUIContent s_SharedDepthBufferLabel = EditorGUIUtility.TrTextContent("Shared Depth Buffer");
         static GUIContent s_DashSupportLabel = EditorGUIUtility.TrTextContent("Dash Support");
@@ -23,6 +25,9 @@ namespace Unity.XR.Oculus.Editor
         static GUIContent s_LowOverheadModeLabel = EditorGUIUtility.TrTextContent("Low Overhead Mode (GLES)");
         static GUIContent s_OptimizeBufferDiscardsLabel = EditorGUIUtility.TrTextContent("Optimize Buffer Discards (Vulkan)");
         static GUIContent s_PhaseSyncLabel = EditorGUIUtility.TrTextContent("Phase Sync");
+        static GUIContent s_TargetDevicesLabel = EditorGUIUtility.TrTextContent("Target Devices");
+        static GUIContent s_TargetQuestLabel = EditorGUIUtility.TrTextContent("Quest");
+        static GUIContent s_TargetQuest2Label = EditorGUIUtility.TrTextContent("Quest 2");
 
         private SerializedProperty m_SharedDepthBuffer;
         private SerializedProperty m_DashSupport;
@@ -31,6 +36,8 @@ namespace Unity.XR.Oculus.Editor
         private SerializedProperty m_LowOverheadMode;
         private SerializedProperty m_OptimizeBufferDiscards;
         private SerializedProperty m_PhaseSync;
+        private SerializedProperty m_TargetQuest;
+        private SerializedProperty m_TargetQuest2;
 
         public override void OnInspectorGUI()
         {
@@ -44,6 +51,8 @@ namespace Unity.XR.Oculus.Editor
             if (m_LowOverheadMode == null) m_LowOverheadMode = serializedObject.FindProperty(kLowOverheadMode);
             if (m_OptimizeBufferDiscards == null) m_OptimizeBufferDiscards = serializedObject.FindProperty(kOptimizeBufferDiscards);
             if (m_PhaseSync == null) m_PhaseSync = serializedObject.FindProperty(kPhaseSync);
+            if (m_TargetQuest == null) m_TargetQuest = serializedObject.FindProperty(kTargetQuest);
+            if (m_TargetQuest2 == null) m_TargetQuest2 = serializedObject.FindProperty(kTargetQuest2);
 
             serializedObject.Update();
 
@@ -71,6 +80,13 @@ namespace Unity.XR.Oculus.Editor
                 EditorGUILayout.PropertyField(m_LowOverheadMode, s_LowOverheadModeLabel);
                 EditorGUILayout.PropertyField(m_OptimizeBufferDiscards, s_OptimizeBufferDiscardsLabel);
                 EditorGUILayout.PropertyField(m_PhaseSync, s_PhaseSyncLabel);
+
+                EditorGUILayout.Space();
+
+                GUILayout.Label(s_TargetDevicesLabel, EditorStyles.boldLabel);
+
+                EditorGUILayout.PropertyField(m_TargetQuest, s_TargetQuestLabel);
+                EditorGUILayout.PropertyField(m_TargetQuest2, s_TargetQuest2Label);
             }
             EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndVertical();

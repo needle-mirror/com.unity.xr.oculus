@@ -4,10 +4,22 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.7.0-preview.2] - 2020-12-09
+### Added
+- Added target devices to the Android settings. These are used to configure the supported devices list in the Android manifest. For example, enabling Quest 2 will allow 80/90Hz refresh rates on Quest 2.
+- Added `bool TryGetAvailableDisplayRefreshRates(out float[] refreshRates)`
+- Added `bool TrySetDisplayRefreshRate(float refreshRate)`
+- Added `bool TryGetDisplayRefreshRate(out float refreshRate)`
+
+### Fixed
+- Fixed `XRDevice.refreshRate` not updating correctly
+- Fixed `indexTouch` and `thumbTouch` usages always returning false
+- Removed the Mac audio spatializer plugin to work around a crash on startup on M1 based Macs
+
 ## [1.7.0-preview.1] - 2020-11-30
 ### Added
 - Added `Phase Sync` option on Android. This enables a latency optimization technique which can reduce simulation latency by several ms, depending on application workload. This is currently disabled by default, but we encourage trying it with your projects
-- Added Unity Profiler marker for `OculusRuntime.WaitToBeginFrame` to clarify time spent waiting for frame sync.
+- Added Unity Profiler marker for `OculusRuntime.WaitToBeginFrame` to clarify time spent waiting for frame sync. Note that this marker is only visible in Unity 2020.1+ since the profiler plugin interface is not available in 2019.4
 
 ### Changed
 - Updated to Oculus plugin 1.55.0

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Xml;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -367,6 +368,48 @@ namespace UnityEditor.XR.Oculus
 
             nodePath = "/manifest";
             CreateNameValueElementsInTag(manifestDoc, nodePath, "uses-feature", "name", "android.hardware.vr.headtracking", "required", "true", "version", "1");
+
+            string supportedDevices = null;
+
+            if (settings != null)
+            {
+                var deviceList = new List<string>();
+
+                if (settings.TargetQuest)
+                    deviceList.Add("quest");
+
+                if (settings.TargetQuest2)
+                    deviceList.Add("quest2");
+
+                if (deviceList.Count > 0)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    string delim = "";
+
+                    foreach (string device in deviceList)
+                    {
+                        sb.Append(delim);
+                        sb.Append(device);
+                        delim = "|";
+                    }
+
+                    supportedDevices = sb.ToString();
+                }
+                else
+                {
+                    Debug.LogWarning("No target devices selected in Oculus Android project settings. No devices will be listed as supported in the application Android manifest.");
+                }
+            }
+            else
+            {
+                supportedDevices = "quest|quest2";
+            }
+
+            if (supportedDevices != null)
+            {
+                nodePath = "/manifest/application";
+                UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.oculus.supportedDevices", "value", supportedDevices);
+            }
 
             nodePath = "/manifest/application/activity";
             UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.oculus.vr.focusaware", "value", "true");

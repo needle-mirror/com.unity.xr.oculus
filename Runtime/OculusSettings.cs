@@ -103,6 +103,18 @@ namespace Unity.XR.Oculus
         [SerializeField, Tooltip("Enables a latency optimization technique which can reduce simulation latency by several ms, depending on application workload.")]
         public bool PhaseSync = false;
 
+        /// <summary>
+        /// Adds a Quest entry to the supported devices list in the Android manifest.
+        /// </summary>
+        [SerializeField, Tooltip("Adds a Quest entry to the supported devices list in the Android manifest.")]
+        public bool TargetQuest = true;
+
+        /// <summary>
+        /// Adds a Quest 2 entry to the supported devices list in the Android manifest.
+        /// </summary>
+        [SerializeField, Tooltip("Adds a Quest 2 entry to the supported devices list in the Android manifest.")]
+        public bool TargetQuest2 = true;
+
 
         public ushort GetStereoRenderingMode()
         {

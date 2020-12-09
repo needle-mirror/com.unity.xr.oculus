@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.XR;
 using XRStats = UnityEngine.XR.Provider.XRStats;
@@ -39,6 +40,50 @@ namespace Unity.XR.Oculus
         public static bool TrySetGPULevel(int level)
         {
             return (NativeMethods.SetGPULevel(level) == 0);
+        }
+
+        private static float[] cachedDisplayAvailableFrequencies = null;
+
+        /// <summary>
+        /// Get an array of available display frequencies supported by this hardware.
+        /// </summary>
+        public static bool TryGetAvailableDisplayRefreshRates(out float[] refreshRates)
+        {
+            if (cachedDisplayAvailableFrequencies == null || cachedDisplayAvailableFrequencies.Length == 0)
+            {
+                cachedDisplayAvailableFrequencies = new float[0];
+                int numFrequencies = 0;
+                if (NativeMethods.GetDisplayAvailableFrequencies(IntPtr.Zero, ref numFrequencies) && numFrequencies > 0)
+                {                   
+                    int size = sizeof(float) * numFrequencies;
+                    IntPtr ptr = Marshal.AllocHGlobal(size);
+                    if (NativeMethods.GetDisplayAvailableFrequencies(ptr, ref numFrequencies) && numFrequencies > 0)
+                    {
+                        cachedDisplayAvailableFrequencies = new float[numFrequencies];
+                        Marshal.Copy(ptr, cachedDisplayAvailableFrequencies, 0, numFrequencies);
+                    }
+                    Marshal.FreeHGlobal(ptr);
+                }
+            }
+
+            refreshRates = cachedDisplayAvailableFrequencies;
+            return (cachedDisplayAvailableFrequencies.Length > 0);
+        }
+
+        /// <summary>
+        /// Set the current display frequency.
+        /// </summary>
+        public static bool TrySetDisplayRefreshRate(float refreshRate)
+        {
+            return NativeMethods.SetDisplayFrequency(refreshRate);
+        }
+
+        /// <summary>
+        /// Get the current display frequency.
+        /// </summary>
+        public static bool TryGetDisplayRefreshRate(out float refreshRate)
+        {
+            return NativeMethods.GetDisplayFrequency(out refreshRate);
         }
     }
 
