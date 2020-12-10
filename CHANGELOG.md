@@ -4,6 +4,10 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2020-12-10
+### Changed
+No changes since 1.7.0-preview.2
+
 ## [1.7.0-preview.2] - 2020-12-09
 ### Added
 - Added target devices to the Android settings. These are used to configure the supported devices list in the Android manifest. For example, enabling Quest 2 will allow 80/90Hz refresh rates on Quest 2.
