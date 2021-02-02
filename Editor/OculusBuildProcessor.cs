@@ -39,6 +39,16 @@ namespace UnityEditor.XR.Oculus
                 return false;
 
             bool loaderFound = false;
+#if XR_MGMT_GTE_400
+            for (int i = 0; i < settings.Manager.activeLoaders.Count; ++i)
+            {
+                if (settings.Manager.activeLoaders[i] as OculusLoader != null)
+                {
+                    loaderFound = true;
+                    break;
+                }
+            }
+#else
             for (int i = 0; i < settings.Manager.loaders.Count; ++i)
             {
                 if (settings.Manager.loaders[i] as OculusLoader != null)
@@ -47,6 +57,7 @@ namespace UnityEditor.XR.Oculus
                     break;
                 }
             }
+#endif            
 
             return loaderFound;
         }
@@ -117,8 +128,23 @@ namespace UnityEditor.XR.Oculus
             var settings = generalSettingsForBuildTarget.AssignedSettings;
             if (!settings)
                 return false;
+
+#if XR_MGMT_GTE_400
+            bool loaderFound = false;
+            for (int i = 0; i < settings.activeLoaders.Count; ++i)
+            {
+                if (settings.activeLoaders[i] as OculusLoader != null)
+                {
+                    loaderFound = true;
+                    break;
+                }
+            }
+
+            return loaderFound;
+#else
             List<XRLoader> loaders = settings.loaders;
             return loaders.Exists(loader => loader is OculusLoader);
+#endif
         }
 
         public static OculusSettings GetSettings()
