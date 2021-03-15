@@ -4,7 +4,19 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [1.8.1] - 2020-02-01
+## [1.9.0-preview.1] - 2021-03-15
+### Added
+- Added `bool EnableDynamicFFR(bool enable)` to enable dynamic FFR.  This should be combined with `SetFoveationLevel()` to enable dynamic FFR
+
+### Changed
+- FFR APIs still log when called on desktop, but it is now a warning rather than an error.  Conditionally compile out FFR code on non-Android to avoid the messages
+
+### Fixed
+- Fixed issue #1300651, where the Oculus XR Plugin would crash with apps built into folders with non-ASCII characters in the path
+- Fixed an editor crash when entering playmode with a non-DX11 graphics device
+- Fixed `[XR] Error determining if we should quit: Not Initialized` log spam when the runtime fails to initialize
+
+## [1.8.1] - 2021-02-01
 ### Changed
 - Enabling the Oculus Android loader will automatically set the Minimum API Level setting to 23.
 - Updated XR Management dependency to 4.0.1
@@ -15,7 +27,7 @@ No changes since 1.7.0-preview.2
 
 ## [1.7.0-preview.2] - 2020-12-09
 ### Added
-- Added target devices to the Android settings. These are used to configure the supported devices list in the Android manifest. For example, enabling Quest 2 will allow 80/90Hz refresh rates on Quest 2.
+- Added target devices to the Android settings. These are used to configure the supported devices list in the Android manifest. For example, enabling Quest 2 will allow 80/90Hz refresh rates on Quest 2
 - Added `bool TryGetAvailableDisplayRefreshRates(out float[] refreshRates)`
 - Added `bool TrySetDisplayRefreshRate(float refreshRate)`
 - Added `bool TryGetDisplayRefreshRate(out float refreshRate)`

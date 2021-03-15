@@ -1,7 +1,7 @@
 {
   "name": "com.unity.xr.oculus",
   "displayName": "Oculus XR Plugin",
-  "version": "1.8.1",
+  "version": "1.9.0-preview.1",
   "unity": "2019.4",
   "unityRelease": "0f1",
   "description": "Provides display and input support for Oculus devices.",
@@ -21,12 +21,12 @@
   "repository": {
     "url": "https://github.cds.internal.unity3d.com/unity/xr.sdk.oculus.git",
     "type": "git",
-    "revision": "5aefd475e33452f8a6a1082429c36a5b26d363d6"
+    "revision": "b97a301925a6578241b10acfaa6e1a12f72c2a1e"
   },
   "relatedPackages": {
-    "com.unity.xr.oculus.tests": "1.8.1"
+    "com.unity.xr.oculus.tests": "1.9.0-preview.1"
   },
   "upmCi": {
-    "footprint": "d1ba3a1178efbb0478740ba740dd16b58064f79a"
+    "footprint": "d9ab7c1f2781baa8ee9e4d726c82824c99bc8f72"
   }
 }

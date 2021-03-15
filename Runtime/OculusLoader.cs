@@ -117,7 +117,11 @@ namespace Unity.XR.Oculus
 
         public override bool Initialize()
         {
-            if (IsDeviceSupported() != DeviceSupportedResult.Supported)
+            if (IsDeviceSupported() != DeviceSupportedResult.Supported
+#if UNITY_EDITOR_WIN
+                || SystemInfo.graphicsDeviceType != GraphicsDeviceType.Direct3D11
+#endif
+            )
             {
                 return false;
             }
@@ -163,8 +167,10 @@ namespace Unity.XR.Oculus
             {
                 Debug.LogError("Unable to start Oculus XR Plugin. Failed to load input subsystem.");
             }
-
-            ShutdownMonitor.Initialize();
+            else
+            {
+                ShutdownMonitor.Initialize();
+            }
 
             return displaySubsystem != null && inputSubsystem != null;
         }

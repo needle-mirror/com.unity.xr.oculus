@@ -31,6 +31,7 @@ namespace Unity.XR.Oculus
         internal enum OvrProperty
         {
             FoveationLevel = 15,
+            DynamicFoveationEnabled = 30
         }
 
         internal static void SetColorScale(float x, float y, float z, float w)
@@ -254,7 +255,7 @@ namespace Unity.XR.Oculus
             [DllImport("OculusXRPlugin")]
             internal static extern bool GetIsSupportedDevice();
 
-            [DllImport("OculusXRPlugin", CharSet=CharSet.Ansi)]
+            [DllImport("OculusXRPlugin", CharSet=CharSet.Unicode)]
             internal static extern bool LoadOVRPlugin(string ovrpPath);
 
             [DllImport("OculusXRPlugin")]
