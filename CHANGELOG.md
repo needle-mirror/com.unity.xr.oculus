@@ -4,6 +4,10 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.9.0] - 2021-03-18
+### Changed
+No changes since 1.9.0-preview.1
+
 ## [1.9.0-preview.1] - 2021-03-15
 ### Added
 - Added `bool EnableDynamicFFR(bool enable)` to enable dynamic FFR.  This should be combined with `SetFoveationLevel()` to enable dynamic FFR
