@@ -265,9 +265,14 @@ namespace Unity.XR.Oculus
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
         static void RuntimeLoadOVRPlugin()
         {
-            if (!NativeMethods.LoadOVRPlugin(""))
+            try
             {
-                Debug.LogError("Failed to load OVRPlugin.dll");
+                if (!NativeMethods.LoadOVRPlugin(""))
+                    Debug.LogError("Failed to load OVRPlugin.dll");
+            }
+            catch
+            {
+                // handle Windows standalone build with Oculus XR Plugin installed but disabled in loader list.
             }
         }
 #elif (UNITY_ANDROID && !UNITY_EDITOR)
@@ -285,10 +290,16 @@ namespace Unity.XR.Oculus
             if (supported != DeviceSupportedResult.Supported)
                 return;
 
-            if (!NativeMethods.LoadOVRPlugin(""))
+            try
             {
-                Debug.LogError("Failed to load libOVRPlugin.so");
+                if (!NativeMethods.LoadOVRPlugin(""))
+                    Debug.LogError("Failed to load libOVRPlugin.so");
             }
+            catch
+            {
+                // handle Android standalone build with Oculus XR Plugin installed but disabled in loader list.
+            }
+
         }
 #endif
 

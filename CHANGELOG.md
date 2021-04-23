@@ -4,6 +4,16 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.9.1] - 2021-04-23
+### Changed
+No changes since 1.9.1-preview.2
+
+## [1.9.1-preview.2] - 2021-04-15
+### Fixed
+- Fixed issue #1324560, a potential PC crash with certain audio input and/or output device configurations
+- Fixed DllNotFoundException error when running standalone players with the Oculus XR Plugin installed but disabled in the loader list
+- Fixed an OculusUnity.java compile error when targeting Android API lower than 26
+
 ## [1.9.0] - 2021-03-18
 ### Changed
 No changes since 1.9.0-preview.1
@@ -22,7 +32,7 @@ No changes since 1.9.0-preview.1
 
 ## [1.8.1] - 2021-02-01
 ### Changed
-- Enabling the Oculus Android loader will automatically set the Minimum API Level setting to 23.
+- Enabling the Oculus Android loader will automatically set the Minimum API Level setting to 23
 - Updated XR Management dependency to 4.0.1
 
 ## [1.7.0] - 2020-12-10

@@ -25,7 +25,7 @@ public class OculusUnity
 
         activity.runOnUiThread(() -> {
 
-            ViewGroup vg = activity.findViewById(android.R.id.content);
+            ViewGroup vg = (ViewGroup) activity.findViewById(android.R.id.content);
             player = null;
             for (int i = 0; i < vg.getChildCount(); ++i) {
                 if (vg.getChildAt(i) instanceof UnityPlayer) {
