@@ -1,5 +1,6 @@
 ﻿using System;
-
+using System.IO;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.XR.Management;
 
@@ -115,6 +116,12 @@ namespace Unity.XR.Oculus
         [SerializeField, Tooltip("Adds a Quest 2 entry to the supported devices list in the Android manifest.")]
         public bool TargetQuest2 = true;
 
+        /// <summary>
+        /// Adds a PNG under the Assets folder as the splash screen image. If set, Oculus OS will display the system splash screen as a high quality compositor layer as soon as the app is starting to launch until the app submits the first frame.
+        /// </summary>
+        [SerializeField, Tooltip("Adds a PNG under the Assets folder as the splash screen image. If set, Oculus OS will display the system splash screen as a high quality compositor layer as soon as the app is starting to launch until the app submits the first frame.")]
+        public Texture2D SystemSplashScreen;
+
 
         public ushort GetStereoRenderingMode()
         {
@@ -131,6 +138,21 @@ namespace Unity.XR.Oculus
 		{
 			s_Settings = this;
 		}
+#else
+        private void OnValidate()
+        {
+            if(SystemSplashScreen == null)
+                return;
+            
+            string splashScreenAssetPath = AssetDatabase.GetAssetPath(SystemSplashScreen);
+            if (Path.GetExtension(splashScreenAssetPath).ToLower() != ".png")
+            {
+                SystemSplashScreen = null;
+                throw new ArgumentException("Invalid file format of System Splash Screen. It has to be a PNG file to be used by the Quest OS. The asset path: " + splashScreenAssetPath);
+            }
+        }
 #endif
+        
+        
     }
 }

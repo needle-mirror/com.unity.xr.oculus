@@ -169,7 +169,7 @@ namespace Unity.XR.Oculus
             }
             else
             {
-                ShutdownMonitor.Initialize();
+                RegisterUpdateCallback.Initialize();
             }
 
             return displaySubsystem != null && inputSubsystem != null;
@@ -195,7 +195,7 @@ namespace Unity.XR.Oculus
 
         public override bool Deinitialize()
         {
-            ShutdownMonitor.Deinitialize();
+            RegisterUpdateCallback.Deinitialize();
 
             DestroySubsystem<XRDisplaySubsystem>();
             DestroySubsystem<XRInputSubsystem>();

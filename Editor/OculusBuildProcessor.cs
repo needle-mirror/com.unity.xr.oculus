@@ -421,6 +421,33 @@ namespace UnityEditor.XR.Oculus
                 UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.oculus.supportedDevices", "value", supportedDevices);
             }
 
+            if (settings != null && settings.SystemSplashScreen != null)
+            {
+                string splashScreenAssetPath = AssetDatabase.GetAssetPath(settings.SystemSplashScreen);
+                if (Path.GetExtension(splashScreenAssetPath).ToLower() != ".png")
+                {
+                    throw new BuildFailedException("Invalid file format of System Splash Screen. It has to be a PNG file to be used by the Quest OS. The asset path: " + splashScreenAssetPath);
+                }
+                else
+                {
+                    string sourcePath = splashScreenAssetPath;
+                    string targetFolder = Path.Combine(path, "src/main/assets");
+                    string targetPath = targetFolder + "/vr_splash.png";
+                    UnityEngine.Debug.LogFormat("Copy splash screen asset from {0} to {1}", sourcePath, targetPath);
+                    try
+                    {
+                        FileUtil.CopyFileOrDirectory(sourcePath, targetPath);
+                    }
+                    catch(Exception e)
+                    {
+                        throw new BuildFailedException(e.Message);
+                    }
+                }
+
+                nodePath = "/manifest/application";
+                UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.oculus.ossplash", "value", "true");
+            }
+
             nodePath = "/manifest/application/activity";
             UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.oculus.vr.focusaware", "value", "true");
 

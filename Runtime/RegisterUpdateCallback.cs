@@ -1,23 +1,15 @@
-#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+﻿#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
 #define OCULUSPLUGIN_WINDOWS_PLATFORM_ONLY
 #endif
 
-#if OCULUSPLUGIN_WINDOWS_PLATFORM_ONLY
-using System;
-using System.Runtime.InteropServices;
 using UnityEngine;
-#endif
 
 namespace Unity.XR.Oculus
 {
-    internal static class ShutdownMonitor
+    internal static class RegisterUpdateCallback
     {
-#if OCULUSPLUGIN_WINDOWS_PLATFORM_ONLY
         internal static void Initialize()
         {
-            if (!NativeMethods.IsOculusXRModuleLoaded())
-                return;
-
             Application.onBeforeRender += Update;
         }
 
@@ -25,17 +17,19 @@ namespace Unity.XR.Oculus
         {
             Application.onBeforeRender -= Update;
         }
-
+        
         private static void Update()
         {
+            //Detect if input focus lost or acquired.
+            InputFocus.Update();
+
+#if OCULUSPLUGIN_WINDOWS_PLATFORM_ONLY
+            //Detect if App is closed from Oculus dash menu and close Windows based App as well.
             if (NativeMethods.GetAppShouldQuit())
             {
                 Application.Quit();
             }
+#endif
         }
-#else
-        internal static void Initialize() { }
-        internal static void Deinitialize() { }
-#endif // UNITY_SHUTDOWNMONITOR_ENABLE
     }
 }

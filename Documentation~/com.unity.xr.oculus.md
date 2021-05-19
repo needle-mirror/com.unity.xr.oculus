@@ -43,6 +43,7 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 * **Low Overhead Mode** - If enabled, the GLES graphics driver will bypass validation code, potentially running faster. Disable this if you experience graphics instabilities. GLES only.
 * **Optimize Buffer Discards** - If enabled, the depth buffer contents will be discarded rather than resolved and the MSAA color buffer will be resolved rather than stored after rendering. This is a performance optimization that can possibly break rendering effects that sample from the depth buffer, such as camera stacking. Vulkan only.
 * **Phase Sync** - This enables a latency optimization technique which can reduce simulation latency by several ms, depending on application workload. This is currently disabled by default, but we encourage trying it with your projects.
+* **System Splash Screen** - You can add a PNG under the Assets folder as the splash screen image. If set, Oculus OS will display the system splash screen as a high quality compositor layer as soon as the app is starting to launch until the app submits the first frame.
 
 ## Technical details
 

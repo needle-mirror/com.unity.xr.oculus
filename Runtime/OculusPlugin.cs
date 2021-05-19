@@ -154,6 +154,15 @@ namespace Unity.XR.Oculus
 #endif
         }
 
+        internal static bool GetHasInputFocus()
+        {
+#if OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            return false;
+#else
+            return Internal.GetAppHasInputFocus();
+#endif
+        }
+
         internal static bool GetBoundaryConfigured()
         {
 #if OCULUSPLUGIN_UNSUPPORTED_PLATFORM
@@ -196,21 +205,6 @@ namespace Unity.XR.Oculus
 #else
             return false;
 #endif
-        }
-
-        internal static bool IsOculusXRModuleLoaded()
-        {
-            var found = true;
-            try
-            {
-                var pluginVersion = Stats.PluginVersion;
-            }
-            catch (System.Exception)
-            {
-                Debug.LogError("Unable to find the OculusXRPlugin DLL\n");
-                found = false;
-            }
-            return found;
         }
 
         internal static bool GetDisplayAvailableFrequencies(IntPtr ptr, ref int numFrequencies)
@@ -287,6 +281,9 @@ namespace Unity.XR.Oculus
 
             [DllImport("OculusXRPlugin")]
             internal static extern bool SetDeveloperModeStrict(bool active);
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern bool GetAppHasInputFocus();
 
             [DllImport("OculusXRPlugin")]
             internal static extern bool GetBoundaryConfigured();

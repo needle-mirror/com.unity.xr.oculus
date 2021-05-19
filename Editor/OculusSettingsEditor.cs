@@ -18,6 +18,7 @@ namespace Unity.XR.Oculus.Editor
         private const string kPhaseSync = "PhaseSync";
         private const string kTargetQuest = "TargetQuest";
         private const string kTargetQuest2 = "TargetQuest2";
+        private const string kSystemSplashScreen = "SystemSplashScreen";
 
         static GUIContent s_SharedDepthBufferLabel = EditorGUIUtility.TrTextContent("Shared Depth Buffer");
         static GUIContent s_DashSupportLabel = EditorGUIUtility.TrTextContent("Dash Support");
@@ -28,6 +29,7 @@ namespace Unity.XR.Oculus.Editor
         static GUIContent s_TargetDevicesLabel = EditorGUIUtility.TrTextContent("Target Devices");
         static GUIContent s_TargetQuestLabel = EditorGUIUtility.TrTextContent("Quest");
         static GUIContent s_TargetQuest2Label = EditorGUIUtility.TrTextContent("Quest 2");
+        static GUIContent s_SystemSplashScreen = EditorGUIUtility.TrTextContent("System Splash Screen");
 
         private SerializedProperty m_SharedDepthBuffer;
         private SerializedProperty m_DashSupport;
@@ -38,6 +40,7 @@ namespace Unity.XR.Oculus.Editor
         private SerializedProperty m_PhaseSync;
         private SerializedProperty m_TargetQuest;
         private SerializedProperty m_TargetQuest2;
+        private SerializedProperty m_SystemSplashScreen;
 
         public override void OnInspectorGUI()
         {
@@ -53,6 +56,7 @@ namespace Unity.XR.Oculus.Editor
             if (m_PhaseSync == null) m_PhaseSync = serializedObject.FindProperty(kPhaseSync);
             if (m_TargetQuest == null) m_TargetQuest = serializedObject.FindProperty(kTargetQuest);
             if (m_TargetQuest2 == null) m_TargetQuest2 = serializedObject.FindProperty(kTargetQuest2);
+            if (m_SystemSplashScreen == null) m_SystemSplashScreen = serializedObject.FindProperty(kSystemSplashScreen);
 
             serializedObject.Update();
 
@@ -87,6 +91,10 @@ namespace Unity.XR.Oculus.Editor
 
                 EditorGUILayout.PropertyField(m_TargetQuest, s_TargetQuestLabel);
                 EditorGUILayout.PropertyField(m_TargetQuest2, s_TargetQuest2Label);
+
+                EditorGUILayout.Space();
+
+                EditorGUILayout.PropertyField(m_SystemSplashScreen, s_SystemSplashScreen);
             }
             EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndVertical();

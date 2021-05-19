@@ -4,6 +4,15 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.10.0-preview.1] - 2021-05-19
+### Added
+- Added `event Action InputFocusAcquired` and `event Action InputFocusLost` in `class InputFocus` to detect Oculus input focus when the Universal menu is open or closed
+- Added system splash screen support for Quest. Oculus OS will display the system splash screen as a high quality compositor layer as soon as the app is starting to launch until the app submits the first frame
+
+### Fixed
+- Fixed issue #1325113, where hand tracking was not working on Quest/Quest 2 when the Unity splash screen was disabled
+- Fixed related script initialization timing issues where some calls failed on the first frame but would succeed later
+
 ## [1.9.1] - 2021-04-23
 ### Changed
 No changes since 1.9.1-preview.2
