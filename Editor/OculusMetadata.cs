@@ -50,6 +50,7 @@ namespace Unity.XR.Oculus.Editor
                 settings.FocusAware = true;
                 settings.OptimizeBufferDiscards = true;
                 settings.PhaseSync = false;
+                settings.SubsampledLayout = false;
                 settings.TargetQuest = true;
                 settings.TargetQuest2 = true;
 

@@ -12,6 +12,35 @@ using UnityEngine;
 
 namespace Unity.XR.Oculus
 {
+    
+    public enum SystemHeadset
+    {
+        None = 0,
+
+        // Standalone headsets
+        Oculus_Quest = 8,
+        Oculus_Quest_2 = 9,
+        Placeholder_10,
+        Placeholder_11,
+        Placeholder_12,
+        Placeholder_13,
+        Placeholder_14,
+
+        // PC headsets
+        Rift_DK1 = 0x1000,
+        Rift_DK2,
+        Rift_CV1,
+        Rift_CB,
+        Rift_S,
+        Oculus_Link_Quest,
+        Oculus_Link_Quest_2,
+        PC_Placeholder_4103,
+        PC_Placeholder_4104,
+        PC_Placeholder_4105,
+        PC_Placeholder_4106,
+        PC_Placeholder_4107
+    }
+    
     public static partial class NativeMethods
     {
         [StructLayout(LayoutKind.Sequential)]
@@ -26,6 +55,7 @@ namespace Unity.XR.Oculus
             public ushort focusAware;               // remove in 2.0.0
             public ushort optimizeBufferDiscards;
             public ushort phaseSync;
+            public ushort subsampledLayout;
         }
 
         internal enum OvrProperty
@@ -234,6 +264,15 @@ namespace Unity.XR.Oculus
             return false;
 #endif
         }
+        
+        internal static SystemHeadset GetSystemHeadsetType()
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            return Internal.GetSystemHeadsetType();
+#else
+            return SystemHeadset.None;
+#endif
+        }
 
         private static class Internal
         {
@@ -308,6 +347,9 @@ namespace Unity.XR.Oculus
 
             [DllImport("OculusXRPlugin")]
             internal static extern bool GetDisplayFrequency(out float refreshRate);
+            
+            [DllImport("OculusXRPlugin")]
+            internal static extern SystemHeadset GetSystemHeadsetType();
         }
     }
 }

@@ -143,6 +143,7 @@ namespace Unity.XR.Oculus
                 userDefinedSettings.focusAware = (ushort)(settings.FocusAware ? 1 : 0);
                 userDefinedSettings.optimizeBufferDiscards = (ushort)(settings.OptimizeBufferDiscards ? 1 : 0);
                 userDefinedSettings.phaseSync = (ushort)(settings.PhaseSync ? 1 : 0);
+                userDefinedSettings.subsampledLayout = (ushort)(settings.SubsampledLayout ? 1 : 0);
                 NativeMethods.SetUserDefinedSettings(userDefinedSettings);
             }
 

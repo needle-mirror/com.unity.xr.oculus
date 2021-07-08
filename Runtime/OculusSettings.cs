@@ -105,6 +105,12 @@ namespace Unity.XR.Oculus
         public bool PhaseSync = false;
 
         /// <summary>
+        /// Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan and Quest 2 only. Requires Unity 2020.3.11f1 or 2021.1.9f1 or higher, and will result in a black screen if enabled on earlier versions of Unity.
+        /// </summary>
+        [SerializeField, Tooltip("Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan and Quest 2 only. Requires Unity 2020.3.11f1 or 2021.1.9f1 or higher, and will result in a black screen if enabled on earlier versions of Unity.")]
+        public bool SubsampledLayout = false;
+
+        /// <summary>
         /// Adds a Quest entry to the supported devices list in the Android manifest.
         /// </summary>
         [SerializeField, Tooltip("Adds a Quest entry to the supported devices list in the Android manifest.")]

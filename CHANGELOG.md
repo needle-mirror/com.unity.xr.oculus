@@ -4,6 +4,21 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.10.0-preview.2] - 2021-07-08
+### Added
+- Added `SystemHeadset GetSystemHeadsetType()` to query the active headset type at runtime
+- Added the Subsampled Layout option for Vulkan on Quest 2.  Requires Unity 2020.3.11f1 or 2021.1.9f1 or higher, and will result in a black screen if enabled on earlier versions of Unity
+
+### Changed
+- Added the Mac audio spatializer plugin back in now that it no longer crashes on M1 based Macs
+- Updated Oculus plugins to 1.57.0
+- Updated AudioSpatializer plugins to 1.57.0
+- Moved updated Oculus library licensing information into `Third Party Notices.md`
+- Updated `LICENSE.md`
+
+### Fixed
+- Fixed issue when Link disconnected and reconnected while in play mode, a black screen in headset occurred when reentering play mode
+
 ## [1.10.0-preview.1] - 2021-05-19
 ### Added
 - Added `event Action InputFocusAcquired` and `event Action InputFocusLost` in `class InputFocus` to detect Oculus input focus when the Universal menu is open or closed
