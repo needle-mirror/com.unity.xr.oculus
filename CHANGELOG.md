@@ -4,6 +4,10 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.10.0] - 2021-07-08
+### Changed
+No changes since 1.10.0-preview.2
+
 ## [1.10.0-preview.2] - 2021-07-08
 ### Added
 - Added `SystemHeadset GetSystemHeadsetType()` to query the active headset type at runtime
