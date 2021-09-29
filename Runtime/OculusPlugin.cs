@@ -58,12 +58,6 @@ namespace Unity.XR.Oculus
             public ushort subsampledLayout;
         }
 
-        internal enum OvrProperty
-        {
-            FoveationLevel = 15,
-            DynamicFoveationEnabled = 30
-        }
-
         internal static void SetColorScale(float x, float y, float z, float w)
         {
 #if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
@@ -75,32 +69,6 @@ namespace Unity.XR.Oculus
         {
 #if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
             Internal.SetColorOffset(x, y, z, w);
-#endif
-        }
-
-        internal static IntPtr GetOvrJava()
-        {
-#if OCULUSPLUGIN_ANDROID_PLATFORM_ONLY
-            return Internal.GetOvrJava();
-#else
-            return IntPtr.Zero;
-#endif
-        }
-
-        internal static void SetPropertyInt(IntPtr java, OvrProperty prop, int val)
-        {
-#if OCULUSPLUGIN_ANDROID_PLATFORM_ONLY
-            Internal.vrapi_SetPropertyInt(java, prop, val);
-#endif
-        }
-
-        internal static bool GetPropertyInt(IntPtr java, OvrProperty propType, out int intVal)
-        {
-#if OCULUSPLUGIN_ANDROID_PLATFORM_ONLY
-            return Internal.vrapi_GetPropertyInt(java, propType, out intVal);
-#else
-            intVal = -1;
-            return false;
 #endif
         }
 
@@ -274,6 +242,38 @@ namespace Unity.XR.Oculus
 #endif
         }
 
+        internal static bool GetTiledMultiResSupported()
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            return Internal.GetTiledMultiResSupported();
+#else
+            return false;
+#endif
+        }
+
+        internal static void SetTiledMultiResLevel(int level)
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            Internal.SetTiledMultiResLevel(level);
+#endif
+        }
+
+        internal static int GetTiledMultiResLevel()
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            return Internal.GetTiledMultiResLevel();
+#else
+            return -1;
+#endif
+        }
+
+        internal static void SetTiledMultiResDynamic(bool isDynamic)
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            Internal.SetTiledMultiResDynamic(isDynamic);
+#endif
+        }
+
         private static class Internal
         {
             [DllImport("OculusXRPlugin")]
@@ -281,9 +281,6 @@ namespace Unity.XR.Oculus
 
             [DllImport("OculusXRPlugin")]
             internal static extern void SetColorOffset(float x, float y, float z, float w);
-
-            [DllImport("OculusXRPlugin")]
-            internal static extern IntPtr GetOvrJava();
 
             [DllImport("OculusXRPlugin")]
             internal static extern bool GetIsSupportedDevice();
@@ -302,12 +299,6 @@ namespace Unity.XR.Oculus
 
             [DllImport("OculusXRPlugin")]
             internal static extern int SetGPULevel(int gpuLevel);
-
-            [DllImport("vrapi", EntryPoint = "vrapi_SetPropertyInt")]
-            internal static extern void vrapi_SetPropertyInt(IntPtr java, OvrProperty prop, int val);
-
-            [DllImport("vrapi", EntryPoint = "vrapi_GetPropertyInt")]
-            internal static extern bool vrapi_GetPropertyInt(IntPtr java, OvrProperty propType, out int intVal);
 
             [DllImport("OculusXRPlugin", CharSet=CharSet.Auto)]
             internal static extern void GetOVRPVersion(byte[] version);
@@ -350,6 +341,18 @@ namespace Unity.XR.Oculus
             
             [DllImport("OculusXRPlugin")]
             internal static extern SystemHeadset GetSystemHeadsetType();
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern bool GetTiledMultiResSupported();
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern void SetTiledMultiResLevel(int level);
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern int GetTiledMultiResLevel();
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern void SetTiledMultiResDynamic(bool isDynamic);
         }
     }
 }

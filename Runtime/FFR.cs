@@ -19,13 +19,13 @@ namespace Unity.XR.Oculus
         /// </param>
         public static void SetFoveationLevel(int level)
         {
-            IntPtr ovrJava = NativeMethods.GetOvrJava();
-            if (ovrJava == IntPtr.Zero)
+            if (!NativeMethods.GetTiledMultiResSupported())
             {
-                Debug.LogWarning("Can't set foveation level on desktop platforms");
+                Debug.LogWarning("Can't set foveation level on current platform");
                 return;
             }
-            NativeMethods.SetPropertyInt(ovrJava, NativeMethods.OvrProperty.FoveationLevel, level);
+
+            NativeMethods.SetTiledMultiResLevel(level);
         }
 
         /// <summary>
@@ -36,13 +36,13 @@ namespace Unity.XR.Oculus
         /// </param>
         public static bool EnableDynamicFFR(bool enable)
         {
-            IntPtr ovrJava = NativeMethods.GetOvrJava();
-            if (ovrJava == IntPtr.Zero)
+            if (!NativeMethods.GetTiledMultiResSupported())
             {
-                Debug.LogWarning("Can't enable dynamic FFR on desktop platforms");
+                Debug.LogWarning("Can't enable dynamic FFR on current platform");
                 return false;
             }
-            NativeMethods.SetPropertyInt(ovrJava, NativeMethods.OvrProperty.DynamicFoveationEnabled, enable ? 1 : 0);
+
+            NativeMethods.SetTiledMultiResDynamic(enable);
             return true;
         }
 
@@ -59,14 +59,13 @@ namespace Unity.XR.Oculus
         /// </returns>
         public static int GetFoveationLevel()
         {
-            IntPtr ovrJava = NativeMethods.GetOvrJava();
-            if (ovrJava == IntPtr.Zero ||
-                !NativeMethods.GetPropertyInt(ovrJava, NativeMethods.OvrProperty.FoveationLevel, out var ret))
+            if (!NativeMethods.GetTiledMultiResSupported())
             {
-                Debug.LogWarning("Can't get foveation level");
+                Debug.LogWarning("Can't get foveation level on current platform");
                 return -1;
             }
-            return ret;
+
+            return NativeMethods.GetTiledMultiResLevel();
         }
     }
 }
