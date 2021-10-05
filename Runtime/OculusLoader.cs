@@ -305,8 +305,10 @@ namespace Unity.XR.Oculus
 #endif
 
 #if UNITY_EDITOR && XR_MGMT_GTE_320
+#if !UNITY_2021_2_OR_NEWER
         private void RemoveVulkanFromAndroidGraphicsAPIs()
         {
+
             // don't need to do anything if auto apis is selected
             if (PlayerSettings.GetUseDefaultGraphicsAPIs(BuildTarget.Android))
                 return;
@@ -347,6 +349,7 @@ namespace Unity.XR.Oculus
 
             PlayerSettings.SetGraphicsAPIs(BuildTarget.Android, newApisList.ToArray());
         }
+#endif // !UNITY_2021_2_OR_NEWER
 
         private void SetAndroidMinSdkVersion()
         {
@@ -361,11 +364,14 @@ namespace Unity.XR.Oculus
         {
             if (buildTargetGroup == BuildTargetGroup.Android)
             {
+#if !UNITY_2021_2_OR_NEWER
                 RemoveVulkanFromAndroidGraphicsAPIs();
+#endif
                 SetAndroidMinSdkVersion();
             }
         }
-#endif
+#endif // UNITY_EDITOR && XR_MGMT_GTE_320
+
         public OculusSettings GetSettings()
         {
             OculusSettings settings = null;

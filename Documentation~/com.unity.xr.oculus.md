@@ -12,7 +12,7 @@ The display subsystem provides stereo rendering support for the XR Plugin. It su
     * DX11
 * Android (Quest, Quest 2)
     * OpenGL ES 3.0
-    * Vulkan (Experimental, Quest/Quest 2 only)
+    * Vulkan (Quest/Quest 2, experimental in Unity versions prior to 2021.2)
 
 ### Input 
 
@@ -50,17 +50,17 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 
 ### Fixed-Foveated Rendering (FFR)
 
-Quest and Quest 2 support [fixed-foveated rendering](https://developer.oculus.com/documentation/quest/latest/concepts/mobile-ffr/) to provide better performance for [pixel-fill limited](https://en.wikipedia.org/wiki/Fillrate) applications.  Controlling the level of foveation is made available through APIs in the Oculus XR Plugin.
+Quest and Quest 2 support [fixed-foveated rendering](https://developer.oculus.com/documentation/quest/latest/concepts/mobile-ffr/) to provide better performance for [pixel-fill limited](https://en.wikipedia.org/wiki/Fillrate) applications. Controlling the level of foveation is made available through APIs in the Oculus XR Plugin.
 
-FFR works best when rendering directly into the *eye textures* using the [foward rendering mode](https://docs.unity3d.com/Manual/RenderTech-ForwardRendering.html).  [*Deferred rendering* mode](https://docs.unity3d.com/Manual/RenderTech-DeferredShading.html), which is characterized by rendering into an intermediate render texture, is not recommended for use with FFR.  This situation arises often when using the default *Universal Rendering Pipeline*, which included a blit operation by default at the end of the frame. 
+FFR works best when rendering directly into the *eye textures* using the [foward rendering mode](https://docs.unity3d.com/Manual/RenderTech-ForwardRendering.html).  [*Deferred rendering* mode](https://docs.unity3d.com/Manual/RenderTech-DeferredShading.html), which is characterized by rendering into an intermediate render texture, is not recommended for use with FFR. This situation arises often when using the default *Universal Rendering Pipeline*, which includes a blit operation by default at the end of the frame. 
 
 ### Vulkan
 
-Currently, using the Vulkan graphics API is supported in an experimental release and only for the Quest and Quest 2 platforms.  The implementation supports multiview rendering and fixed-foveated rendering.
+As of Unity 2021.2, Vulkan support for Oculus Quest and Quest 2 is no longer considered experimental. The implementation supports multiview rendering and fixed-foveated rendering, and is only supported on Quest and Quest 2.
 
-To enable Vulkan, follow the steps below:
+In versions of Unity prior to 2021.2, Vulkan will be disabled by default. To enable Vulkan on those versions, follow the steps below:
 
 * Open the **Project Settings** window (menu: **Edit > Project Settings**), and select **Player**.
 * Under the **Android** settings, add and move **Vulkan** to the top of the list of **Graphic APIs** so that it is selected ahead of others.
 
-Note that unless otherwise modified, OpenGL ES 3.0 is the default graphics API used.
+Note that unless otherwise modified, OpenGL ES 3.0 is the default graphics API used in Unity versions prior to 2021.2.

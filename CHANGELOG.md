@@ -4,6 +4,11 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.11.0] - 2021-10-05
+### Changed
+- Vulkan is no longer experimental for Oculus on Android in Unity 2021.2 and higher, and will no longer be removed from your graphics settings in those versions.
+- Updated Vulkan docs to reflect the above.
+
 ## [1.10.1-preview.3] - 2021-09-29
 ### Changed
 - Updated Oculus plugins to v33 non-OpenXR
@@ -11,9 +16,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Fixed an issue where eye textures were the incorrect resolution on Rift
-
-## [1.10.1-preview.2] - 2021-08-12
-### Fixed
 - Resolved an issue with configuring FFR when using the OpenXR backend
 
 ## [1.10.0] - 2021-07-08
