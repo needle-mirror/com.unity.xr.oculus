@@ -157,6 +157,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Reports the display's refresh rate in frames per second
             /// </summary>
+            [Obsolete("RefreshRate is deprecated. Use Performance.TryGetDisplayRefreshRate instead.", false)]
             public static float RefreshRate
             {
                 get

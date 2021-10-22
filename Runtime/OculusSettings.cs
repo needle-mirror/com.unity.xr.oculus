@@ -13,13 +13,13 @@ namespace Unity.XR.Oculus
         public enum StereoRenderingModeDesktop
         {
             /// <summary>
-            /// Unity makes two passes across the scene graph, each one entirely indepedent of the other. 
-            /// Each pass has its own eye matrices and render target. Unity draws everything twice, which includes setting the graphics state for each pass. 
+            /// Unity makes two passes across the scene graph, each one entirely indepedent of the other.
+            /// Each pass has its own eye matrices and render target. Unity draws everything twice, which includes setting the graphics state for each pass.
             /// This is a slow and simple rendering method which doesn't require any special modification to shaders.
             /// </summary>
             MultiPass = 0,
             /// <summary>
-            /// Unity uses a single texture array with two elements. Unity converts each call into an instanced draw call. 
+            /// Unity uses a single texture array with two elements. Unity converts each call into an instanced draw call.
             /// Shaders need to be aware of this. Unity's shader macros handle the situation.
             /// </summary>
             SinglePassInstanced = 1,
@@ -28,14 +28,14 @@ namespace Unity.XR.Oculus
         public enum StereoRenderingModeAndroid
         {
             /// <summary>
-            /// Unity makes two passes across the scene graph, each one entirely indepedent of the other. 
-            /// Each pass has its own eye matrices and render target. Unity draws everything twice, which includes setting the graphics state for each pass. 
+            /// Unity makes two passes across the scene graph, each one entirely indepedent of the other.
+            /// Each pass has its own eye matrices and render target. Unity draws everything twice, which includes setting the graphics state for each pass.
             /// This is a slow and simple rendering method which doesn't require any special modification to shaders.
             /// </summary>
             MultiPass = 0,
             /// <summary>
-            /// Unity uses a single texture array with two elements. 
-            /// Multiview is very similar to Single Pass Instanced; however, the graphics driver converts each call into an instanced draw call so it requires less work on Unity's side. 
+            /// Unity uses a single texture array with two elements.
+            /// Multiview is very similar to Single Pass Instanced; however, the graphics driver converts each call into an instanced draw call so it requires less work on Unity's side.
             /// As with Single Pass Instanced, shaders need to be aware of the Multiview setting. Unity's shader macros handle the situation.
             /// </summary>
             Multiview = 2
@@ -66,34 +66,13 @@ namespace Unity.XR.Oculus
         public bool DashSupport = true;
 
         /// <summary>
-        /// Enable this if you are building for Quest. This enables application signing with the Android Package (APK) Signature Scheme v2. Disable v2 signing if building for Oculus Go.
-        /// This is deprecated and will be removed in Oculus XR Plugin 2.0.0
-        /// </summary>
-        [SerializeField, Tooltip("Configure Manifest for Oculus Quest. This is deprecated and will be removed in Oculus XR Plugin 2.0.0")]
-        public bool V2Signing = true;
-
-        /// <summary>
         /// If enabled, the GLES graphics driver will bypass validation code, potentially running faster.
         /// </summary>
         [SerializeField, Tooltip("If enabled, the GLES graphics driver will bypass validation code, potentially running faster at the expense of detecting and reporting errors. GLES only.")]
         public bool LowOverheadMode = false;
-        
-        /// <summary>
-        /// If enabled, the Oculus SDK will create a protected graphics context. Has a slight overhead; only use if needed for protected content.
-        /// This is deprecated and will be removed in Oculus XR Plugin 2.0.0
-        /// </summary>
-        [SerializeField, Tooltip("If enabled, the Oculus runtime will create a protected graphics context. Has a slight overhead; only use if needed for protected content. This is deprecated and will be removed in Oculus XR Plugin 2.0.0")]
-        public bool ProtectedContext = false;
 
         /// <summary>
-        /// If enabled, the application will continue running when system overlays appear.
-        /// This is deprecated and will be removed in Oculus XR Plugin 2.0.0
-        /// </summary>
-        [SerializeField, Tooltip("If enabled, the application will continue running when system overlays appear. This is deprecated and will be removed in Oculus XR Plugin 2.0.0")]
-        public bool FocusAware = true;
-
-        /// <summary>
-        /// If enabled, the depth buffer and MSAA contents will be discarded rather than resolved. This is an optimization that can possibly break rendering in certain cases.  Vulkan only.
+        /// If enabled, the depth buffer and MSAA contents will be discarded rather than resolved. This is an optimization that can possibly break rendering in certain cases. Vulkan only.
         /// </summary>
         [SerializeField, Tooltip("If enabled, the depth buffer and MSAA contents will be discarded rather than resolved. This is an optimization that can possibly break rendering in certain cases. Vulkan only.")]
         public bool OptimizeBufferDiscards = true;
@@ -109,6 +88,18 @@ namespace Unity.XR.Oculus
         /// </summary>
         [SerializeField, Tooltip("Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan and Quest 2 only. Requires Unity 2020.3.11f1 or 2021.1.9f1 or higher, and will result in a black screen if enabled on earlier versions of Unity.")]
         public bool SubsampledLayout = false;
+
+        /// <summary>
+        /// Reduces tracked rendering latency by updating head and controller poses as late as possible before rendering. Vulkan only.
+        /// </summary>
+        [SerializeField, Tooltip("Experimental feature that reduces tracked rendering latency by updating head and controller poses as late as possible before rendering. Vulkan only.")]
+        public bool LateLatching = false;
+
+        /// <summary>
+        /// A frame synthesis technology to allow your application to render at half frame rate, while still delivering a smooth experience. Note that this currently requires a custom version of the URP provided by Oculus in order to work, and should not be enabled if you aren't using that customized Oculus URP package.
+        /// </summary>
+        [SerializeField, Tooltip("A frame synthesis technology to allow your application to render at half frame rate, while still delivering a smooth experience. Note that this currently requires a custom version of the URP provided by Oculus in order to work, and should not be enabled if you aren't using that customized Oculus URP package.")]
+        public bool SpaceWarp = false;
 
         /// <summary>
         /// Adds a Quest entry to the supported devices list in the Android manifest.
@@ -149,7 +140,7 @@ namespace Unity.XR.Oculus
         {
             if(SystemSplashScreen == null)
                 return;
-            
+
             string splashScreenAssetPath = AssetDatabase.GetAssetPath(SystemSplashScreen);
             if (Path.GetExtension(splashScreenAssetPath).ToLower() != ".png")
             {
@@ -158,7 +149,7 @@ namespace Unity.XR.Oculus
             }
         }
 #endif
-        
-        
+
+
     }
 }

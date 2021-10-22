@@ -81,7 +81,7 @@ public class OculusUnity
         java.lang.System.loadLibrary(name);
     }
 
-    public static boolean getLowOverheadMode() {
+    private static boolean getManifestSetting(String boolName) {
         boolean ret = false;
 
         try
@@ -89,7 +89,7 @@ public class OculusUnity
             Activity activity = UnityPlayer.currentActivity;
             ApplicationInfo appInfo = activity.getPackageManager().getApplicationInfo(activity.getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle = appInfo.metaData;
-            ret = bundle.getBoolean("com.unity.xr.oculus.LowOverheadMode");
+            ret = bundle.getBoolean(boolName);
         }
         catch (Exception e)
         {
@@ -97,6 +97,14 @@ public class OculusUnity
         }
 
         return ret;
+    }
+
+    public static boolean getLateLatching() {
+        return getManifestSetting("com.unity.xr.oculus.LateLatching");
+    }
+
+    public static boolean getLowOverheadMode() {
+        return getManifestSetting("com.unity.xr.oculus.LowOverheadMode");
     }
 
     public static boolean getIsOnOculusHardware() {

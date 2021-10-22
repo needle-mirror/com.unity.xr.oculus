@@ -44,13 +44,12 @@ namespace Unity.XR.Oculus.Editor
                 settings.m_StereoRenderingModeAndroid = OculusSettings.StereoRenderingModeAndroid.MultiPass;
                 settings.SharedDepthBuffer = true;
                 settings.DashSupport = true;
-                settings.V2Signing = true;
                 settings.LowOverheadMode = false;
-                settings.ProtectedContext = false;
-                settings.FocusAware = true;
                 settings.OptimizeBufferDiscards = true;
                 settings.PhaseSync = false;
                 settings.SubsampledLayout = false;
+                settings.LateLatching = false;
+                settings.SpaceWarp = false;
                 settings.TargetQuest = true;
                 settings.TargetQuest2 = true;
 

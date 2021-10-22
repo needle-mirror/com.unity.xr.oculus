@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Unity.XR.Oculus
 {
-    
+
     public enum SystemHeadset
     {
         None = 0,
@@ -40,7 +40,7 @@ namespace Unity.XR.Oculus
         PC_Placeholder_4106,
         PC_Placeholder_4107
     }
-    
+
     public static partial class NativeMethods
     {
         [StructLayout(LayoutKind.Sequential)]
@@ -51,11 +51,11 @@ namespace Unity.XR.Oculus
             public ushort stereoRenderingMode;
             public ushort colorSpace;
             public ushort lowOverheadMode;
-            public ushort protectedContext;         // remove in 2.0.0
-            public ushort focusAware;               // remove in 2.0.0
             public ushort optimizeBufferDiscards;
             public ushort phaseSync;
             public ushort subsampledLayout;
+            public ushort lateLatching;
+            public ushort spaceWarp;
         }
 
         internal static void SetColorScale(float x, float y, float z, float w)
@@ -232,7 +232,7 @@ namespace Unity.XR.Oculus
             return false;
 #endif
         }
-        
+
         internal static SystemHeadset GetSystemHeadsetType()
         {
 #if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
@@ -338,7 +338,7 @@ namespace Unity.XR.Oculus
 
             [DllImport("OculusXRPlugin")]
             internal static extern bool GetDisplayFrequency(out float refreshRate);
-            
+
             [DllImport("OculusXRPlugin")]
             internal static extern SystemHeadset GetSystemHeadsetType();
 

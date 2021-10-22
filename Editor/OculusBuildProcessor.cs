@@ -193,6 +193,10 @@ namespace UnityEditor.XR.Oculus
                 {
                     throw new BuildFailedException("Android Minimum API Level must be set to 23 or higher for the Oculus XR Plugin.");
                 }
+                if (PlayerSettings.colorSpace != ColorSpace.Linear && (firstGfxType == GraphicsDeviceType.OpenGLES3 || firstGfxType == GraphicsDeviceType.OpenGLES2))
+                {
+                    throw new BuildFailedException("Only Linear Color Space is supported when using OpenGLES. Please set Color Space to Linear in Player Settings, or switch to Vulkan.");
+                }
             }
 
             if (report.summary.platform == BuildTarget.StandaloneWindows || report.summary.platform == BuildTarget.StandaloneWindows64)
@@ -203,6 +207,17 @@ namespace UnityEditor.XR.Oculus
                     throw new BuildFailedException("D3D11 is currently the only graphics API compatible with the Oculus XR Plugin on desktop platforms. Please change the Graphics API setting in Player Settings.");
                 }
             }
+        }
+    }
+
+    internal class OculusPostbuildSettings : IPostprocessBuildWithReport
+    {
+        public int callbackOrder { get; }
+
+        public void OnPostprocessBuild(BuildReport report)
+        {
+            if (EditorUserBuildSettings.waitForManagedDebugger && report.summary.platformGroup == BuildTargetGroup.Android && ((report.summary.options & BuildOptions.AutoRunPlayer) != 0))
+                Debug.Log("[Wait For Managed Debugger To Attach] Use volume Up or Down button on headset to confirm ...\n");
         }
     }
 
@@ -358,8 +373,12 @@ namespace UnityEditor.XR.Oculus
             UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.samsung.android.vr.application.mode", "value", "vr_only");
 
             var settings = OculusBuildTools.GetSettings();
+
             var lowOverheadModeVal = ((settings != null) && settings.LowOverheadMode) ? "true" : "false";
             UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.unity.xr.oculus.LowOverheadMode", "value", lowOverheadModeVal);
+
+            var lateLatchingVal = ((settings != null) && settings.LateLatching) ? "true" : "false";
+            UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.unity.xr.oculus.LateLatching", "value", lateLatchingVal);
 
             nodePath = "/manifest/application";
             UpdateOrCreateAttributeInTag(manifestDoc, nodePath, "activity", "screenOrientation", "landscape");
