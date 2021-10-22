@@ -4,6 +4,10 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.0.0-pre.1] - 2021-10-22
+### Changed
+- Changed minimum Unity version to 2021.2.0b17
+
 ## [2.0.0-preview.1] - 2021-10-22
 ### Added
 - Added support for Application SpaceWarp to enable smoother experiences at lower framerates. **Note:** This feature currently requires a customized version of the URP package that is provided by Oculus. You shouldn't enable this feature if you aren't using that custom URP package
@@ -11,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Updated Oculus plugins to v33 with the OpenXR backend.  **Note:** Gamma color space is no longer supported with GLES with the OpenXR backend, so projects need to use linear color space, or switch to Vulkan. Users on 2020.3 can continue to use the verified 1.x.y versions of this package if they don't wish to update to the OpenXR backend
-- Bumped minimum version to 2020.3.21f1
+- Bumped minimum version to 2020.3.20f1
 - Changed `SetFoveationLevel(int level)` to return a bool.  FFR APIs should succeed on mobile and fail on desktop
 - Removed package dependency on `com.unity.ugui`
 
