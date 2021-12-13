@@ -4,10 +4,20 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.11.2] - 2021-12-13
+### Fixed
+- Changed how init code finds the Unity Surface View to fix an issue related to recent core engine changes
+
+## [1.11.1] - 2021-11-14
+### Changed
+- Updated Oculus plugins to v34 non-OpenXR
+- Modified Oculus plugin initialization on D3D11
+- Updated XR Management dependency to 4.2.0
+
 ## [1.11.0] - 2021-10-05
 ### Changed
-- Vulkan is no longer experimental for Oculus on Android in Unity 2021.2 and higher, and will no longer be removed from your graphics settings in those versions.
-- Updated Vulkan docs to reflect the above.
+- Vulkan is no longer experimental for Oculus on Android in Unity 2021.2 and higher, and will no longer be removed from your graphics settings in those versions
+- Updated Vulkan docs to reflect the above
 
 ## [1.10.1-preview.3] - 2021-09-29
 ### Changed
