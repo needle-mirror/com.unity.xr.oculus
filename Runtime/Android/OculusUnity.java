@@ -37,15 +37,19 @@ public class OculusUnity
             if (player == null) {
                 Log.e("Unity", "Failed to find UnityPlayer view!");
                 return;
-            }
-
+            }      
             glView = null;
-            for (int i = 0; i < player.getChildCount(); ++i)
-            {
-                if (player.getChildAt(0) instanceof SurfaceView)
-                {
-                    glView = (SurfaceView)player.getChildAt(0);
-                }
+            int surfaceViewId = activity.getResources().getIdentifier("unitySurfaceView", "id", activity.getPackageName());
+
+            if(surfaceViewId == 0){
+                Log.e("Unity", "Failed to find SurfaceView Identifier!");
+            }
+            else{
+                SurfaceView view = activity.findViewById(surfaceViewId);
+
+                if(view != null && view instanceof SurfaceView){
+                    glView = view;
+                }  
             }
 
             if (glView == null) {
