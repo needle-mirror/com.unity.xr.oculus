@@ -45,13 +45,21 @@ namespace Unity.XR.Oculus
         /// The current stereo rendering mode selected for desktop-based Oculus platforms
         /// </summary>
         [SerializeField, Tooltip("The current stereo rendering mode selected for desktop-based Oculus platforms.")]
-        public StereoRenderingModeDesktop m_StereoRenderingModeDesktop;
+#if UNITY_2021_2_OR_NEWER
+        public StereoRenderingModeDesktop m_StereoRenderingModeDesktop = StereoRenderingModeDesktop.SinglePassInstanced;
+#else
+        public StereoRenderingModeDesktop m_StereoRenderingModeDesktop = StereoRenderingModeDesktop.MultiPass;
+#endif
 
         /// <summary>
         /// The current stereo rendering mode selected for Android-based Oculus platforms
         /// </summary>
         [SerializeField, Tooltip("The current stereo rendering mode selected for Android-based Oculus platforms.")]
-        public StereoRenderingModeAndroid m_StereoRenderingModeAndroid;
+#if UNITY_2021_2_OR_NEWER
+        public StereoRenderingModeAndroid m_StereoRenderingModeAndroid = StereoRenderingModeAndroid.Multiview;
+#else
+        public StereoRenderingModeAndroid m_StereoRenderingModeAndroid = StereoRenderingModeAndroid.MultiPass;
+#endif
 
         /// <summary>
         /// Enable or disable support for using a shared depth buffer. This allows Unity and Oculus to use a common depth buffer which enables Oculus to composite the Oculus Dash and other utilities over the Unity application.

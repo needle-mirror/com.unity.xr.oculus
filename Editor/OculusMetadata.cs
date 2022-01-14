@@ -40,8 +40,13 @@ namespace Unity.XR.Oculus.Editor
             var settings = obj as OculusSettings;
             if (settings != null)
             {
+#if UNITY_2021_2_OR_NEWER
+                settings.m_StereoRenderingModeDesktop = OculusSettings.StereoRenderingModeDesktop.SinglePassInstanced;
+                settings.m_StereoRenderingModeAndroid = OculusSettings.StereoRenderingModeAndroid.Multiview;
+#else
                 settings.m_StereoRenderingModeDesktop = OculusSettings.StereoRenderingModeDesktop.MultiPass;
                 settings.m_StereoRenderingModeAndroid = OculusSettings.StereoRenderingModeAndroid.MultiPass;
+#endif
                 settings.SharedDepthBuffer = true;
                 settings.DashSupport = true;
                 settings.LowOverheadMode = false;

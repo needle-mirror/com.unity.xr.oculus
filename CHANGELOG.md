@@ -4,6 +4,13 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-preview.2] - 2022-01-14
+### Changed
+- Updated with changes from 1.11.1, 1.11.2, and 1.12.0 (but using the OpenXR backend for the Oculus plugins)
+
+### Fixed
+- Fixed a potential thread safety issue with ASW
+
 ## [2.0.0-preview.1] - 2021-10-22
 ### Added
 - Added support for Application SpaceWarp to enable smoother experiences at lower framerates. **Note:** This feature currently requires a customized version of the URP package that is provided by Oculus. You shouldn't enable this feature if you aren't using that custom URP package
@@ -17,6 +24,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Removed
 - Removed unsupported `InputFeatureUsage<bool> volumeUp` and `InputFeatureUsage<bool> volumeDown` from OculusUsages
+
+## [1.12.0] - 2022-01-14
+### Changed
+- Multiview (Quest), and Single Pass Instanced (PC) are now the default stereo rendering modes in Unity 2021.2 and higher.
+
+## [1.11.2] - 2021-12-13
+### Fixed
+- Changed how init code finds the Unity Surface View to fix an issue related to recent core engine changes
+
+## [1.11.1] - 2021-11-14
+### Changed
+- Updated Oculus plugins to v34 non-OpenXR
+- Modified Oculus plugin initialization on D3D11
+- Updated XR Management dependency to 4.2.0
 
 ## [1.11.0] - 2021-10-05
 ### Changed
