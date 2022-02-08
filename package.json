@@ -1,7 +1,7 @@
 {
   "name": "com.unity.xr.oculus",
   "displayName": "Oculus XR Plugin",
-  "version": "2.2.0-preview.1",
+  "version": "2.2.3-preview.1",
   "unity": "2020.3",
   "unityRelease": "40f1",
   "description": "Provides display and input support for Oculus devices.",
@@ -20,12 +20,16 @@
   "repository": {
     "url": "https://github.cds.internal.unity3d.com/unity/xr.sdk.oculus.git",
     "type": "git",
-    "revision": "dc9b06ee33d2c01ef0d82c295df77b1e77e8b5b5"
+    "revision": "03ecf62e2ee9c5a083f790b0d6e660f4e11add9e"
   },
   "relatedPackages": {
-    "com.unity.xr.oculus.tests": "2.2.0-preview.1"
+    "com.unity.xr.oculus.tests": "2.2.3-preview.1"
+  },
+  "_upm": {
+    "changelog": "### Fixed\n- Fixed a potential memory corruption issue on Rift when calculating mirror view rects\n- Resolved a potential issue where read-only System Splash Screen images could cause build failures\n- `Shared Depth Buffer` on PC should now work correctly when using `Single Pass Instanced` rendering\n- Resolved an issue where disconnecting a Link device then reconnecting it could result in a black screen with no input\n- Fixed a potential startup crash on Quest when app initialization is interrupted and then resumed\n\n### Known Issues\n- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is the default in the 2.x and 3.x versions of the Oculus XR Plugin package\n- `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes\n- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/"
   },
   "upmCi": {
-    "footprint": "49adc0be75e5b40173204a42ffa0743c503df32f"
-  }
+    "footprint": "afe15e513ff102ba3bf77feb51ce8a158f21a13d"
+  },
+  "documentationUrl": "https://docs.unity3d.com/Packages/com.unity.xr.oculus@2.2/manual/index.html"
 }

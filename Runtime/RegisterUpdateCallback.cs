@@ -22,6 +22,9 @@ namespace Unity.XR.Oculus
         {
             //Detect if input focus lost or acquired.
             InputFocus.Update();
+            
+            // Update our session state
+            OculusSession.Update();
 
 #if OCULUSPLUGIN_WINDOWS_PLATFORM_ONLY
             //Detect if App is closed from Oculus dash menu and close Windows based App as well.

@@ -277,6 +277,15 @@ namespace Unity.XR.Oculus
 #endif
         }
 
+        internal static bool GetShouldRestartSession()
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            return Internal.GetShouldRestartSession();
+#else
+            return false;
+#endif          
+        }
+
         private static class Internal
         {
             [DllImport("OculusXRPlugin")]
@@ -356,6 +365,9 @@ namespace Unity.XR.Oculus
 
             [DllImport("OculusXRPlugin")]
             internal static extern void SetTiledMultiResDynamic(bool isDynamic);
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern bool GetShouldRestartSession();
         }
     }
 }

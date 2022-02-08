@@ -573,9 +573,11 @@ namespace UnityEditor.XR.Oculus
                     string sourcePath = splashScreenAssetPath;
                     string targetFolder = Path.Combine(path, "src/main/assets");
                     string targetPath = targetFolder + "/vr_splash.png";
-                    Debug.LogFormat("Copy Oculus system splash screen asset from {0} to {1}", sourcePath, targetPath);
 
+                    // copy the splash over into the gradle folder and make sure it's not read only
                     FileUtil.ReplaceFile(sourcePath, targetPath);
+                    FileInfo targetInfo = new FileInfo(targetPath);
+                    targetInfo.IsReadOnly = false;
                 }
 
                 nodePath = "/manifest/application";
