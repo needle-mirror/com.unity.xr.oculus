@@ -49,16 +49,18 @@ namespace Unity.XR.Oculus.Editor
 #endif
                 settings.SharedDepthBuffer = true;
                 settings.DashSupport = true;
-                settings.V2Signing = true;
                 settings.LowOverheadMode = false;
-                settings.ProtectedContext = false;
-                settings.FocusAware = true;
                 settings.OptimizeBufferDiscards = true;
                 settings.PhaseSync = false;
-                settings.SymmetricProjection = false;
+                settings.SymmetricProjection = true;
                 settings.SubsampledLayout = false;
+                settings.LateLatching = false;
+                settings.LateLatchingDebug = false;
+                settings.EnableTrackingOriginStageMode = false;
+                settings.SpaceWarp = false;
                 settings.TargetQuest = true;
                 settings.TargetQuest2 = true;
+                settings.TargetQuestPro = false;
 
                 return true;
             }

@@ -4,42 +4,50 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [1.13.1-preview.2] - 2023-02-23
+## [2.2.3-preview.2] - 2022-02-23
 ### Fixed
 - Resolved an issue where eye textures and layers were being destroyed too early when being reallocated, potentially resulting in GPU hangs/faults
 
 ### Known Issues
-- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is optionally installed with the Oculus Integration asset
+- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is the default in the 2.x and 3.x versions of the Oculus XR Plugin package
 - `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes
 - For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
 
-## [1.13.1-preview.1] - 2023-02-08
+## [2.2.3-preview.1] - 2022-02-08
 ### Fixed
 - Fixed a potential memory corruption issue on Rift when calculating mirror view rects
-- Resolved an issue where disconnecting a Link device then reconnecting it could result in a black screen with no input
-- Resolved an issue where `OnPostprocessBuild()` could log warnings in situations where the Oculus Android provider wasn't enabled in XR Management
 - Resolved a potential issue where read-only System Splash Screen images could cause build failures
-- Fixed a potential startup crash on Quest when app initialization is interrupted and then resumed
 - `Shared Depth Buffer` on PC should now work correctly when using `Single Pass Instanced` rendering
+- Resolved an issue where disconnecting a Link device then reconnecting it could result in a black screen with no input
+- Fixed a potential startup crash on Quest when app initialization is interrupted and then resumed
 
-## [1.13.0] - 2022-08-26
+## [2.2.0-preview.1] - 2022-10-07
+### Added
+- Added the `Enable TrackingOrigin Stage Mode` option to mobile settings. When enabled, if the Tracking Origin Mode is set to Floor, the tracking origin won't change with a system recenter
+- Added a setting to add Quest Pro support to the Android manifest
+
 ### Changed
-- Bumped minimum Unity version to 2020.3.34f1
+- Updated Oculus plugins to v46 with the OpenXR backend (Mac spatializer plugin is still on v34)
 
 ### Fixed
+- A few refresh rate issues with Rift and available refresh rate reporting on Quest have been resolved with the v46 plugin update
+- Fixed an issue where playing in editor via Link was not functioning correctly when Application SpaceWarp was enabled
 - Fixed an issue where an XR Rig could cause constant attempts to set the tracking origin when using the OpenXR backend, causing potential visual issues and/or crashes. **Note:** This fix will cause `TryRecenter()` to always return `true`. If you have an application that depends on the results of `TryRecenter()`, please note this behavior change.  `TryRecenter()` would only work correctly on PC non-OpenXR builds in previous versions, and would return `false` in all other situations
+- Resolved an issue where `OnPostprocessBuild()` could log warnings in situations where the Oculus Android provider wasn't enabled in XR Management
 
-## [1.12.1] - 2022-06-01
+## [2.0.2-preview.1] - 2022-06-01
 ### Fixed
+- Resolved an issue where Symmetric Projection was defaulting to off, not taking advantage of potential GPU perf gains
 - Changed Symmetric Projection and Subsampled Layout settings incompatibilities to be build warnings rather than errors since these aren't fatal settings issues
 - Fixed an incorrect depth texture format being requested on mobile
 - Fixed compilation errors on platforms where `ENABLE_VR` is not currently defined
 - Fixed an issue where the mirror view blit was using an incorrect source rect
 - Early engine init on mobile now looks for a boot.config entry rather than using an intent filter query, resolving potential Android app store issues
 
-## [1.12.0] - 2022-02-24
+## [2.0.0-preview.5] - 2022-03-02
 ### Added
-- Add optional support for Symmetric Projection on Quest 2 when using Vulkan and Multiview
+- Added a Late Latching Debug Mode option under the Experimental section of the Oculus Android settings. This can be used to verify that Late Latching is working as intended via log entries in Development builds. Currently requires Unity 2020.3.28f1 or higher, and will be available in a future release of 2021.2+
+- Add optional support for Symmetric Projection on Quest 2 when using Vulkan and Multiview. This can improve GPU performance when using Multiview due to more common workloads between the left and right eye
 
 ### Changed
 - Multiview (Quest), and Single Pass Instanced (PC) are now the default stereo rendering modes in Unity 2021.2 and higher
@@ -47,15 +55,33 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Android Minimum API Level was always being forced to 23 when Oculus Android was enabled. Now it's only set to 23 if it's currently less than 23
 
-## [1.11.2] - 2021-12-13
+## [2.0.0-preview.4] - 2022-01-24
 ### Fixed
-- Changed how init code finds the Unity Surface View to fix an issue related to recent core engine changes
+- Resolved a package manifest issue that was causing the Oculus subsystems to fail to load correctly
 
-## [1.11.1] - 2021-11-14
+## [2.0.0-preview.2] - 2022-01-14
 ### Changed
-- Updated Oculus plugins to v34 non-OpenXR
+- Updated Oculus plugins to v34 with the OpenXR backend
 - Modified Oculus plugin initialization on D3D11
 - Updated XR Management dependency to 4.2.0
+
+### Fixed
+- Fixed a potential thread safety issue with ASW
+- Changed how init code finds the Unity Surface View to fix an issue related to recent core engine changes
+
+## [2.0.0-preview.1] - 2021-10-22
+### Added
+- Added support for Application SpaceWarp to enable smoother experiences at lower framerates. **Note:** This feature currently requires a customized version of the URP package that is provided by Oculus. You shouldn't enable this feature if you aren't using that custom URP package
+- Added experimental support for Late Latching when using Vulkan on Quest devices
+
+### Changed
+- Updated Oculus plugins to v33 with the OpenXR backend.  **Note:** Gamma color space is no longer supported with GLES with the OpenXR backend, so projects need to use linear color space, or switch to Vulkan. Users on 2020.3 can continue to use the verified 1.x.y versions of this package if they don't wish to update to the OpenXR backend
+- Bumped minimum version to 2020.3.21f1
+- Changed `SetFoveationLevel(int level)` to return a bool.  FFR APIs should succeed on mobile and fail on desktop
+- Removed package dependency on `com.unity.ugui`
+
+### Removed
+- Removed unsupported `InputFeatureUsage<bool> volumeUp` and `InputFeatureUsage<bool> volumeDown` from OculusUsages
 
 ## [1.11.0] - 2021-10-05
 ### Changed

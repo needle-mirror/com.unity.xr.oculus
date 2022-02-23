@@ -121,6 +121,11 @@ namespace Unity.XR.Oculus
 
         public override bool Initialize()
         {
+            if (!CheckUnityVersionCompatibility())
+            {
+                return false;
+            }
+
             if (IsDeviceSupported() != DeviceSupportedResult.Supported
 #if UNITY_EDITOR_WIN
                 || SystemInfo.graphicsDeviceType != GraphicsDeviceType.Direct3D11
@@ -144,12 +149,19 @@ namespace Unity.XR.Oculus
                 userDefinedSettings.stereoRenderingMode = (ushort)settings.GetStereoRenderingMode();
                 userDefinedSettings.colorSpace = (ushort)((QualitySettings.activeColorSpace == ColorSpace.Linear) ? 1 : 0);
                 userDefinedSettings.lowOverheadMode = (ushort)(settings.LowOverheadMode ? 1 : 0);
-                userDefinedSettings.protectedContext = (ushort)(settings.ProtectedContext ? 1 : 0);
-                userDefinedSettings.focusAware = (ushort)(settings.FocusAware ? 1 : 0);
                 userDefinedSettings.optimizeBufferDiscards = (ushort)(settings.OptimizeBufferDiscards ? 1 : 0);
                 userDefinedSettings.phaseSync = (ushort)(settings.PhaseSync ? 1 : 0);
                 userDefinedSettings.symmetricProjection = (ushort)(settings.SymmetricProjection ? 1 : 0);
                 userDefinedSettings.subsampledLayout = (ushort)(settings.SubsampledLayout ? 1 : 0);
+                userDefinedSettings.lateLatching = (ushort)(settings.LateLatching ? 1 : 0);
+                userDefinedSettings.lateLatchingDebug = (ushort)(settings.LateLatchingDebug ? 1 : 0);
+                userDefinedSettings.enableTrackingOriginStageMode = (ushort)(settings.EnableTrackingOriginStageMode ? 1 : 0);
+#if (UNITY_ANDROID && !UNITY_EDITOR)
+                userDefinedSettings.spaceWarp = (ushort)(settings.SpaceWarp ? 1 : 0);
+#else
+                userDefinedSettings.spaceWarp = 0;
+#endif
+
                 NativeMethods.SetUserDefinedSettings(userDefinedSettings);
             }
 
@@ -404,5 +416,15 @@ namespace Unity.XR.Oculus
             return "OculusXRPlugin";
         }
 #endif
+
+        private bool CheckUnityVersionCompatibility()
+        {
+#if UNITY_2020_3_OR_NEWER
+            return true;
+#else
+            Debug.Log("This version of the Oculus XR Plugin requires Unity 2020.3 or higher in order to run.");
+            return false;
+#endif
+        }
     }
 }

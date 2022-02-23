@@ -171,6 +171,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Reports the display's refresh rate in frames per second
             /// </summary>
+            [Obsolete("RefreshRate is deprecated. Use Performance.TryGetDisplayRefreshRate instead.", false)]
             public static float RefreshRate
             {
                 get
@@ -291,7 +292,7 @@ namespace Unity.XR.Oculus
 
         /// <summary>
         /// Provides additional perf metrics. These stats will not be tracked unless the user makes a PerfMetrics.EnablePerfMetrics(true) method call. Not every stat is supported on every Oculus platform and will always return a value of 0 if unsupported.
-        /// <para/><b>Note:</b> PerfMetrics stats will return 0 when using the optional OpenXR runtime. The suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
+        /// <para/><b>Note:</b> PerfMetrics stats will return 0 when using the OpenXR runtime. The suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
         /// </summary>
         public static class PerfMetrics
         {

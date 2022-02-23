@@ -10,14 +10,6 @@ namespace Unity.XR.Oculus
     public static class OculusUsages
     {
         /// <summary>
-        /// Represents the state of the volume up physical button on the headset.  This is also processed internally to adjust the volume regardless of developer handling.
-        /// </summary>
-        public static InputFeatureUsage<bool> volumeUp = new InputFeatureUsage<bool>("VolumeUp");
-        /// <summary>
-        /// Represents the state of the volume down physical button on the headset.  This is also processed internally to adjust the volume regardless of developer handling.
-        /// </summary>
-        public static InputFeatureUsage<bool> volumeDown = new InputFeatureUsage<bool>("VolumeDown");
-        /// <summary>
         /// Represents the capacitive touch thumbrest on Oculus Rift controllers.
         /// </summary>
         public static InputFeatureUsage<bool> thumbrest = new InputFeatureUsage<bool>("Thumbrest");

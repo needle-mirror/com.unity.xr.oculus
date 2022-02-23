@@ -15,7 +15,6 @@ import com.unity3d.player.UnityPlayer;
 
 public class OculusUnity implements SurfaceHolder.Callback
 {
-    UnityPlayer player;
     Activity activity;
     SurfaceView glView;
 
@@ -25,21 +24,6 @@ public class OculusUnity implements SurfaceHolder.Callback
         activity = UnityPlayer.currentActivity;
 
         activity.runOnUiThread(() -> {
-
-            ViewGroup vg = (ViewGroup) activity.findViewById(android.R.id.content);
-            player = null;
-            for (int i = 0; i < vg.getChildCount(); ++i) {
-                if (vg.getChildAt(i) instanceof UnityPlayer) {
-                    player = (UnityPlayer) vg.getChildAt(i);
-                    break;
-                }
-            }
-
-            if (player == null) {
-                Log.e("Unity", "Failed to find UnityPlayer view!");
-                return;
-            }
-
             glView = null;
             int surfaceViewId = activity.getResources().getIdentifier("unitySurfaceView", "id", activity.getPackageName());
 
@@ -86,7 +70,7 @@ public class OculusUnity implements SurfaceHolder.Callback
         java.lang.System.loadLibrary(name);
     }
 
-    public static boolean getLowOverheadMode() {
+    private static boolean getManifestSetting(String boolName) {
         boolean ret = false;
 
         try
@@ -94,7 +78,7 @@ public class OculusUnity implements SurfaceHolder.Callback
             Activity activity = UnityPlayer.currentActivity;
             ApplicationInfo appInfo = activity.getPackageManager().getApplicationInfo(activity.getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle = appInfo.metaData;
-            ret = bundle.getBoolean("com.unity.xr.oculus.LowOverheadMode");
+            ret = bundle.getBoolean(boolName);
         }
         catch (Exception e)
         {
@@ -102,6 +86,18 @@ public class OculusUnity implements SurfaceHolder.Callback
         }
 
         return ret;
+    }
+
+    public static boolean getLateLatching() {
+        return getManifestSetting("com.unity.xr.oculus.LateLatching");
+    }
+
+    public static boolean getLateLatchingDebug() {
+        return getManifestSetting("com.unity.xr.oculus.LateLatchingDebug");
+    }
+
+    public static boolean getLowOverheadMode() {
+        return getManifestSetting("com.unity.xr.oculus.LowOverheadMode");
     }
 
     public static boolean getIsOnOculusHardware() {

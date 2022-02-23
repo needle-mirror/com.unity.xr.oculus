@@ -17,15 +17,16 @@ namespace Unity.XR.Oculus
         /// * 3 high FFR setting
         /// * 4 high top FFR setting
         /// </param>
-        public static void SetFoveationLevel(int level)
+        public static bool SetFoveationLevel(int level)
         {
             if (!NativeMethods.GetTiledMultiResSupported())
             {
                 Debug.LogWarning("Can't set foveation level on current platform");
-                return;
+                return false;
             }
 
             NativeMethods.SetTiledMultiResLevel(level);
+            return true;
         }
 
         /// <summary>

@@ -198,6 +198,10 @@ namespace UnityEditor.XR.Oculus
                 {
                     throw new BuildFailedException("Android Minimum API Level must be set to 23 or higher for the Oculus XR Plugin.");
                 }
+                if (PlayerSettings.colorSpace != ColorSpace.Linear && (firstGfxType == GraphicsDeviceType.OpenGLES3 || firstGfxType == GraphicsDeviceType.OpenGLES2))
+                {
+                    throw new BuildFailedException("Only Linear Color Space is supported when using OpenGLES. Please set Color Space to Linear in Player Settings, or switch to Vulkan.");
+                }
 
                 // write Android Meta tags to bootconfig
                 var bootConfig = new BootConfig(report);
@@ -245,17 +249,20 @@ namespace UnityEditor.XR.Oculus
                 {
                     GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0];
                     
-                    if (settings.SymmetricProjection && (!settings.TargetQuest2 || settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
+                    if (settings.SymmetricProjection && (!(settings.TargetQuest2 || settings.TargetQuestPro) || settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
                     {
-                        Debug.LogWarning("Symmetric Projection is only supported on Quest 2 with Vulkan and Multiview.");
+                        Debug.LogWarning("Symmetric Projection is only supported on Quest 2 and Quest Pro with Vulkan and Multiview.");
                     }
                     
-                    if (settings.SubsampledLayout && (!settings.TargetQuest2 || firstGfxType != GraphicsDeviceType.Vulkan))
+                    if (settings.SubsampledLayout && (!(settings.TargetQuest2 || settings.TargetQuestPro) || firstGfxType != GraphicsDeviceType.Vulkan))
                     {
-                        Debug.LogWarning("Subsampled Layout is only supported on Quest 2 with Vulkan.");
+                        Debug.LogWarning("Subsampled Layout is only supported on Quest 2 and Quest Pro with Vulkan.");
                     }
                 }
             }
+
+            if (EditorUserBuildSettings.waitForManagedDebugger && report.summary.platformGroup == BuildTargetGroup.Android && ((report.summary.options & BuildOptions.AutoRunPlayer) != 0))
+                Debug.Log("[Wait For Managed Debugger To Attach] Use volume Up or Down button on headset to confirm ...\n");
         }
     }
 
@@ -373,7 +380,7 @@ namespace UnityEditor.XR.Oculus
                     }
                 }
             }
-            
+
             // Didn't find any attributes that matched, create both (or all three)
             XmlElement childElement = doc.CreateElement(tag);
             childElement.SetAttribute(firstName, k_AndroidURI, firstValue);
@@ -404,7 +411,7 @@ namespace UnityEditor.XR.Oculus
                     }
                 }
             }
-            
+
             XmlElement childElement = doc.CreateElement(tag);
             childElement.SetAttribute(firstName, k_AndroidURI, firstValue);
 
@@ -481,8 +488,15 @@ namespace UnityEditor.XR.Oculus
             UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.samsung.android.vr.application.mode", "value", "vr_only");
 
             var settings = OculusBuildTools.GetSettings();
+
             var lowOverheadModeVal = ((settings != null) && settings.LowOverheadMode) ? "true" : "false";
             UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.unity.xr.oculus.LowOverheadMode", "value", lowOverheadModeVal);
+
+            var lateLatchingVal = ((settings != null) && settings.LateLatching) ? "true" : "false";
+            UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.unity.xr.oculus.LateLatching", "value", lateLatchingVal);
+
+            var lateLatchingDebugVal = ((settings != null) && settings.LateLatchingDebug) ? "true" : "false";
+            UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.unity.xr.oculus.LateLatchingDebug", "value", lateLatchingDebugVal);
 
             nodePath = "/manifest/application";
             UpdateOrCreateAttributeInTag(manifestDoc, nodePath, "activity", "screenOrientation", "landscape");
@@ -513,6 +527,9 @@ namespace UnityEditor.XR.Oculus
 
                 if (settings.TargetQuest2)
                     deviceList.Add("quest2");
+
+                if (settings.TargetQuestPro)
+                    deviceList.Add("cambria");
 
                 if (deviceList.Count > 0)
                 {

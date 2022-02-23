@@ -1,9 +1,9 @@
 {
   "name": "com.unity.xr.oculus",
   "displayName": "Oculus XR Plugin",
-  "version": "1.13.1-preview.2",
+  "version": "2.2.3-preview.2",
   "unity": "2020.3",
-  "unityRelease": "34f1",
+  "unityRelease": "40f1",
   "description": "Provides display and input support for Oculus devices.",
   "keywords": [
     "oculus",
@@ -15,22 +15,21 @@
     "xreditorsubsystem"
   ],
   "dependencies": {
-    "com.unity.xr.management": "4.2.0",
-    "com.unity.ugui": "1.0.0"
+    "com.unity.xr.management": "4.2.0"
   },
   "repository": {
     "url": "https://github.cds.internal.unity3d.com/unity/xr.sdk.oculus.git",
     "type": "git",
-    "revision": "353a67df2616273aaa32daf4e939401390559c2f"
+    "revision": "9bee369a189c4aa97cd9999859a758b5a79a0285"
   },
   "relatedPackages": {
-    "com.unity.xr.oculus.tests": "1.13.1-preview.2"
+    "com.unity.xr.oculus.tests": "2.2.3-preview.2"
   },
   "_upm": {
-    "changelog": "### Fixed\n- Resolved an issue where eye textures and layers were being destroyed too early when being reallocated, potentially resulting in GPU hangs/faults\n\n### Known Issues\n- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is optionally installed with the Oculus Integration asset\n- `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes\n- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/"
+    "changelog": "### Fixed\n- Resolved an issue where eye textures and layers were being destroyed too early when being reallocated, potentially resulting in GPU hangs/faults\n\n### Known Issues\n- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is the default in the 2.x and 3.x versions of the Oculus XR Plugin package\n- `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes\n- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/"
   },
   "upmCi": {
-    "footprint": "2dfc89f1b9711f5ed0fb9d84a97912dbb6a7f7d7"
+    "footprint": "d5d841b11c0c71d9770e09b0d1fe99c47647561b"
   },
-  "documentationUrl": "https://docs.unity3d.com/Packages/com.unity.xr.oculus@1.13/manual/index.html"
+  "documentationUrl": "https://docs.unity3d.com/Packages/com.unity.xr.oculus@2.2/manual/index.html"
 }
