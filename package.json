@@ -1,7 +1,7 @@
 {
   "name": "com.unity.xr.oculus",
   "displayName": "Oculus XR Plugin",
-  "version": "1.11.2",
+  "version": "1.12.0",
   "unity": "2019.4",
   "unityRelease": "15f1",
   "description": "Provides display and input support for Oculus devices.",
@@ -21,12 +21,15 @@
   "repository": {
     "url": "https://github.cds.internal.unity3d.com/unity/xr.sdk.oculus.git",
     "type": "git",
-    "revision": "7af62e510d11a78d5a56b974b22a918e89018d7f"
+    "revision": "f840cdd5dd44ffbd3fc2e0e57c18d0543a4ffe24"
+  },
+  "upm": {
+    "changelog": "### Added,- Add optional support for Symmetric Projection on Quest 2 when using Vulkan and Multiview,### Changed,- Multiview (Quest), and Single Pass Instanced (PC) are now the default stereo rendering modes in Unity 2021.2 and higher,### Fixed,- Android Minimum API Level was always being forced to 23 when Oculus Android was enabled. Now it's only set to 23 if it's currently less than 23"
   },
   "relatedPackages": {
-    "com.unity.xr.oculus.tests": "1.11.2"
+    "com.unity.xr.oculus.tests": "1.12.0"
   },
   "upmCi": {
-    "footprint": "a89733e3d78e4824f61aade600803629f26033a6"
+    "footprint": "583119bc9f7d4eccac83caab08c2bda64fc99095"
   }
 }

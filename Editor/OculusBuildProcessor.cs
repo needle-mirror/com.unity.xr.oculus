@@ -193,6 +193,17 @@ namespace UnityEditor.XR.Oculus
                 {
                     throw new BuildFailedException("Android Minimum API Level must be set to 23 or higher for the Oculus XR Plugin.");
                 }
+                
+                var settings = OculusBuildTools.GetSettings();
+                if (settings.SymmetricProjection && (!settings.TargetQuest2 || settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
+                {
+                    throw new BuildFailedException("Symmetric Projection is only supported on Quest 2 with Vulkan and Multiview.");
+                }
+                
+                if (settings.SubsampledLayout && (!settings.TargetQuest2 || firstGfxType != GraphicsDeviceType.Vulkan))
+                {
+                    throw new BuildFailedException("Subsampled Layout is only supported on Quest 2 with Vulkan.");
+                }
             }
 
             if (report.summary.platform == BuildTarget.StandaloneWindows || report.summary.platform == BuildTarget.StandaloneWindows64)

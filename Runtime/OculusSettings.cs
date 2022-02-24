@@ -45,13 +45,21 @@ namespace Unity.XR.Oculus
         /// The current stereo rendering mode selected for desktop-based Oculus platforms
         /// </summary>
         [SerializeField, Tooltip("The current stereo rendering mode selected for desktop-based Oculus platforms.")]
-        public StereoRenderingModeDesktop m_StereoRenderingModeDesktop;
+#if UNITY_2021_2_OR_NEWER
+        public StereoRenderingModeDesktop m_StereoRenderingModeDesktop = StereoRenderingModeDesktop.SinglePassInstanced;
+#else
+        public StereoRenderingModeDesktop m_StereoRenderingModeDesktop = StereoRenderingModeDesktop.MultiPass;
+#endif
 
         /// <summary>
         /// The current stereo rendering mode selected for Android-based Oculus platforms
         /// </summary>
         [SerializeField, Tooltip("The current stereo rendering mode selected for Android-based Oculus platforms.")]
-        public StereoRenderingModeAndroid m_StereoRenderingModeAndroid;
+#if UNITY_2021_2_OR_NEWER
+        public StereoRenderingModeAndroid m_StereoRenderingModeAndroid = StereoRenderingModeAndroid.Multiview;
+#else
+        public StereoRenderingModeAndroid m_StereoRenderingModeAndroid = StereoRenderingModeAndroid.MultiPass;
+#endif
 
         /// <summary>
         /// Enable or disable support for using a shared depth buffer. This allows Unity and Oculus to use a common depth buffer which enables Oculus to composite the Oculus Dash and other utilities over the Unity application.
@@ -103,6 +111,12 @@ namespace Unity.XR.Oculus
         /// </summary>
         [SerializeField, Tooltip("Enables a latency optimization technique which can reduce simulation latency by several ms, depending on application workload.")]
         public bool PhaseSync = false;
+
+        /// <summary>
+        /// Allows the application to render with symmetric projection matrices which can improve performance when using multiview.
+        /// </summary>
+        [SerializeField, Tooltip("Allows the application to render with symmetric projection matrices.")]
+        public bool SymmetricProjection = false;
 
         /// <summary>
         /// Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan and Quest 2 only. Requires Unity 2020.3.11f1 or 2021.1.9f1 or higher, and will result in a black screen if enabled on earlier versions of Unity.

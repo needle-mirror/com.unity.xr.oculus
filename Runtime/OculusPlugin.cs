@@ -55,6 +55,7 @@ namespace Unity.XR.Oculus
             public ushort focusAware;               // remove in 2.0.0
             public ushort optimizeBufferDiscards;
             public ushort phaseSync;
+            public ushort symmetricProjection;
             public ushort subsampledLayout;
         }
 

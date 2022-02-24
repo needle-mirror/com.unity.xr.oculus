@@ -4,6 +4,16 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.12.0] - 2022-02-24
+### Added
+- Add optional support for Symmetric Projection on Quest 2 when using Vulkan and Multiview
+
+### Changed
+- Multiview (Quest), and Single Pass Instanced (PC) are now the default stereo rendering modes in Unity 2021.2 and higher
+
+### Fixed
+- Android Minimum API Level was always being forced to 23 when Oculus Android was enabled. Now it's only set to 23 if it's currently less than 23
+
 ## [1.11.2] - 2021-12-13
 ### Fixed
 - Changed how init code finds the Unity Surface View to fix an issue related to recent core engine changes
