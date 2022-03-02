@@ -146,8 +146,10 @@ namespace Unity.XR.Oculus
                 userDefinedSettings.lowOverheadMode = (ushort)(settings.LowOverheadMode ? 1 : 0);
                 userDefinedSettings.optimizeBufferDiscards = (ushort)(settings.OptimizeBufferDiscards ? 1 : 0);
                 userDefinedSettings.phaseSync = (ushort)(settings.PhaseSync ? 1 : 0);
+                userDefinedSettings.symmetricProjection = (ushort)(settings.SymmetricProjection ? 1 : 0);
                 userDefinedSettings.subsampledLayout = (ushort)(settings.SubsampledLayout ? 1 : 0);
                 userDefinedSettings.lateLatching = (ushort)(settings.LateLatching ? 1 : 0);
+                userDefinedSettings.lateLatchingDebug = (ushort)(settings.LateLatchingDebug ? 1 : 0);
                 userDefinedSettings.spaceWarp = (ushort)(settings.SpaceWarp ? 1 : 0);
                 NativeMethods.SetUserDefinedSettings(userDefinedSettings);
             }
@@ -358,9 +360,9 @@ namespace Unity.XR.Oculus
 
         private void SetAndroidMinSdkVersion()
         {
-            if (PlayerSettings.Android.minSdkVersion != AndroidSdkVersions.AndroidApiLevel23)
+            if (PlayerSettings.Android.minSdkVersion < AndroidSdkVersions.AndroidApiLevel23)
             {
-                Debug.Log("The Android Minimum API Level has been changed to 23 in Player Settings as this is required for Oculus builds.");
+                Debug.Log("The Android Minimum API Level has been updated to 23 in Player Settings as this is the minimum required for Oculus builds.");
                 PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel23;
             }
         }

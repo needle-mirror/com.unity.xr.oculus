@@ -53,8 +53,10 @@ namespace Unity.XR.Oculus
             public ushort lowOverheadMode;
             public ushort optimizeBufferDiscards;
             public ushort phaseSync;
+            public ushort symmetricProjection;
             public ushort subsampledLayout;
             public ushort lateLatching;
+            public ushort lateLatchingDebug;
             public ushort spaceWarp;
         }
 
