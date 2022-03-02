@@ -92,6 +92,12 @@ namespace Unity.XR.Oculus
         public bool PhaseSync = false;
 
         /// <summary>
+        /// Allows the application to render with symmetric projection matrices which can improve performance when using multiview.
+        /// </summary>
+        [SerializeField, Tooltip("Allows the application to render with symmetric projection matrices.")]
+        public bool SymmetricProjection = false;
+
+        /// <summary>
         /// Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan and Quest 2 only. Requires Unity 2020.3.11f1 or 2021.1.9f1 or higher, and will result in a black screen if enabled on earlier versions of Unity.
         /// </summary>
         [SerializeField, Tooltip("Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan and Quest 2 only. Requires Unity 2020.3.11f1 or 2021.1.9f1 or higher, and will result in a black screen if enabled on earlier versions of Unity.")]
@@ -104,6 +110,11 @@ namespace Unity.XR.Oculus
         public bool LateLatching = false;
 
         /// <summary>
+        /// Debug mode for Late Latching which will print information about the Late Latching system as well as any errors.
+        /// </summary>
+        [SerializeField, Tooltip("Debug mode for Late Latching which will print information about the Late Latching system as well as any errors.")]
+        public bool LateLatchingDebug = false;
+
         /// A frame synthesis technology to allow your application to render at half frame rate, while still delivering a smooth experience. Note that this currently requires a custom version of the URP provided by Oculus in order to work, and should not be enabled if you aren't using that customized Oculus URP package.
         /// </summary>
         [SerializeField, Tooltip("A frame synthesis technology to allow your application to render at half frame rate, while still delivering a smooth experience. Note that this currently requires a custom version of the URP provided by Oculus in order to work, and should not be enabled if you aren't using that customized Oculus URP package.")]
@@ -157,7 +168,5 @@ namespace Unity.XR.Oculus
             }
         }
 #endif
-
-
     }
 }

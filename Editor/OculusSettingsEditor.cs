@@ -16,8 +16,10 @@ namespace Unity.XR.Oculus.Editor
         private const string kLowOverheadMode = "LowOverheadMode";
         private const string kOptimizeBufferDiscards = "OptimizeBufferDiscards";
         private const string kPhaseSync = "PhaseSync";
+        private const string kSymmetricProjection = "SymmetricProjection";
         private const string kSubsampledLayout = "SubsampledLayout";
         private const string kLateLatching = "LateLatching";
+        private const string kLateLatchingDebug = "LateLatchingDebug";
         private const string kSpaceWarp = "SpaceWarp";
         private const string kTargetQuest = "TargetQuest";
         private const string kTargetQuest2 = "TargetQuest2";
@@ -29,8 +31,10 @@ namespace Unity.XR.Oculus.Editor
         static GUIContent s_LowOverheadModeLabel = EditorGUIUtility.TrTextContent("Low Overhead Mode (GLES)");
         static GUIContent s_OptimizeBufferDiscardsLabel = EditorGUIUtility.TrTextContent("Optimize Buffer Discards (Vulkan)");
         static GUIContent s_PhaseSyncLabel = EditorGUIUtility.TrTextContent("Phase Sync");
-        static GUIContent s_SubsampledLayoutLabel = EditorGUIUtility.TrTextContent("Subsampled Layout (Vulkan/Quest 2)");
+        static GUIContent s_SymmetricProjectionLabel = EditorGUIUtility.TrTextContent("Symmetric Projection (Vulkan/Quest 2)", "Supported on Quest 2 when using Vulkan and Multiview.");
+        static GUIContent s_SubsampledLayoutLabel = EditorGUIUtility.TrTextContent("Subsampled Layout (Vulkan/Quest 2)", "Supported on Quest 2 when using Vulkan.");
         static GUIContent s_LateLatchingLabel = EditorGUIUtility.TrTextContent("Late Latching (Vulkan)");
+        static GUIContent s_LateLatchingDebugLabel = EditorGUIUtility.TrTextContent("Late Latching Debug Mode");
         static GUIContent s_SpaceWarpLabel = EditorGUIUtility.TrTextContent("Application SpaceWarp (Vulkan)");
         static GUIContent s_TargetDevicesLabel = EditorGUIUtility.TrTextContent("Target Devices");
         static GUIContent s_TargetQuestLabel = EditorGUIUtility.TrTextContent("Quest");
@@ -45,8 +49,10 @@ namespace Unity.XR.Oculus.Editor
         private SerializedProperty m_LowOverheadMode;
         private SerializedProperty m_OptimizeBufferDiscards;
         private SerializedProperty m_PhaseSync;
+        private SerializedProperty m_SymmetricProjection;
         private SerializedProperty m_SubsampledLayout;
         private SerializedProperty m_LateLatching;
+        private SerializedProperty m_LateLatchingDebug;
         private SerializedProperty m_SpaceWarp;
         private SerializedProperty m_TargetQuest;
         private SerializedProperty m_TargetQuest2;
@@ -66,8 +72,10 @@ namespace Unity.XR.Oculus.Editor
             if (m_LowOverheadMode == null) m_LowOverheadMode = serializedObject.FindProperty(kLowOverheadMode);
             if (m_OptimizeBufferDiscards == null) m_OptimizeBufferDiscards = serializedObject.FindProperty(kOptimizeBufferDiscards);
             if (m_PhaseSync == null) m_PhaseSync = serializedObject.FindProperty(kPhaseSync);
+            if (m_SymmetricProjection == null) m_SymmetricProjection = serializedObject.FindProperty(kSymmetricProjection);
             if (m_SubsampledLayout == null) m_SubsampledLayout = serializedObject.FindProperty(kSubsampledLayout);
             if (m_LateLatching == null) m_LateLatching = serializedObject.FindProperty(kLateLatching);
+            if (m_LateLatchingDebug == null) m_LateLatchingDebug = serializedObject.FindProperty(kLateLatchingDebug);
             if (m_SpaceWarp == null) m_SpaceWarp = serializedObject.FindProperty(kSpaceWarp);
             if (m_TargetQuest == null) m_TargetQuest = serializedObject.FindProperty(kTargetQuest);
             if (m_TargetQuest2 == null) m_TargetQuest2 = serializedObject.FindProperty(kTargetQuest2);
@@ -99,6 +107,7 @@ namespace Unity.XR.Oculus.Editor
                 EditorGUILayout.PropertyField(m_LowOverheadMode, s_LowOverheadModeLabel);
                 EditorGUILayout.PropertyField(m_OptimizeBufferDiscards, s_OptimizeBufferDiscardsLabel);
                 EditorGUILayout.PropertyField(m_PhaseSync, s_PhaseSyncLabel);
+                EditorGUILayout.PropertyField(m_SymmetricProjection, s_SymmetricProjectionLabel);
 #if UNITY_2020_1_OR_NEWER
                 EditorGUILayout.PropertyField(m_SubsampledLayout, s_SubsampledLayoutLabel);
 #endif
@@ -118,6 +127,7 @@ namespace Unity.XR.Oculus.Editor
                 {
                     EditorGUI.indentLevel++;
                     EditorGUILayout.PropertyField(m_LateLatching, s_LateLatchingLabel);
+                    EditorGUILayout.PropertyField(m_LateLatchingDebug, s_LateLatchingDebugLabel);
 #if UNITY_2020_3_OR_NEWER
                     EditorGUILayout.PropertyField(m_SpaceWarp, s_SpaceWarpLabel);
 #endif

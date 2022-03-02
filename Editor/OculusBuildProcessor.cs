@@ -197,6 +197,17 @@ namespace UnityEditor.XR.Oculus
                 {
                     throw new BuildFailedException("Only Linear Color Space is supported when using OpenGLES. Please set Color Space to Linear in Player Settings, or switch to Vulkan.");
                 }
+                
+                var settings = OculusBuildTools.GetSettings();
+                if (settings.SymmetricProjection && (!settings.TargetQuest2 || settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
+                {
+                    throw new BuildFailedException("Symmetric Projection is only supported on Quest 2 with Vulkan and Multiview.");
+                }
+                
+                if (settings.SubsampledLayout && (!settings.TargetQuest2 || firstGfxType != GraphicsDeviceType.Vulkan))
+                {
+                    throw new BuildFailedException("Subsampled Layout is only supported on Quest 2 with Vulkan.");
+                }
             }
 
             if (report.summary.platform == BuildTarget.StandaloneWindows || report.summary.platform == BuildTarget.StandaloneWindows64)
@@ -265,7 +276,7 @@ namespace UnityEditor.XR.Oculus
                     }
                 }
             }
-            
+
             // Didn't find any attributes that matched, create both (or all three)
             XmlElement childElement = doc.CreateElement(tag);
             childElement.SetAttribute(firstName, k_AndroidURI, firstValue);
@@ -296,7 +307,7 @@ namespace UnityEditor.XR.Oculus
                     }
                 }
             }
-            
+
             XmlElement childElement = doc.CreateElement(tag);
             childElement.SetAttribute(firstName, k_AndroidURI, firstValue);
 
@@ -379,6 +390,9 @@ namespace UnityEditor.XR.Oculus
 
             var lateLatchingVal = ((settings != null) && settings.LateLatching) ? "true" : "false";
             UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.unity.xr.oculus.LateLatching", "value", lateLatchingVal);
+
+            var lateLatchingDebugVal = ((settings != null) && settings.LateLatchingDebug) ? "true" : "false";
+            UpdateOrCreateNameValueElementsInTag(manifestDoc, nodePath, "meta-data", "name", "com.unity.xr.oculus.LateLatchingDebug", "value", lateLatchingDebugVal);
 
             nodePath = "/manifest/application";
             UpdateOrCreateAttributeInTag(manifestDoc, nodePath, "activity", "screenOrientation", "landscape");

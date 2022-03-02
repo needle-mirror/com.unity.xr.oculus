@@ -79,7 +79,7 @@ public class OculusUnity
 
     private native void initComplete(Surface glView);
 
-	
+
     public static void loadLibrary(String name) {
 		Log.d("Unity", "loading library " + name);
         java.lang.System.loadLibrary(name);
@@ -105,6 +105,10 @@ public class OculusUnity
 
     public static boolean getLateLatching() {
         return getManifestSetting("com.unity.xr.oculus.LateLatching");
+    }
+
+    public static boolean getLateLatchingDebug() {
+        return getManifestSetting("com.unity.xr.oculus.LateLatchingDebug");
     }
 
     public static boolean getLowOverheadMode() {

@@ -52,8 +52,10 @@ namespace Unity.XR.Oculus.Editor
                 settings.LowOverheadMode = false;
                 settings.OptimizeBufferDiscards = true;
                 settings.PhaseSync = false;
+                settings.SymmetricProjection = false;
                 settings.SubsampledLayout = false;
                 settings.LateLatching = false;
+                settings.LateLatchingDebug = false;
                 settings.SpaceWarp = false;
                 settings.TargetQuest = true;
                 settings.TargetQuest2 = true;

@@ -4,52 +4,44 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2022-03-02
+### Added
+- Added a Late Latching Debug Mode option under the Experimental section of the Oculus Android settings. This can be used to verify that Late Latching is working as intended via log entries in Development builds. Currently requires Unity 2020.3.28f1 or higher, and will be available in a future release of 2021.2+
+- Add optional support for Symmetric Projection on Quest 2 when using Vulkan and Multiview. This can improve GPU performance when using Multiview due to more common workloads between the left and right eye
+
+### Changed
+- Multiview (Quest), and Single Pass Instanced (PC) are now the default stereo rendering modes in Unity 2021.2 and higher
+
+### Fixed
+- Android Minimum API Level was always being forced to 23 when Oculus Android was enabled. Now it's only set to 23 if it's currently less than 23
+
 ## [3.0.0-pre.4] - 2022-01-24
 ### Fixed
 - Resolved a package manifest issue that was causing the Oculus subsystems to fail to load correctly
 
 ## [3.0.0-pre.2] - 2022-01-14
 ### Changed
-- Same content as 2.0.0-preview.2
-
-## [3.0.0-pre.1] - 2021-10-22
-### Changed
-- Changed minimum Unity version to 2021.2.0b17
-
-## [2.0.0-preview.2] - 2022-01-14
-### Changed
-- Updated with changes from 1.11.1, 1.11.2, and 1.12.0 (but using the OpenXR backend for the Oculus plugins)
+- Updated Oculus plugins to v34 with the OpenXR backend
+- Modified Oculus plugin initialization on D3D11
+- Updated XR Management dependency to 4.2.0
 
 ### Fixed
 - Fixed a potential thread safety issue with ASW
+- Changed how init code finds the Unity Surface View to fix an issue related to recent core engine changes
 
-## [2.0.0-preview.1] - 2021-10-22
+## [3.0.0-pre.1] - 2021-10-22
 ### Added
 - Added support for Application SpaceWarp to enable smoother experiences at lower framerates. **Note:** This feature currently requires a customized version of the URP package that is provided by Oculus. You shouldn't enable this feature if you aren't using that custom URP package
 - Added experimental support for Late Latching when using Vulkan on Quest devices
 
 ### Changed
 - Updated Oculus plugins to v33 with the OpenXR backend.  **Note:** Gamma color space is no longer supported with GLES with the OpenXR backend, so projects need to use linear color space, or switch to Vulkan. Users on 2020.3 can continue to use the verified 1.x.y versions of this package if they don't wish to update to the OpenXR backend
-- Bumped minimum version to 2020.3.21f1
+- Bumped minimum Unity version to 2021.2.0b17
 - Changed `SetFoveationLevel(int level)` to return a bool.  FFR APIs should succeed on mobile and fail on desktop
 - Removed package dependency on `com.unity.ugui`
 
 ### Removed
 - Removed unsupported `InputFeatureUsage<bool> volumeUp` and `InputFeatureUsage<bool> volumeDown` from OculusUsages
-
-## [1.12.0] - 2022-01-14
-### Changed
-- Multiview (Quest), and Single Pass Instanced (PC) are now the default stereo rendering modes in Unity 2021.2 and higher.
-
-## [1.11.2] - 2021-12-13
-### Fixed
-- Changed how init code finds the Unity Surface View to fix an issue related to recent core engine changes
-
-## [1.11.1] - 2021-11-14
-### Changed
-- Updated Oculus plugins to v34 non-OpenXR
-- Modified Oculus plugin initialization on D3D11
-- Updated XR Management dependency to 4.2.0
 
 ## [1.11.0] - 2021-10-05
 ### Changed
