@@ -52,7 +52,7 @@ namespace Unity.XR.Oculus.Editor
                 settings.LowOverheadMode = false;
                 settings.OptimizeBufferDiscards = true;
                 settings.PhaseSync = false;
-                settings.SymmetricProjection = false;
+                settings.SymmetricProjection = true;
                 settings.SubsampledLayout = false;
                 settings.LateLatching = false;
                 settings.LateLatchingDebug = false;

@@ -197,17 +197,6 @@ namespace UnityEditor.XR.Oculus
                 {
                     throw new BuildFailedException("Only Linear Color Space is supported when using OpenGLES. Please set Color Space to Linear in Player Settings, or switch to Vulkan.");
                 }
-                
-                var settings = OculusBuildTools.GetSettings();
-                if (settings.SymmetricProjection && (!settings.TargetQuest2 || settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
-                {
-                    throw new BuildFailedException("Symmetric Projection is only supported on Quest 2 with Vulkan and Multiview.");
-                }
-                
-                if (settings.SubsampledLayout && (!settings.TargetQuest2 || firstGfxType != GraphicsDeviceType.Vulkan))
-                {
-                    throw new BuildFailedException("Subsampled Layout is only supported on Quest 2 with Vulkan.");
-                }
             }
 
             if (report.summary.platform == BuildTarget.StandaloneWindows || report.summary.platform == BuildTarget.StandaloneWindows64)
@@ -227,6 +216,22 @@ namespace UnityEditor.XR.Oculus
 
         public void OnPostprocessBuild(BuildReport report)
         {
+            if (report.summary.platformGroup == BuildTargetGroup.Android)
+            {
+                var settings = OculusBuildTools.GetSettings();
+                GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0];
+                
+                if (settings.SymmetricProjection && (!settings.TargetQuest2 || settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
+                {
+                    Debug.LogWarning("Symmetric Projection is only supported on Quest 2 with Vulkan and Multiview.");
+                }
+                
+                if (settings.SubsampledLayout && (!settings.TargetQuest2 || firstGfxType != GraphicsDeviceType.Vulkan))
+                {
+                    Debug.LogWarning("Subsampled Layout is only supported on Quest 2 with Vulkan.");
+                }
+            }
+
             if (EditorUserBuildSettings.waitForManagedDebugger && report.summary.platformGroup == BuildTargetGroup.Android && ((report.summary.options & BuildOptions.AutoRunPlayer) != 0))
                 Debug.Log("[Wait For Managed Debugger To Attach] Use volume Up or Down button on headset to confirm ...\n");
         }

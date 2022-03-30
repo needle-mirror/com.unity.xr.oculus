@@ -4,6 +4,16 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.0.1] - 2022-03-30
+### Fixed
+- Resolved an issue where Symmetric Projection was defaulting to off, not taking advantage of potential GPU perf gains
+- Changed Symmetric Projection and Subsampled Layout settings incompatibilities to be build warnings rather than errors since these aren't fatal settings issues
+
+### Known Issues
+- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is the default in the 2.x and 3.x versions of the Oculus XR Plugin package
+- `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes
+- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
+
 ## [3.0.0] - 2022-03-02
 ### Added
 - Added a Late Latching Debug Mode option under the Experimental section of the Oculus Android settings. This can be used to verify that Late Latching is working as intended via log entries in Development builds. Currently requires Unity 2020.3.28f1 or higher, and will be available in a future release of 2021.2+

@@ -250,6 +250,7 @@ namespace Unity.XR.Oculus
 
         /// <summary>
         /// Provides additional perf metrics. These stats will not be tracked unless the user makes a PerfMetrics.EnablePerfMetrics(true) method call. Not every stat is supported on every Oculus platform and will always return a value of 0 if unsupported.
+        /// <para/><b>Note:</b> PerfMetrics stats will return 0 when using the OpenXR runtime. The suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
         /// </summary>
         public static class PerfMetrics
         {
@@ -380,7 +381,8 @@ namespace Unity.XR.Oculus
         }
 
         /// <summary>
-        /// Provides additional application metrics. These metrics will not be tracked unless the user makes a AppMetrics.EnableAppMetrics(true) method call. Not every stat is supported on every Oculus platform and will always return a value of 0 if unsupported.
+        /// Provides additional application metrics. These metrics will not be tracked unless the user makes a AppMetrics.EnableAppMetrics(true) method call.
+        /// <para/><b>Note:</b> AppMetrics are deprecated and currently return 0 on all Oculus runtimes. The suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
         /// </summary>
         public static class AppMetrics
         {
