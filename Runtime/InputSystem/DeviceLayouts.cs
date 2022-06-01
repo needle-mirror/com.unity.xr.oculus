@@ -1,12 +1,16 @@
-#if UNITY_INPUT_SYSTEM
+#if UNITY_INPUT_SYSTEM || PACKAGE_DOCS_GENERATION
 using UnityEngine.Scripting;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XR;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
 
+#if ENABLE_VR || PACKAGE_DOCS_GENERATION
+using UnityEngine.InputSystem.XR;
+#endif
+
 namespace Unity.XR.Oculus.Input
 {
+#if ENABLE_VR || PACKAGE_DOCS_GENERATION
     /// <summary>
     /// An Oculus VR headset (such as the Oculus Rift series of devices).
     /// </summary>
@@ -218,6 +222,7 @@ namespace Unity.XR.Oculus.Input
             deviceAngularAcceleration = GetChildControl<Vector3Control>("deviceAngularAcceleration");
         }
     }
+#endif
 
     [Preserve]
     [InputControlLayout(displayName = "Oculus Tracking Reference")]
@@ -274,6 +279,7 @@ namespace Unity.XR.Oculus.Input
         }
     }
 
+#if ENABLE_VR || PACKAGE_DOCS_GENERATION
     /// <summary>
     /// An Oculus Go controller.
     /// </summary>
@@ -383,5 +389,6 @@ namespace Unity.XR.Oculus.Input
             deviceAngularAcceleration = GetChildControl<Vector3Control>("deviceAngularAcceleration");
         }
     }
+#endif
 }
 #endif

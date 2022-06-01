@@ -123,6 +123,8 @@ namespace Unity.XR.Oculus.Editor
 
                 EditorGUILayout.PropertyField(m_SystemSplashScreen, s_SystemSplashScreen);
 
+                EditorGUILayout.Space();
+
                 if (m_ShowAndroidExperimental = EditorGUILayout.Foldout(m_ShowAndroidExperimental, s_ShowAndroidExperimentalLabel))
                 {
                     EditorGUI.indentLevel++;
