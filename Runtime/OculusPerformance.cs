@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 using UnityEngine;
+
+#if ENABLE_VR || PACKAGE_DOCS_GENERATION
+using System.Collections.Generic;
 using UnityEngine.XR;
 using XRStats = UnityEngine.XR.Provider.XRStats;
+#endif
 
 namespace Unity.XR.Oculus
 {
@@ -122,9 +124,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     ((XRDisplaySubsystem) GetOculusDisplaySubsystem()).TryGetAppGPUTimeLastFrame(out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -135,9 +141,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     ((XRDisplaySubsystem) GetOculusDisplaySubsystem()).TryGetCompositorGPUTimeLastFrame(out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -148,9 +158,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     ((XRDisplaySubsystem) GetOculusDisplaySubsystem()).TryGetMotionToPhoton(out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -161,9 +175,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     ((XRDisplaySubsystem) GetOculusDisplaySubsystem()).TryGetDisplayRefreshRate(out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -174,9 +192,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float batteryTemp;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "batteryTemperature", out batteryTemp);
                     return batteryTemp;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -187,9 +209,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float batteryLevel;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "batteryLevel", out batteryLevel);
                     return batteryLevel;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -200,9 +226,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float powerSavingMode;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "powerSavingMode", out powerSavingMode);
                     return !(powerSavingMode == 0.0f);
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -214,9 +244,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float performanceScale;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "adaptivePerformanceScale", out performanceScale);
                     return performanceScale;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -227,9 +261,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float cpuLevel;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "cpuLevel", out cpuLevel);
                     return (int) cpuLevel;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -240,15 +278,20 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float gpuLevel;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "gpuLevel", out gpuLevel);
                     return (int) gpuLevel;
+#else
+                    return default;
+#endif
                 }
             }
         }
 
         /// <summary>
         /// Provides additional perf metrics. These stats will not be tracked unless the user makes a PerfMetrics.EnablePerfMetrics(true) method call. Not every stat is supported on every Oculus platform and will always return a value of 0 if unsupported.
+        /// <para/><b>Note:</b> PerfMetrics stats will return 0 when using the optional OpenXR runtime. The suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
         /// </summary>
         public static class PerfMetrics
         {
@@ -259,9 +302,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "perfmetrics.appcputime", out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -272,9 +319,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "perfmetrics.appgputime", out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -285,9 +336,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "perfmetrics.compositorcputime", out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -298,9 +353,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "perfmetrics.compositorgputime", out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -311,9 +370,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "perfmetrics.gpuutil", out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -324,9 +387,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "perfmetrics.cpuutilavg", out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -337,9 +404,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "perfmetrics.cpuutilworst", out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -350,9 +421,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "perfmetrics.cpuclockfreq", out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -363,9 +438,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "perfmetrics.gpuclockfreq", out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -379,7 +458,8 @@ namespace Unity.XR.Oculus
         }
 
         /// <summary>
-        /// Provides additional application metrics. These metrics will not be tracked unless the user makes a AppMetrics.EnableAppMetrics(true) method call. Not every stat is supported on every Oculus platform and will always return a value of 0 if unsupported.
+        /// Provides additional application metrics. These metrics will not be tracked unless the user makes a AppMetrics.EnableAppMetrics(true) method call.
+        /// <para/><b>Note:</b> AppMetrics are deprecated and currently return 0 on all Oculus runtimes. The suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
         /// </summary>
         public static class AppMetrics
         {
@@ -387,9 +467,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "appstats.appqueueahead", out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -397,9 +481,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "appstats.cpuelapsedtime", out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -410,9 +498,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "appstats.compositordroppedframes", out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -420,9 +512,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "appstats.compositorlatency", out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -433,9 +529,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "appstats.compositorcputime", out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -446,9 +546,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "appstats.compositorcpustartgpuendelapsedtime", out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -459,9 +563,13 @@ namespace Unity.XR.Oculus
             {
                 get
                 {
+#if ENABLE_VR
                     float val;
                     XRStats.TryGetStat(GetOculusDisplaySubsystem(), "appstats.compositorgpuendtovsyncelapsedtime", out val);
                     return val;
+#else
+                    return default;
+#endif
                 }
             }
 
@@ -476,6 +584,8 @@ namespace Unity.XR.Oculus
         {
             if (m_Display != null)
                 return m_Display;
+
+#if ENABLE_VR
             List<XRDisplaySubsystem> displays = new List<XRDisplaySubsystem>();
             SubsystemManager.GetInstances(displays);
 
@@ -487,6 +597,7 @@ namespace Unity.XR.Oculus
                     return m_Display;
                 }
             }
+#endif
 
             Debug.LogError("No active Oculus display subsystem was found.");
             return m_Display;

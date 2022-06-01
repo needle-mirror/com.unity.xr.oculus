@@ -173,9 +173,14 @@ namespace UnityEditor.XR.Oculus
         }
     }
 
-    internal class OculusPrebuildSettings : IPreprocessBuildWithReport
+    internal class OculusBuildHooks : IPreprocessBuildWithReport, IPostprocessBuildWithReport
     {
         public int callbackOrder { get; }
+
+        private static readonly Dictionary<string, string> AndroidBootConfigVars = new Dictionary<string, string>()
+        {
+            { "xr-meta-enabled", "1" }
+        };
 
         public void OnPreprocessBuild(BuildReport report)
         {
@@ -193,17 +198,17 @@ namespace UnityEditor.XR.Oculus
                 {
                     throw new BuildFailedException("Android Minimum API Level must be set to 23 or higher for the Oculus XR Plugin.");
                 }
-                
-                var settings = OculusBuildTools.GetSettings();
-                if (settings.SymmetricProjection && (!settings.TargetQuest2 || settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
+
+                // write Android Meta tags to bootconfig
+                var bootConfig = new BootConfig(report);
+                bootConfig.ReadBootConfig();
+
+                foreach (var entry in AndroidBootConfigVars)
                 {
-                    throw new BuildFailedException("Symmetric Projection is only supported on Quest 2 with Vulkan and Multiview.");
+                    bootConfig.SetValueForKey(entry.Key, entry.Value);
                 }
-                
-                if (settings.SubsampledLayout && (!settings.TargetQuest2 || firstGfxType != GraphicsDeviceType.Vulkan))
-                {
-                    throw new BuildFailedException("Subsampled Layout is only supported on Quest 2 with Vulkan.");
-                }
+
+                bootConfig.WriteBootConfig();
             }
 
             if (report.summary.platform == BuildTarget.StandaloneWindows || report.summary.platform == BuildTarget.StandaloneWindows64)
@@ -214,6 +219,107 @@ namespace UnityEditor.XR.Oculus
                     throw new BuildFailedException("D3D11 is currently the only graphics API compatible with the Oculus XR Plugin on desktop platforms. Please change the Graphics API setting in Player Settings.");
                 }
             }
+        }
+
+        public void OnPostprocessBuild(BuildReport report)
+        {
+            if (report.summary.platformGroup == BuildTargetGroup.Android)
+            {
+                // clean up Android Meta boot settings after build
+                BootConfig bootConfig = new BootConfig(report);
+                bootConfig.ReadBootConfig();
+
+                foreach (KeyValuePair<string, string> entry in AndroidBootConfigVars)
+                {
+                    bootConfig.ClearEntryForKeyAndValue(entry.Key, entry.Value);
+                }
+
+                bootConfig.WriteBootConfig();
+
+                // verify settings
+                var settings = OculusBuildTools.GetSettings();
+                GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0];
+                
+                if (settings.SymmetricProjection && (!settings.TargetQuest2 || settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
+                {
+                    Debug.LogWarning("Symmetric Projection is only supported on Quest 2 with Vulkan and Multiview.");
+                }
+                
+                if (settings.SubsampledLayout && (!settings.TargetQuest2 || firstGfxType != GraphicsDeviceType.Vulkan))
+                {
+                    Debug.LogWarning("Subsampled Layout is only supported on Quest 2 with Vulkan.");
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Small utility class for reading, updating and writing boot config.
+    /// </summary>
+    internal class BootConfig
+    {
+        private const string XrBootSettingsKey = "xr-boot-settings";
+
+        private readonly Dictionary<string, string> bootConfigSettings;
+        private readonly string buildTargetName;
+
+        public BootConfig(BuildReport report)
+        {
+            bootConfigSettings = new Dictionary<string, string>();
+            buildTargetName = BuildPipeline.GetBuildTargetName(report.summary.platform);
+        }
+
+        public void ReadBootConfig()
+        {
+            bootConfigSettings.Clear();
+
+            string xrBootSettings = EditorUserBuildSettings.GetPlatformSettings(buildTargetName, XrBootSettingsKey);
+            if (!string.IsNullOrEmpty(xrBootSettings))
+            {
+                // boot settings string format
+                // <boot setting>:<value>[;<boot setting>:<value>]*
+                var bootSettings = xrBootSettings.Split(';');
+                foreach (var bootSetting in bootSettings)
+                {
+                    var setting = bootSetting.Split(':');
+                    if (setting.Length == 2 && !string.IsNullOrEmpty(setting[0]) && !string.IsNullOrEmpty(setting[1]))
+                    {
+                        bootConfigSettings.Add(setting[0], setting[1]);
+                    }
+                }
+            }
+        }
+
+        public void SetValueForKey(string key, string value) => bootConfigSettings[key] = value;
+
+        public bool TryGetValue(string key, out string value) => bootConfigSettings.TryGetValue(key, out value);
+
+        public void ClearEntryForKeyAndValue(string key, string value)
+        {
+            if (bootConfigSettings.TryGetValue(key, out string dictValue) && dictValue == value)
+            {
+                bootConfigSettings.Remove(key);
+            }
+        }
+
+        public void WriteBootConfig()
+        {
+            // boot settings string format
+            // <boot setting>:<value>[;<boot setting>:<value>]*
+            bool firstEntry = true;
+            var sb = new System.Text.StringBuilder();
+            foreach (var kvp in bootConfigSettings)
+            {
+                if (!firstEntry)
+                {
+                    sb.Append(";");
+                }
+
+                sb.Append($"{kvp.Key}:{kvp.Value}");
+                firstEntry = false;
+            }
+
+            EditorUserBuildSettings.SetPlatformSettings(buildTargetName, XrBootSettingsKey, sb.ToString());
         }
     }
 

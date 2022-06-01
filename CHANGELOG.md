@@ -4,6 +4,19 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.12.1] - 2022-06-01
+### Fixed
+- Changed Symmetric Projection and Subsampled Layout settings incompatibilities to be build warnings rather than errors since these aren't fatal settings issues
+- Fixed an incorrect depth texture format being requested on mobile
+- Fixed compilation errors on platforms where `ENABLE_VR` is not currently defined
+- Fixed an issue where the mirror view blit was using an incorrect source rect
+- Early engine init on mobile now looks for a boot.config entry rather than using an intent filter query, resolving potential Android app store issues
+
+### Known Issues
+- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is optionally installed with the Oculus Integration asset
+- `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes
+- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
+
 ## [1.12.0] - 2022-02-24
 ### Added
 - Add optional support for Symmetric Projection on Quest 2 when using Vulkan and Multiview
