@@ -1,4 +1,5 @@
-﻿using UnityEngine.XR;
+﻿#if ENABLE_VR || PACKAGE_DOCS_GENERATION
+using UnityEngine.XR;
 
 namespace Unity.XR.Oculus
 {
@@ -22,3 +23,4 @@ namespace Unity.XR.Oculus
         public static InputFeatureUsage<bool> thumbTouch = new InputFeatureUsage<bool>("ThumbTouch");
     }
 }
+#endif

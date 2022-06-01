@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.XR.Management;
 using UnityEngine.XR;
-#if UNITY_INPUT_SYSTEM
+#if UNITY_INPUT_SYSTEM && ENABLE_VR
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.XR;
@@ -20,7 +20,7 @@ using UnityEditor;
 
 namespace Unity.XR.Oculus
 {
-#if UNITY_INPUT_SYSTEM
+#if UNITY_INPUT_SYSTEM && ENABLE_VR
 #if UNITY_EDITOR
     [InitializeOnLoad]
 #endif
@@ -74,7 +74,9 @@ namespace Unity.XR.Oculus
 
         static DeviceSupportedResult IsDeviceSupported()
         {
-#if UNITY_EDITOR_WIN
+#if !ENABLE_VR
+            return DeviceSupportedResult.NotSupported;
+#elif UNITY_EDITOR_WIN
             return DeviceSupportedResult.Supported;
 #elif (UNITY_STANDALONE_WIN && !UNITY_EDITOR)
             return DeviceSupportedResult.Supported;
@@ -96,6 +98,7 @@ namespace Unity.XR.Oculus
 #endif
         }
 
+#if ENABLE_VR
         private static List<XRDisplaySubsystemDescriptor> s_DisplaySubsystemDescriptors = new List<XRDisplaySubsystemDescriptor>();
         private static List<XRInputSubsystemDescriptor> s_InputSubsystemDescriptors = new List<XRInputSubsystemDescriptor>();
 
@@ -114,6 +117,7 @@ namespace Unity.XR.Oculus
                 return GetLoadedSubsystem<XRInputSubsystem>();
             }
         }
+#endif
 
         public override bool Initialize()
         {
@@ -131,9 +135,10 @@ namespace Unity.XR.Oculus
                 return false;
             }
 
+#if ENABLE_VR
 #if UNITY_INPUT_SYSTEM
             InputLayoutLoader.RegisterInputLayouts();
-#endif // UNITY_INPUT_SYSTEM
+#endif
 
             OculusSettings settings = GetSettings();
             if (settings != null)
@@ -181,12 +186,17 @@ namespace Unity.XR.Oculus
             }
 
             return displaySubsystem != null && inputSubsystem != null;
+#else
+            return false;
+#endif
         }
 
         public override bool Start()
         {
+#if ENABLE_VR
             StartSubsystem<XRDisplaySubsystem>();
             StartSubsystem<XRInputSubsystem>();
+#endif
             Development.OverrideDeveloperModeStart();
 
             return true;
@@ -194,8 +204,10 @@ namespace Unity.XR.Oculus
 
         public override bool Stop()
         {
+#if ENABLE_VR
             StopSubsystem<XRDisplaySubsystem>();
             StopSubsystem<XRInputSubsystem>();
+#endif
             Development.OverrideDeveloperModeStop();
 
             return true;
@@ -205,8 +217,10 @@ namespace Unity.XR.Oculus
         {
             RegisterUpdateCallback.Deinitialize();
 
+#if ENABLE_VR
             DestroySubsystem<XRDisplaySubsystem>();
             DestroySubsystem<XRInputSubsystem>();
+#endif
 
             return true;
         }

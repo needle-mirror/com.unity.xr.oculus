@@ -1,7 +1,7 @@
 {
   "name": "com.unity.xr.oculus",
   "displayName": "Oculus XR Plugin",
-  "version": "2.0.0-preview.5",
+  "version": "2.0.2-preview.1",
   "unity": "2020.3",
   "unityRelease": "21f1",
   "description": "Provides display and input support for Oculus devices.",
@@ -20,15 +20,15 @@
   "repository": {
     "url": "https://github.cds.internal.unity3d.com/unity/xr.sdk.oculus.git",
     "type": "git",
-    "revision": "a9a94c4bed468689f38f47745117e1892ba8a09a"
+    "revision": "070beaa4a711e3730f303a52a6c338d1e01938c3"
   },
-  "upm": {
-    "changelog": "### Added,- Added a Late Latching Debug Mode option under the Experimental section of the Oculus Android settings. This can be used to verify that Late Latching is working as intended via log entries in Development builds. Currently requires Unity 2020.3.28f1 or higher, and will be available in a future release of 2021.2+,- Add optional support for Symmetric Projection on Quest 2 when using Vulkan and Multiview. This can improve GPU performance when using Multiview due to more common workloads between the left and right eye,### Changed,- Multiview (Quest), and Single Pass Instanced (PC) are now the default stereo rendering modes in Unity 2021.2 and higher,### Fixed,- Android Minimum API Level was always being forced to 23 when Oculus Android was enabled. Now it's only set to 23 if it's currently less than 23"
+  "_upm": {
+    "changelog": "### Fixed\r\n- Resolved an issue where Symmetric Projection was defaulting to off, not taking advantage of potential GPU perf gains\r\n- Changed Symmetric Projection and Subsampled Layout settings incompatibilities to be build warnings rather than errors since these aren't fatal settings issues\r\n- Fixed an incorrect depth texture format being requested on mobile\r\n- Fixed compilation errors on platforms where `ENABLE_VR` is not currently defined\r\n- Fixed an issue where the mirror view blit was using an incorrect source rect\r\n- Early engine init on mobile now looks for a boot.config entry rather than using an intent filter query, resolving potential Android app store issues\r\n\r\n### Known Issues\r\n- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is the default in the 2.x and 3.x versions of the Oculus XR Plugin package\r\n- `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes\r\n- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/"
   },
   "relatedPackages": {
-    "com.unity.xr.oculus.tests": "2.0.0-preview.5"
+    "com.unity.xr.oculus.tests": "2.0.2-preview.1"
   },
   "upmCi": {
-    "footprint": "008eaacfc41e18f566176e4b74c8778a6033da4e"
+    "footprint": "150b9f7cefcc44bf8b254e2bbd027b91f825fd34"
   }
 }
