@@ -115,6 +115,13 @@ namespace Unity.XR.Oculus
         [SerializeField, Tooltip("Debug mode for Late Latching which will print information about the Late Latching system as well as any errors.")]
         public bool LateLatchingDebug = false;
 
+        /// <summary>
+        /// When the Tracking Origin Mode is set to Floor, the tracking origin won't change with a system recenter.
+        /// </summary>
+        [SerializeField, Tooltip("When the Tracking Origin Mode is set to Floor, the tracking origin won't change with a system recenter.")]
+        public bool EnableTrackingOriginStageMode = false;
+
+        /// <summary>
         /// A frame synthesis technology to allow your application to render at half frame rate, while still delivering a smooth experience. Note that this currently requires a custom version of the URP provided by Oculus in order to work, and should not be enabled if you aren't using that customized Oculus URP package.
         /// </summary>
         [SerializeField, Tooltip("A frame synthesis technology to allow your application to render at half frame rate, while still delivering a smooth experience. Note that this currently requires a custom version of the URP provided by Oculus in order to work, and should not be enabled if you aren't using that customized Oculus URP package.")]
@@ -133,9 +140,9 @@ namespace Unity.XR.Oculus
         public bool TargetQuest2 = true;
 
         /// <summary>
-        /// Adds a PNG under the Assets folder as the splash screen image. If set, Oculus OS will display the system splash screen as a high quality compositor layer as soon as the app is starting to launch until the app submits the first frame.
+        /// Adds a PNG under the Assets folder as the system splash screen image. If set, the OS will display the system splash screen as a high quality compositor layer as soon as the app is starting to launch until the app submits the first frame.
         /// </summary>
-        [SerializeField, Tooltip("Adds a PNG under the Assets folder as the splash screen image. If set, Oculus OS will display the system splash screen as a high quality compositor layer as soon as the app is starting to launch until the app submits the first frame.")]
+        [SerializeField, Tooltip("Adds a PNG under the Assets folder as the system splash screen image. If set, the OS will display the system splash screen as a high quality compositor layer as soon as the app is starting to launch until the app submits the first frame.")]
         public Texture2D SystemSplashScreen;
 
 

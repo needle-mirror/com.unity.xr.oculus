@@ -20,6 +20,7 @@ namespace Unity.XR.Oculus.Editor
         private const string kSubsampledLayout = "SubsampledLayout";
         private const string kLateLatching = "LateLatching";
         private const string kLateLatchingDebug = "LateLatchingDebug";
+        private const string kEnableTrackingOriginStageMode = "EnableTrackingOriginStageMode";
         private const string kSpaceWarp = "SpaceWarp";
         private const string kTargetQuest = "TargetQuest";
         private const string kTargetQuest2 = "TargetQuest2";
@@ -35,6 +36,7 @@ namespace Unity.XR.Oculus.Editor
         static GUIContent s_SubsampledLayoutLabel = EditorGUIUtility.TrTextContent("Subsampled Layout (Vulkan/Quest 2)", "Supported on Quest 2 when using Vulkan.");
         static GUIContent s_LateLatchingLabel = EditorGUIUtility.TrTextContent("Late Latching (Vulkan)");
         static GUIContent s_LateLatchingDebugLabel = EditorGUIUtility.TrTextContent("Late Latching Debug Mode");
+        static GUIContent s_TrackingOriginStageLabel = EditorGUIUtility.TrTextContent("Enable TrackingOrigin Stage Mode");
         static GUIContent s_SpaceWarpLabel = EditorGUIUtility.TrTextContent("Application SpaceWarp (Vulkan)");
         static GUIContent s_TargetDevicesLabel = EditorGUIUtility.TrTextContent("Target Devices");
         static GUIContent s_TargetQuestLabel = EditorGUIUtility.TrTextContent("Quest");
@@ -53,6 +55,7 @@ namespace Unity.XR.Oculus.Editor
         private SerializedProperty m_SubsampledLayout;
         private SerializedProperty m_LateLatching;
         private SerializedProperty m_LateLatchingDebug;
+        private SerializedProperty m_EnableTrackingOriginStageMode;
         private SerializedProperty m_SpaceWarp;
         private SerializedProperty m_TargetQuest;
         private SerializedProperty m_TargetQuest2;
@@ -76,6 +79,7 @@ namespace Unity.XR.Oculus.Editor
             if (m_SubsampledLayout == null) m_SubsampledLayout = serializedObject.FindProperty(kSubsampledLayout);
             if (m_LateLatching == null) m_LateLatching = serializedObject.FindProperty(kLateLatching);
             if (m_LateLatchingDebug == null) m_LateLatchingDebug = serializedObject.FindProperty(kLateLatchingDebug);
+            if (m_EnableTrackingOriginStageMode == null) m_EnableTrackingOriginStageMode = serializedObject.FindProperty(kEnableTrackingOriginStageMode);
             if (m_SpaceWarp == null) m_SpaceWarp = serializedObject.FindProperty(kSpaceWarp);
             if (m_TargetQuest == null) m_TargetQuest = serializedObject.FindProperty(kTargetQuest);
             if (m_TargetQuest2 == null) m_TargetQuest2 = serializedObject.FindProperty(kTargetQuest2);
@@ -111,17 +115,15 @@ namespace Unity.XR.Oculus.Editor
 #if UNITY_2020_1_OR_NEWER
                 EditorGUILayout.PropertyField(m_SubsampledLayout, s_SubsampledLayoutLabel);
 #endif
+                EditorGUILayout.PropertyField(m_EnableTrackingOriginStageMode, s_TrackingOriginStageLabel);
 
+                EditorGUILayout.Space();
+                EditorGUILayout.PropertyField(m_SystemSplashScreen, s_SystemSplashScreen);
                 EditorGUILayout.Space();
 
                 GUILayout.Label(s_TargetDevicesLabel, EditorStyles.boldLabel);
-
                 EditorGUILayout.PropertyField(m_TargetQuest, s_TargetQuestLabel);
                 EditorGUILayout.PropertyField(m_TargetQuest2, s_TargetQuest2Label);
-
-                EditorGUILayout.Space();
-
-                EditorGUILayout.PropertyField(m_SystemSplashScreen, s_SystemSplashScreen);
 
                 EditorGUILayout.Space();
 

@@ -85,7 +85,7 @@ public class OculusUnity
         java.lang.System.loadLibrary(name);
     }
 
-    private static boolean getManifestSetting(String boolName) {
+    public static boolean getManifestSetting(String boolName) {
         boolean ret = false;
 
         try

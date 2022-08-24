@@ -56,6 +56,7 @@ namespace Unity.XR.Oculus.Editor
                 settings.SubsampledLayout = false;
                 settings.LateLatching = false;
                 settings.LateLatchingDebug = false;
+                settings.EnableTrackingOriginStageMode = false;
                 settings.SpaceWarp = false;
                 settings.TargetQuest = true;
                 settings.TargetQuest2 = true;

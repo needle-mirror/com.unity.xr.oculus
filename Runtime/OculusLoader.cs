@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.XR.Management;
@@ -155,7 +156,13 @@ namespace Unity.XR.Oculus
                 userDefinedSettings.subsampledLayout = (ushort)(settings.SubsampledLayout ? 1 : 0);
                 userDefinedSettings.lateLatching = (ushort)(settings.LateLatching ? 1 : 0);
                 userDefinedSettings.lateLatchingDebug = (ushort)(settings.LateLatchingDebug ? 1 : 0);
+                userDefinedSettings.enableTrackingOriginStageMode = (ushort)(settings.EnableTrackingOriginStageMode ? 1 : 0);
+#if (UNITY_ANDROID && !UNITY_EDITOR)
                 userDefinedSettings.spaceWarp = (ushort)(settings.SpaceWarp ? 1 : 0);
+#else
+                userDefinedSettings.spaceWarp = 0;
+#endif
+
                 NativeMethods.SetUserDefinedSettings(userDefinedSettings);
             }
 
@@ -413,11 +420,53 @@ namespace Unity.XR.Oculus
 
         private bool CheckUnityVersionCompatibility()
         {
-#if UNITY_2020_3_OR_NEWER
-            return true;
-#else
-            Debug.Log("This version of the Oculus XR Plugin requires Unity 2020.3 or higher in order to run.");
+#if !UNITY_2021_3_OR_NEWER
+            Debug.LogWarning("This version of the Oculus XR Plugin requires at least Unity 2021.3.4f1.\n" +
+                             "Please update to that version or higher of Unity, or use the verified Oculus XR Plugin package for this version of Unity.");
             return false;
+#else
+            // verify that 3.1.0+ versions of the package are on compatible versions of Unity
+            var unityVersion = Application.unityVersion;
+            var versionRegex = @"^(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?<type>.).*";
+            var match = Regex.Match(unityVersion, versionRegex);
+
+            // if we can't parse the Unity version number, just assume success
+            if (!match.Success)
+                return true;
+
+            int major = Int32.Parse((match.Groups["major"].Value));
+            int minor = Int32.Parse((match.Groups["minor"].Value));
+            int patch = Int32.Parse((match.Groups["patch"].Value));
+            var type = match.Groups["type"].Value;
+
+            // 2021.3 requires at least 2021.3.4f1. this is handled by the package.json, but handle here for internal development as well
+            if (major == 2021)
+            {
+                if ((minor < 3) || ((minor == 3) && (patch < 4)))
+                {
+                    Debug.LogWarning("This version of the Oculus XR Plugin requires at least Unity 2021.3.4f1.\n" +
+                                     "Please update to that version or higher of Unity, or use the verified Oculus XR Plugin package for this version of Unity.");
+                    return false;
+                }
+            }
+
+            // 2022.1 requires at least 2022.1.12f1
+            if ((major == 2022) && (minor == 1) && (patch < 12))
+            {
+                Debug.LogWarning("This version of the Oculus XR Plugin requires at least Unity 2022.1.12f1.\n" +
+                                 "Please update to that version or higher of Unity, or use the verified Oculus XR Plugin package for this version of Unity.");
+                return false;
+            }
+
+            // 2022.2 requires at least 2022.0b1
+            if ((major == 2022) && (minor == 2) && (patch == 0) && (type == "a"))
+            {
+                Debug.LogWarning("This version of the Oculus XR Plugin requires at least Unity 2022.2.0b1.\n" +
+                                 "Please update to that version or higher of Unity, or use the verified Oculus XR Plugin package for this version of Unity.");
+                return false;
+            }
+            
+            return true;
 #endif
         }
     }
