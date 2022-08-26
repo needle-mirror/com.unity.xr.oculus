@@ -4,6 +4,18 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.13.0] - 2022-08-26
+### Changed
+- Bumped minimum Unity version to 2020.3.34f1
+
+### Fixed
+- Fixed an issue where an XR Rig could cause constant attempts to set the tracking origin when using the OpenXR backend, causing potential visual issues and/or crashes. **Note:** This fix will cause `TryRecenter()` to always return `true`. If you have an application that depends on the results of `TryRecenter()`, please note this behavior change.  `TryRecenter()` would only work correctly on PC non-OpenXR builds in previous versions, and would return `false` in all other situations
+
+### Known Issues
+- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is optionally installed with the Oculus Integration asset
+- `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes
+- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
+
 ## [1.12.1] - 2022-06-01
 ### Fixed
 - Changed Symmetric Projection and Subsampled Layout settings incompatibilities to be build warnings rather than errors since these aren't fatal settings issues
@@ -11,11 +23,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fixed compilation errors on platforms where `ENABLE_VR` is not currently defined
 - Fixed an issue where the mirror view blit was using an incorrect source rect
 - Early engine init on mobile now looks for a boot.config entry rather than using an intent filter query, resolving potential Android app store issues
-
-### Known Issues
-- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is optionally installed with the Oculus Integration asset
-- `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes
-- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
 
 ## [1.12.0] - 2022-02-24
 ### Added
