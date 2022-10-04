@@ -18,13 +18,16 @@ namespace Unity.XR.Oculus.Editor
         private const string kPhaseSync = "PhaseSync";
         private const string kSymmetricProjection = "SymmetricProjection";
         private const string kSubsampledLayout = "SubsampledLayout";
+        private const string kFoveatedRenderingMethod = "FoveatedRenderingMethod";
         private const string kLateLatching = "LateLatching";
         private const string kLateLatchingDebug = "LateLatchingDebug";
         private const string kEnableTrackingOriginStageMode = "EnableTrackingOriginStageMode";
         private const string kSpaceWarp = "SpaceWarp";
         private const string kTargetQuest = "TargetQuest";
         private const string kTargetQuest2 = "TargetQuest2";
+        private const string kTargetQuestPro = "TargetQuestPro";
         private const string kSystemSplashScreen = "SystemSplashScreen";
+        private const string kDepthSubmission = "DepthSubmission";
 
         static GUIContent s_SharedDepthBufferLabel = EditorGUIUtility.TrTextContent("Shared Depth Buffer");
         static GUIContent s_DashSupportLabel = EditorGUIUtility.TrTextContent("Dash Support");
@@ -32,8 +35,9 @@ namespace Unity.XR.Oculus.Editor
         static GUIContent s_LowOverheadModeLabel = EditorGUIUtility.TrTextContent("Low Overhead Mode (GLES)");
         static GUIContent s_OptimizeBufferDiscardsLabel = EditorGUIUtility.TrTextContent("Optimize Buffer Discards (Vulkan)");
         static GUIContent s_PhaseSyncLabel = EditorGUIUtility.TrTextContent("Phase Sync");
-        static GUIContent s_SymmetricProjectionLabel = EditorGUIUtility.TrTextContent("Symmetric Projection (Vulkan/Quest 2)", "Supported on Quest 2 when using Vulkan and Multiview.");
-        static GUIContent s_SubsampledLayoutLabel = EditorGUIUtility.TrTextContent("Subsampled Layout (Vulkan/Quest 2)", "Supported on Quest 2 when using Vulkan.");
+        static GUIContent s_SymmetricProjectionLabel = EditorGUIUtility.TrTextContent("Symmetric Projection (Vulkan)", "Supported on Quest 2 and Quest Pro when using Vulkan and Multiview.");
+        static GUIContent s_SubsampledLayoutLabel = EditorGUIUtility.TrTextContent("Subsampled Layout (Vulkan)", "Supported on Quest 2 and Quest Pro when using Vulkan.");
+        static GUIContent s_FoveatedRenderingMethodLabel = EditorGUIUtility.TrTextContent("Foveated Rendering Method", "Choose which foveated rendering method is used when foveation is enabled. Eye Tracked Foveated Rendering is only supported on Quest Pro with proper permissions and when using Vulkan, Multiview, and ARM64.");
         static GUIContent s_LateLatchingLabel = EditorGUIUtility.TrTextContent("Late Latching (Vulkan)");
         static GUIContent s_LateLatchingDebugLabel = EditorGUIUtility.TrTextContent("Late Latching Debug Mode");
         static GUIContent s_TrackingOriginStageLabel = EditorGUIUtility.TrTextContent("Enable TrackingOrigin Stage Mode");
@@ -41,7 +45,9 @@ namespace Unity.XR.Oculus.Editor
         static GUIContent s_TargetDevicesLabel = EditorGUIUtility.TrTextContent("Target Devices");
         static GUIContent s_TargetQuestLabel = EditorGUIUtility.TrTextContent("Quest");
         static GUIContent s_TargetQuest2Label = EditorGUIUtility.TrTextContent("Quest 2");
+        static GUIContent s_TargetQuestProLabel = EditorGUIUtility.TrTextContent("Quest Pro"); 
         static GUIContent s_SystemSplashScreen = EditorGUIUtility.TrTextContent("System Splash Screen");
+        static GUIContent s_DepthSubmission = EditorGUIUtility.TrTextContent("Depth Submission (Vulkan)");
         static GUIContent s_ShowAndroidExperimentalLabel = EditorGUIUtility.TrTextContent("Experimental", "Experimental settings that are under active development and should be used with caution.");
 
         private SerializedProperty m_SharedDepthBuffer;
@@ -53,13 +59,16 @@ namespace Unity.XR.Oculus.Editor
         private SerializedProperty m_PhaseSync;
         private SerializedProperty m_SymmetricProjection;
         private SerializedProperty m_SubsampledLayout;
+        private SerializedProperty m_FoveatedRenderingMethod;
         private SerializedProperty m_LateLatching;
         private SerializedProperty m_LateLatchingDebug;
         private SerializedProperty m_EnableTrackingOriginStageMode;
         private SerializedProperty m_SpaceWarp;
         private SerializedProperty m_TargetQuest;
         private SerializedProperty m_TargetQuest2;
+        private SerializedProperty m_TargetQuestPro;
         private SerializedProperty m_SystemSplashScreen;
+        private SerializedProperty m_DepthSubmission;
 
         static private bool m_ShowAndroidExperimental = false;
 
@@ -77,17 +86,20 @@ namespace Unity.XR.Oculus.Editor
             if (m_PhaseSync == null) m_PhaseSync = serializedObject.FindProperty(kPhaseSync);
             if (m_SymmetricProjection == null) m_SymmetricProjection = serializedObject.FindProperty(kSymmetricProjection);
             if (m_SubsampledLayout == null) m_SubsampledLayout = serializedObject.FindProperty(kSubsampledLayout);
+            if (m_FoveatedRenderingMethod == null) m_FoveatedRenderingMethod = serializedObject.FindProperty(kFoveatedRenderingMethod);
             if (m_LateLatching == null) m_LateLatching = serializedObject.FindProperty(kLateLatching);
             if (m_LateLatchingDebug == null) m_LateLatchingDebug = serializedObject.FindProperty(kLateLatchingDebug);
             if (m_EnableTrackingOriginStageMode == null) m_EnableTrackingOriginStageMode = serializedObject.FindProperty(kEnableTrackingOriginStageMode);
             if (m_SpaceWarp == null) m_SpaceWarp = serializedObject.FindProperty(kSpaceWarp);
             if (m_TargetQuest == null) m_TargetQuest = serializedObject.FindProperty(kTargetQuest);
             if (m_TargetQuest2 == null) m_TargetQuest2 = serializedObject.FindProperty(kTargetQuest2);
+            if (m_TargetQuestPro == null) m_TargetQuestPro = serializedObject.FindProperty(kTargetQuestPro);
             if (m_SystemSplashScreen == null) m_SystemSplashScreen = serializedObject.FindProperty(kSystemSplashScreen);
+            if (m_DepthSubmission == null) m_DepthSubmission = serializedObject.FindProperty(kDepthSubmission);
 
             serializedObject.Update();
 
-            EditorGUIUtility.labelWidth = 220.0f;
+            EditorGUIUtility.labelWidth = 240.0f;
 
             BuildTargetGroup selectedBuildTargetGroup = EditorGUILayout.BeginBuildTargetSelectionGrouping();
             EditorGUILayout.Space();
@@ -115,7 +127,13 @@ namespace Unity.XR.Oculus.Editor
 #if UNITY_2020_1_OR_NEWER
                 EditorGUILayout.PropertyField(m_SubsampledLayout, s_SubsampledLayoutLabel);
 #endif
+#if UNITY_2021_3_OR_NEWER
+                EditorGUILayout.PropertyField(m_FoveatedRenderingMethod, s_FoveatedRenderingMethodLabel);
+#endif
                 EditorGUILayout.PropertyField(m_EnableTrackingOriginStageMode, s_TrackingOriginStageLabel);
+#if UNITY_2021_3_OR_NEWER
+                EditorGUILayout.PropertyField(m_DepthSubmission, s_DepthSubmission);
+#endif
 
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(m_SystemSplashScreen, s_SystemSplashScreen);
@@ -124,6 +142,7 @@ namespace Unity.XR.Oculus.Editor
                 GUILayout.Label(s_TargetDevicesLabel, EditorStyles.boldLabel);
                 EditorGUILayout.PropertyField(m_TargetQuest, s_TargetQuestLabel);
                 EditorGUILayout.PropertyField(m_TargetQuest2, s_TargetQuest2Label);
+                EditorGUILayout.PropertyField(m_TargetQuestPro, s_TargetQuestProLabel);
 
                 EditorGUILayout.Space();
 

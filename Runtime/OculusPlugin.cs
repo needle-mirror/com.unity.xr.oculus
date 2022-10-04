@@ -59,6 +59,8 @@ namespace Unity.XR.Oculus
             public ushort lateLatchingDebug;
             public ushort enableTrackingOriginStageMode;
             public ushort spaceWarp;
+            public ushort depthSubmission;
+            public ushort foveatedRenderingMethod;
         }
 
         internal static void SetColorScale(float x, float y, float z, float w)
@@ -104,6 +106,13 @@ namespace Unity.XR.Oculus
         {
 #if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
             Internal.SetUserDefinedSettings(settings);
+#endif
+        }
+
+        internal static void SetHasUserAuthorizedEyeTrackingPermission(bool authorized)
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            Internal.SetHasUserAuthorizedEyeTrackingPermission(authorized);
 #endif
         }
 
@@ -277,6 +286,15 @@ namespace Unity.XR.Oculus
 #endif
         }
 
+        internal static bool GetEyeTrackedFoveatedRenderingSupported()
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            return Internal.GetEyeTrackedFoveatedRenderingSupported();
+#else
+            return false;
+#endif
+        }
+
         private static class Internal
         {
             [DllImport("OculusXRPlugin")]
@@ -288,7 +306,7 @@ namespace Unity.XR.Oculus
             [DllImport("OculusXRPlugin")]
             internal static extern bool GetIsSupportedDevice();
 
-            [DllImport("OculusXRPlugin", CharSet=CharSet.Unicode)]
+            [DllImport("OculusXRPlugin", CharSet = CharSet.Unicode)]
             internal static extern bool LoadOVRPlugin(string ovrpPath);
 
             [DllImport("OculusXRPlugin")]
@@ -296,6 +314,9 @@ namespace Unity.XR.Oculus
 
             [DllImport("OculusXRPlugin")]
             internal static extern void SetUserDefinedSettings(UserDefinedSettings settings);
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern void SetHasUserAuthorizedEyeTrackingPermission(bool authorized);
 
             [DllImport("OculusXRPlugin")]
             internal static extern int SetCPULevel(int cpuLevel);
@@ -356,6 +377,9 @@ namespace Unity.XR.Oculus
 
             [DllImport("OculusXRPlugin")]
             internal static extern void SetTiledMultiResDynamic(bool isDynamic);
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern bool GetEyeTrackedFoveatedRenderingSupported();
         }
     }
 }

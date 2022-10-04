@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Android;
 using UnityEngine.Rendering;
 using UnityEngine.XR.Management;
 using UnityEngine.XR;
@@ -142,6 +143,7 @@ namespace Unity.XR.Oculus
 #endif
 
             OculusSettings settings = GetSettings();
+
             if (settings != null)
             {
                 NativeMethods.UserDefinedSettings userDefinedSettings;
@@ -154,15 +156,17 @@ namespace Unity.XR.Oculus
                 userDefinedSettings.phaseSync = (ushort)(settings.PhaseSync ? 1 : 0);
                 userDefinedSettings.symmetricProjection = (ushort)(settings.SymmetricProjection ? 1 : 0);
                 userDefinedSettings.subsampledLayout = (ushort)(settings.SubsampledLayout ? 1 : 0);
+                userDefinedSettings.foveatedRenderingMethod = (ushort)settings.FoveatedRenderingMethod;
                 userDefinedSettings.lateLatching = (ushort)(settings.LateLatching ? 1 : 0);
                 userDefinedSettings.lateLatchingDebug = (ushort)(settings.LateLatchingDebug ? 1 : 0);
                 userDefinedSettings.enableTrackingOriginStageMode = (ushort)(settings.EnableTrackingOriginStageMode ? 1 : 0);
 #if (UNITY_ANDROID && !UNITY_EDITOR)
                 userDefinedSettings.spaceWarp = (ushort)(settings.SpaceWarp ? 1 : 0);
+                userDefinedSettings.depthSubmission = (ushort)(settings.DepthSubmission ? 1 : 0);
 #else
                 userDefinedSettings.spaceWarp = 0;
+                userDefinedSettings.depthSubmission = 0;
 #endif
-
                 NativeMethods.SetUserDefinedSettings(userDefinedSettings);
             }
 
@@ -192,10 +196,24 @@ namespace Unity.XR.Oculus
                 RegisterUpdateCallback.Initialize();
             }
 
+
+            if (settings != null && (settings.FoveatedRenderingMethod == OculusSettings.FoveationMethod.EyeTrackedFoveatedRendering) && NativeMethods.GetEyeTrackedFoveatedRenderingSupported())
+            {
+                var permissionCallbacks = new PermissionCallbacks();
+                permissionCallbacks.PermissionGranted += PermissionGrantedCallback;
+                Permission.RequestUserPermission("com.oculus.permission.EYE_TRACKING", permissionCallbacks);
+            }
+
             return displaySubsystem != null && inputSubsystem != null;
 #else
             return false;
 #endif
+        }
+
+        internal void PermissionGrantedCallback(string permissionName)
+        {
+            if (permissionName == "com.oculus.permission.EYE_TRACKING")
+                NativeMethods.SetHasUserAuthorizedEyeTrackingPermission(true);
         }
 
         public override bool Start()

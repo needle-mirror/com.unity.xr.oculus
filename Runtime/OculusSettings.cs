@@ -41,6 +41,20 @@ namespace Unity.XR.Oculus
             Multiview = 2
         }
 
+        public enum FoveationMethod
+        {
+            /// <summary>
+            /// Fixed Foveated Rendering
+            /// Foveates the image based on a fixed pattern.
+            /// </summary>
+            FixedFoveatedRendering = 0,
+            /// <summary>
+            /// Eye Tracked Foveated Rendering
+            /// Foveates the image using eye tracking.
+            /// </summary>
+            EyeTrackedFoveatedRendering = 1
+        }
+
         /// <summary>
         /// The current stereo rendering mode selected for desktop-based Oculus platforms
         /// </summary>
@@ -66,6 +80,12 @@ namespace Unity.XR.Oculus
         /// </summary>
         [SerializeField, Tooltip("Allows Unity and the Oculus runtime to share a common depth buffer for better scene integration with the Dash.")]
         public bool SharedDepthBuffer = true;
+
+        /// <summary>
+        /// Enable or disable support for submitting the depth buffer on mobile. This enables depth testing between layers on Oculus mobile platforms.
+        /// </summary>
+        [SerializeField, Tooltip("Allows Unity to submit it's depth buffer to the Oculus runtime to allow for depth testing between layers.")]
+        public bool DepthSubmission = false;
 
         /// <summary>
         /// Enable or disable Dash support. This inintializes the Oculus Plugin with Dash support which enables the Oculus Dash to composite over the Unity application.
@@ -98,10 +118,16 @@ namespace Unity.XR.Oculus
         public bool SymmetricProjection = true;
 
         /// <summary>
-        /// Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan and Quest 2 only. Requires Unity 2020.3.11f1 or 2021.1.9f1 or higher, and will result in a black screen if enabled on earlier versions of Unity.
+        /// Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan and Quest 2/Quest Pro only. Requires Unity 2020.3.11f1 or 2021.1.9f1 or higher, and will result in a black screen if enabled on earlier versions of Unity.
         /// </summary>
-        [SerializeField, Tooltip("Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan and Quest 2 only. Requires Unity 2020.3.11f1 or 2021.1.9f1 or higher, and will result in a black screen if enabled on earlier versions of Unity.")]
+        [SerializeField, Tooltip("Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan and Quest 2/Quest Pro only. Requires Unity 2020.3.11f1 or 2021.1.9f1 or higher, and will result in a black screen if enabled on earlier versions of Unity.")]
         public bool SubsampledLayout = false;
+
+        /// <summary>
+        /// Choose which foveated rendering method is used when foveation is enabled.
+        /// </summary>
+        [SerializeField, Tooltip("Choose which foveated rendering method is used when foveation is enabled.")]
+        public FoveationMethod FoveatedRenderingMethod = FoveationMethod.FixedFoveatedRendering;
 
         /// <summary>
         /// Reduces tracked rendering latency by updating head and controller poses as late as possible before rendering. Vulkan only.
@@ -138,6 +164,12 @@ namespace Unity.XR.Oculus
         /// </summary>
         [SerializeField, Tooltip("Adds a Quest 2 entry to the supported devices list in the Android manifest.")]
         public bool TargetQuest2 = true;
+        
+        /// <summary>
+        /// Adds a Quest Pro entry to the supported devices list in the Android manifest.
+        /// </summary>
+        [SerializeField, Tooltip("Adds a Quest Pro entry to the supported devices list in the Android manifest.")]
+        public bool TargetQuestPro = false;
 
         /// <summary>
         /// Adds a PNG under the Assets folder as the system splash screen image. If set, the OS will display the system splash screen as a high quality compositor layer as soon as the app is starting to launch until the app submits the first frame.

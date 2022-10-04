@@ -187,6 +187,8 @@ namespace UnityEditor.XR.Oculus
             if(!OculusBuildTools.OculusLoaderPresentInSettingsForBuildTarget(report.summary.platformGroup))
                 return;
 
+            var settings = OculusBuildTools.GetSettings();
+            
             if (report.summary.platformGroup == BuildTargetGroup.Android)
             {
                 GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0];
@@ -201,6 +203,16 @@ namespace UnityEditor.XR.Oculus
                 if (PlayerSettings.colorSpace != ColorSpace.Linear && (firstGfxType == GraphicsDeviceType.OpenGLES3 || firstGfxType == GraphicsDeviceType.OpenGLES2))
                 {
                     throw new BuildFailedException("Only Linear Color Space is supported when using OpenGLES. Please set Color Space to Linear in Player Settings, or switch to Vulkan.");
+                }
+                
+                // some features don't work in non-ARM64 builds
+                if ((PlayerSettings.Android.targetArchitectures & AndroidArchitecture.ARM64) != AndroidArchitecture.ARM64)
+                {
+                    // ETFR requires ARM64
+                    if ((settings != null) && (settings.FoveatedRenderingMethod == OculusSettings.FoveationMethod.EyeTrackedFoveatedRendering))
+                    {
+                        throw new BuildFailedException("Eye Tracked Foveated Rendering can only be enabled when ARM64 is selected as the Target Architecture.");
+                    }
                 }
 
                 // write Android Meta tags to bootconfig
@@ -244,14 +256,24 @@ namespace UnityEditor.XR.Oculus
                 var settings = OculusBuildTools.GetSettings();
                 GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0];
                 
-                if (settings.SymmetricProjection && (!settings.TargetQuest2 || settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
+                if (settings.SymmetricProjection && (!(settings.TargetQuest2 || settings.TargetQuestPro) || settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
                 {
-                    Debug.LogWarning("Symmetric Projection is only supported on Quest 2 with Vulkan and Multiview.");
+                    Debug.LogWarning("Symmetric Projection is only supported on Quest 2 and Quest Pro with Vulkan and Multiview.");
                 }
                 
-                if (settings.SubsampledLayout && (!settings.TargetQuest2 || firstGfxType != GraphicsDeviceType.Vulkan))
+                if (settings.SubsampledLayout && (!(settings.TargetQuest2 || settings.TargetQuestPro) || firstGfxType != GraphicsDeviceType.Vulkan))
                 {
-                    Debug.LogWarning("Subsampled Layout is only supported on Quest 2 with Vulkan.");
+                    Debug.LogWarning("Subsampled Layout is only supported on Quest 2 and Quest Pro with Vulkan.");
+                }
+
+                if (settings.DepthSubmission && (settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
+                {
+                    Debug.LogWarning("Depth Submission is only supported on Vulkan with Multiview.");
+                }
+
+                if (settings.DepthSubmission)
+                {
+                    Debug.LogWarning("Enabling Depth Submission may cause a crash on application startup if MSAA is not enabled. This will be resolved in future versions of Unity.");
                 }
             }
 
@@ -510,6 +532,19 @@ namespace UnityEditor.XR.Oculus
             nodePath = "/manifest";
             CreateNameValueElementsInTag(manifestDoc, nodePath, "uses-feature", "name", "android.hardware.vr.headtracking", "required", "true", "version", "1");
 
+            var eyeTrackedFoveatedRendering = ((settings != null) && (settings.FoveatedRenderingMethod == OculusSettings.FoveationMethod.EyeTrackedFoveatedRendering));
+            if (eyeTrackedFoveatedRendering)
+            {
+                CreateNameValueElementsInTag(manifestDoc, nodePath, "uses-feature", "name", "oculus.software.eye_tracking", "required", "false");
+                CreateNameValueElementsInTag(manifestDoc, nodePath, "uses-permission", "name", "com.oculus.permission.EYE_TRACKING");
+            }
+            else
+            {
+                RemoveNameValueElementInTag(manifestDoc, nodePath, "uses-feature", "android:name", "oculus.software.eye_tracking");
+                RemoveNameValueElementInTag(manifestDoc, nodePath, "uses-permission", "android:name", "com.oculus.permission.EYE_TRACKING");
+
+            }
+
             string supportedDevices = null;
 
             if (settings != null)
@@ -521,6 +556,9 @@ namespace UnityEditor.XR.Oculus
 
                 if (settings.TargetQuest2)
                     deviceList.Add("quest2");
+
+                if (settings.TargetQuestPro)
+                    deviceList.Add("cambria");
 
                 if (deviceList.Count > 0)
                 {
