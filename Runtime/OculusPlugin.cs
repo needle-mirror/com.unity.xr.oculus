@@ -57,6 +57,7 @@ namespace Unity.XR.Oculus
             public ushort subsampledLayout;
             public ushort lateLatching;
             public ushort lateLatchingDebug;
+            public ushort enableTrackingOriginStageMode;
             public ushort spaceWarp;
         }
 

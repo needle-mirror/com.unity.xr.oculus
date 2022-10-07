@@ -227,6 +227,9 @@ namespace UnityEditor.XR.Oculus
 
         public void OnPostprocessBuild(BuildReport report)
         {
+            if(!OculusBuildTools.OculusLoaderPresentInSettingsForBuildTarget(report.summary.platformGroup))
+                return;
+            
             if (report.summary.platformGroup == BuildTargetGroup.Android)
             {
                 // clean up Android Meta boot settings after build
@@ -242,16 +245,19 @@ namespace UnityEditor.XR.Oculus
 
                 // verify settings
                 var settings = OculusBuildTools.GetSettings();
-                GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0];
-                
-                if (settings.SymmetricProjection && (!settings.TargetQuest2 || settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
+                if (settings != null)
                 {
-                    Debug.LogWarning("Symmetric Projection is only supported on Quest 2 with Vulkan and Multiview.");
-                }
-                
-                if (settings.SubsampledLayout && (!settings.TargetQuest2 || firstGfxType != GraphicsDeviceType.Vulkan))
-                {
-                    Debug.LogWarning("Subsampled Layout is only supported on Quest 2 with Vulkan.");
+                    GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0];
+                    
+                    if (settings.SymmetricProjection && (!(settings.TargetQuest2 || settings.TargetQuestPro) || settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
+                    {
+                        Debug.LogWarning("Symmetric Projection is only supported on Quest 2 and Quest Pro with Vulkan and Multiview.");
+                    }
+                    
+                    if (settings.SubsampledLayout && (!(settings.TargetQuest2 || settings.TargetQuestPro) || firstGfxType != GraphicsDeviceType.Vulkan))
+                    {
+                        Debug.LogWarning("Subsampled Layout is only supported on Quest 2 and Quest Pro with Vulkan.");
+                    }
                 }
             }
 
@@ -521,6 +527,9 @@ namespace UnityEditor.XR.Oculus
 
                 if (settings.TargetQuest2)
                     deviceList.Add("quest2");
+
+                if (settings.TargetQuestPro)
+                    deviceList.Add("cambria");
 
                 if (deviceList.Count > 0)
                 {

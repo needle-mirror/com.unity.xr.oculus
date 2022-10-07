@@ -155,7 +155,13 @@ namespace Unity.XR.Oculus
                 userDefinedSettings.subsampledLayout = (ushort)(settings.SubsampledLayout ? 1 : 0);
                 userDefinedSettings.lateLatching = (ushort)(settings.LateLatching ? 1 : 0);
                 userDefinedSettings.lateLatchingDebug = (ushort)(settings.LateLatchingDebug ? 1 : 0);
+                userDefinedSettings.enableTrackingOriginStageMode = (ushort)(settings.EnableTrackingOriginStageMode ? 1 : 0);
+#if (UNITY_ANDROID && !UNITY_EDITOR)
                 userDefinedSettings.spaceWarp = (ushort)(settings.SpaceWarp ? 1 : 0);
+#else
+                userDefinedSettings.spaceWarp = 0;
+#endif
+
                 NativeMethods.SetUserDefinedSettings(userDefinedSettings);
             }
 
