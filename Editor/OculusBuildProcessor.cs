@@ -239,6 +239,9 @@ namespace UnityEditor.XR.Oculus
 
         public void OnPostprocessBuild(BuildReport report)
         {
+            if(!OculusBuildTools.OculusLoaderPresentInSettingsForBuildTarget(report.summary.platformGroup))
+                return;
+            
             if (report.summary.platformGroup == BuildTargetGroup.Android)
             {
                 // clean up Android Meta boot settings after build
@@ -254,26 +257,29 @@ namespace UnityEditor.XR.Oculus
 
                 // verify settings
                 var settings = OculusBuildTools.GetSettings();
-                GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0];
-                
-                if (settings.SymmetricProjection && (!(settings.TargetQuest2 || settings.TargetQuestPro) || settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
+                if (settings != null)
                 {
-                    Debug.LogWarning("Symmetric Projection is only supported on Quest 2 and Quest Pro with Vulkan and Multiview.");
-                }
-                
-                if (settings.SubsampledLayout && (!(settings.TargetQuest2 || settings.TargetQuestPro) || firstGfxType != GraphicsDeviceType.Vulkan))
-                {
-                    Debug.LogWarning("Subsampled Layout is only supported on Quest 2 and Quest Pro with Vulkan.");
-                }
+                    GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0];
+                    
+                    if (settings.SymmetricProjection && (!(settings.TargetQuest2 || settings.TargetQuestPro) || settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
+                    {
+                        Debug.LogWarning("Symmetric Projection is only supported on Quest 2 and Quest Pro with Vulkan and Multiview.");
+                    }
+                    
+                    if (settings.SubsampledLayout && (!(settings.TargetQuest2 || settings.TargetQuestPro) || firstGfxType != GraphicsDeviceType.Vulkan))
+                    {
+                        Debug.LogWarning("Subsampled Layout is only supported on Quest 2 and Quest Pro with Vulkan.");
+                    }
 
-                if (settings.DepthSubmission && (settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
-                {
-                    Debug.LogWarning("Depth Submission is only supported on Vulkan with Multiview.");
-                }
+                    if (settings.DepthSubmission && (settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
+                    {
+                        Debug.LogWarning("Depth Submission is only supported on Vulkan with Multiview.");
+                    }
 
-                if (settings.DepthSubmission)
-                {
-                    Debug.LogWarning("Enabling Depth Submission may cause a crash on application startup if MSAA is not enabled. This will be resolved in future versions of Unity.");
+                    if (settings.DepthSubmission)
+                    {
+                        Debug.LogWarning("Enabling Depth Submission may cause a crash on application startup if MSAA is not enabled. This will be resolved in future versions of Unity.");
+                    }
                 }
             }
 

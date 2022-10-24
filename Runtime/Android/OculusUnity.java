@@ -14,7 +14,6 @@ import com.unity3d.player.UnityPlayer;
 
 public class OculusUnity
 {
-    UnityPlayer player;
     Activity activity;
     SurfaceView glView;
 
@@ -24,20 +23,6 @@ public class OculusUnity
         activity = UnityPlayer.currentActivity;
 
         activity.runOnUiThread(() -> {
-
-            ViewGroup vg = (ViewGroup) activity.findViewById(android.R.id.content);
-            player = null;
-            for (int i = 0; i < vg.getChildCount(); ++i) {
-                if (vg.getChildAt(i) instanceof UnityPlayer) {
-                    player = (UnityPlayer) vg.getChildAt(i);
-                    break;
-                }
-            }
-
-            if (player == null) {
-                Log.e("Unity", "Failed to find UnityPlayer view!");
-                return;
-            }      
             glView = null;
             int surfaceViewId = activity.getResources().getIdentifier("unitySurfaceView", "id", activity.getPackageName());
 
