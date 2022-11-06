@@ -4,16 +4,25 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [3.2.2-pre.1] - 2022-10-24
-### Fixed
-- Resolved an issue where `OnPostprocessBuild()` could log warnings in situations where the Oculus Android provider wasn't enabled in XR Management
-- Resolved an issue where eye textures and layers were being destroyed too early when being reallocated, potentially resulting in GPU hangs/faults
+## [3.2.2] - 2022-11-06
+### Changed
+- No changes from 3.2.2-pre.2 other than removing the Pre-release version tag
 
 ### Known Issues
 - `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is the default in the 2.x and 3.x versions of the Oculus XR Plugin package
 - `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes
 - For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
 - Enabling mobile Depth Submission may cause crashes on application startup if MSAA is disabled. Enabling MSAA will resolve the issue. This will be resolved in future versions of Unity
+
+## [3.2.2-pre.2] - 2022-11-03
+### Fixed
+- Resolved an issue where Eye Tracked Foveated Rendering settings may conflict with settings provided by the Oculus Integration asset
+- `Shared Depth Buffer` on PC should now work correctly when using `Single Pass Instanced` rendering
+
+## [3.2.2-pre.1] - 2022-10-24
+### Fixed
+- Resolved an issue where `OnPostprocessBuild()` could log warnings in situations where the Oculus Android provider wasn't enabled in XR Management
+- Resolved an issue where eye textures and layers were being destroyed too early when being reallocated, potentially resulting in GPU hangs/faults
 
 ## [3.2.1] - 2022-10-04
 ### Added

@@ -177,6 +177,8 @@ namespace UnityEditor.XR.Oculus
     {
         public int callbackOrder { get; }
 
+        internal static string s_AndroidManifestPath = "";
+
         private static readonly Dictionary<string, string> AndroidBootConfigVars = new Dictionary<string, string>()
         {
             { "xr-meta-enabled", "1" }
@@ -254,6 +256,22 @@ namespace UnityEditor.XR.Oculus
                 }
 
                 bootConfig.WriteBootConfig();
+
+                // clean up Android manifest after build
+                if (!string.IsNullOrEmpty(s_AndroidManifestPath))
+                {
+                    try
+                    {
+                        File.Delete(s_AndroidManifestPath);
+                    }
+                    catch (Exception e)
+                    {
+                        // this only fails if the file can't be deleted; it is quiet if the file does not exist
+                        Debug.LogWarning("Failed to clean up AndroidManifest.xml file located at " + s_AndroidManifestPath + " : " + e.ToString());
+                    }
+                }
+
+                s_AndroidManifestPath = "";
 
                 // verify settings
                 var settings = OculusBuildTools.GetSettings();
@@ -544,12 +562,6 @@ namespace UnityEditor.XR.Oculus
                 CreateNameValueElementsInTag(manifestDoc, nodePath, "uses-feature", "name", "oculus.software.eye_tracking", "required", "false");
                 CreateNameValueElementsInTag(manifestDoc, nodePath, "uses-permission", "name", "com.oculus.permission.EYE_TRACKING");
             }
-            else
-            {
-                RemoveNameValueElementInTag(manifestDoc, nodePath, "uses-feature", "android:name", "oculus.software.eye_tracking");
-                RemoveNameValueElementInTag(manifestDoc, nodePath, "uses-permission", "android:name", "com.oculus.permission.EYE_TRACKING");
-
-            }
 
             string supportedDevices = null;
 
@@ -630,6 +642,9 @@ namespace UnityEditor.XR.Oculus
             RemoveNameValueElementInTag(manifestDoc, nodePath, "uses-permission", "android:name", "android.permission.BLUETOOTH");
 
             manifestDoc.Save(manifestPath);
+
+            // let OnPostprocessBuild() know which intermediate manifest to delete
+            OculusBuildHooks.s_AndroidManifestPath = manifestPath;
         }
 
         public int callbackOrder { get { return 10000; } }
