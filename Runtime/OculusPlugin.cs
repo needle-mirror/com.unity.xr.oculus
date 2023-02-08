@@ -20,7 +20,7 @@ namespace Unity.XR.Oculus
         // Standalone headsets
         Oculus_Quest = 8,
         Oculus_Quest_2 = 9,
-        Placeholder_10,
+        Placeholder_10 = 10,
         Placeholder_11,
         Placeholder_12,
         Placeholder_13,
@@ -295,6 +295,15 @@ namespace Unity.XR.Oculus
 #endif
         }
 
+        internal static bool GetShouldRestartSession()
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            return Internal.GetShouldRestartSession();
+#else
+            return false;
+#endif          
+        }
+
         private static class Internal
         {
             [DllImport("OculusXRPlugin")]
@@ -380,6 +389,9 @@ namespace Unity.XR.Oculus
 
             [DllImport("OculusXRPlugin")]
             internal static extern bool GetEyeTrackedFoveatedRenderingSupported();
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern bool GetShouldRestartSession();
         }
     }
 }
