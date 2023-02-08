@@ -223,6 +223,9 @@ namespace UnityEditor.XR.Oculus
 
         public void OnPostprocessBuild(BuildReport report)
         {
+            if(!OculusBuildTools.OculusLoaderPresentInSettingsForBuildTarget(report.summary.platformGroup))
+                return;
+            
             if (report.summary.platformGroup == BuildTargetGroup.Android)
             {
                 // clean up Android Meta boot settings after build
@@ -238,16 +241,19 @@ namespace UnityEditor.XR.Oculus
 
                 // verify settings
                 var settings = OculusBuildTools.GetSettings();
-                GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0];
-                
-                if (settings.SymmetricProjection && (!settings.TargetQuest2 || settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
+                if (settings != null)
                 {
-                    Debug.LogWarning("Symmetric Projection is only supported on Quest 2 with Vulkan and Multiview.");
-                }
-                
-                if (settings.SubsampledLayout && (!settings.TargetQuest2 || firstGfxType != GraphicsDeviceType.Vulkan))
-                {
-                    Debug.LogWarning("Subsampled Layout is only supported on Quest 2 with Vulkan.");
+                    GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0];
+                    
+                    if (settings.SymmetricProjection && (!settings.TargetQuest2 || settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
+                    {
+                        Debug.LogWarning("Symmetric Projection is only supported on Quest 2 with Vulkan and Multiview.");
+                    }
+                    
+                    if (settings.SubsampledLayout && (!settings.TargetQuest2 || firstGfxType != GraphicsDeviceType.Vulkan))
+                    {
+                        Debug.LogWarning("Subsampled Layout is only supported on Quest 2 with Vulkan.");
+                    }
                 }
             }
         }
@@ -550,9 +556,11 @@ namespace UnityEditor.XR.Oculus
                     string sourcePath = splashScreenAssetPath;
                     string targetFolder = Path.Combine(path, "src/main/assets");
                     string targetPath = targetFolder + "/vr_splash.png";
-                    Debug.LogFormat("Copy Oculus system splash screen asset from {0} to {1}", sourcePath, targetPath);
 
+                    // copy the splash over into the gradle folder and make sure it's not read only
                     FileUtil.ReplaceFile(sourcePath, targetPath);
+                    FileInfo targetInfo = new FileInfo(targetPath);
+                    targetInfo.IsReadOnly = false;
                 }
 
                 nodePath = "/manifest/application";

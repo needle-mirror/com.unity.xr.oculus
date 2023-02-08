@@ -4,17 +4,26 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.13.1-preview.1] - 2023-02-08
+### Fixed
+- Fixed a potential memory corruption issue on Rift when calculating mirror view rects
+- Resolved an issue where disconnecting a Link device then reconnecting it could result in a black screen with no input
+- Resolved an issue where `OnPostprocessBuild()` could log warnings in situations where the Oculus Android provider wasn't enabled in XR Management
+- Resolved a potential issue where read-only System Splash Screen images could cause build failures
+- Fixed a potential startup crash on Quest when app initialization is interrupted and then resumed
+- `Shared Depth Buffer` on PC should now work correctly when using `Single Pass Instanced` rendering
+
+### Known Issues
+- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is optionally installed with the Oculus Integration asset
+- `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes
+- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
+
 ## [1.13.0] - 2022-08-26
 ### Changed
 - Bumped minimum Unity version to 2020.3.34f1
 
 ### Fixed
 - Fixed an issue where an XR Rig could cause constant attempts to set the tracking origin when using the OpenXR backend, causing potential visual issues and/or crashes. **Note:** This fix will cause `TryRecenter()` to always return `true`. If you have an application that depends on the results of `TryRecenter()`, please note this behavior change.  `TryRecenter()` would only work correctly on PC non-OpenXR builds in previous versions, and would return `false` in all other situations
-
-### Known Issues
-- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is optionally installed with the Oculus Integration asset
-- `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes
-- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
 
 ## [1.12.1] - 2022-06-01
 ### Fixed
