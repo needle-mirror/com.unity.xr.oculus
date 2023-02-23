@@ -4,6 +4,15 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.13.1-preview.2] - 2023-02-23
+### Fixed
+- Resolved an issue where eye textures and layers were being destroyed too early when being reallocated, potentially resulting in GPU hangs/faults
+
+### Known Issues
+- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is optionally installed with the Oculus Integration asset
+- `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes
+- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
+
 ## [1.13.1-preview.1] - 2023-02-08
 ### Fixed
 - Fixed a potential memory corruption issue on Rift when calculating mirror view rects
@@ -12,11 +21,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Resolved a potential issue where read-only System Splash Screen images could cause build failures
 - Fixed a potential startup crash on Quest when app initialization is interrupted and then resumed
 - `Shared Depth Buffer` on PC should now work correctly when using `Single Pass Instanced` rendering
-
-### Known Issues
-- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is optionally installed with the Oculus Integration asset
-- `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes
-- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
 
 ## [1.13.0] - 2022-08-26
 ### Changed
