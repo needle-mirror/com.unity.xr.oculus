@@ -4,14 +4,18 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [1.13.1-preview.2] - 2023-02-23
-### Fixed
-- Resolved an issue where eye textures and layers were being destroyed too early when being reallocated, potentially resulting in GPU hangs/faults
+## [1.13.1] - 2023-02-28
+### Changed
+- No changes from 1.13.1-preview.2 other than removing the preview version tag
 
 ### Known Issues
 - `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is optionally installed with the Oculus Integration asset
 - `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes
 - For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
+
+## [1.13.1-preview.2] - 2023-02-23
+### Fixed
+- Resolved an issue where eye textures and layers were being destroyed too early when being reallocated, potentially resulting in GPU hangs/faults
 
 ## [1.13.1-preview.1] - 2023-02-08
 ### Fixed
