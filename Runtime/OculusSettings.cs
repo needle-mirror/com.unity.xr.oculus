@@ -82,9 +82,9 @@ namespace Unity.XR.Oculus
         public bool SharedDepthBuffer = true;
 
         /// <summary>
-        /// Enable or disable support for submitting the depth buffer on mobile. This enables depth testing between layers on Oculus mobile platforms.
+        /// Enables support for submitting the depth buffer on mobile. This allows for depth testing between layers on mobile Oculus platforms.
         /// </summary>
-        [SerializeField, Tooltip("Allows Unity to submit it's depth buffer to the Oculus runtime to allow for depth testing between layers.")]
+        [SerializeField, Tooltip("Enables support for submitting the depth buffer on mobile. This allows for depth testing between layers on mobile Oculus platforms.")]
         public bool DepthSubmission = false;
 
         /// <summary>

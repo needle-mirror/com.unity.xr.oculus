@@ -4,15 +4,24 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [3.2.3] - 2023-02-16
+## [3.3.0] - 2023-03-13
 ### Changed
-- No changes from 3.2.3-pre.1 other than removing the Pre-release version tag
+- Modified how foveated rendering (ETFR and FFR) is enabled and configured from script to make it more consistent
+- Updated the `SystemHeadset` enum to include `Meta_Quest_Pro` and `Meta_Link_Quest_Pro` entries
+
+### Fixed
+- Reverted deferred eye texture deletion as we only needed to defer layer deletion
+- Fixed a GLES2 script deprecation warning in Unity 2023.1+
 
 ### Known Issues
 - `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is the default in the 2.x and 3.x versions of the Oculus XR Plugin package
 - `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes
 - For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
 - Enabling mobile Depth Submission may cause crashes on application startup if MSAA is disabled. Enabling MSAA will resolve the issue. This will be resolved in future versions of Unity
+
+## [3.2.3] - 2023-02-16
+### Changed
+- No changes from 3.2.3-pre.1 other than removing the Pre-release version tag
 
 ## [3.2.3-pre.1] - 2023-02-08
 ### Fixed
@@ -30,6 +39,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Resolved an issue where Eye Tracked Foveated Rendering settings may conflict with settings provided by the Oculus Integration asset
 - `Shared Depth Buffer` on PC should now work correctly when using `Single Pass Instanced` rendering
+- Fixed potential jittering and one frame delay when using dynamic render viewports
+- Fixed incorrect vertical placement of viewports when using Vulkan
 
 ## [3.2.2-pre.1] - 2022-10-24
 ### Fixed

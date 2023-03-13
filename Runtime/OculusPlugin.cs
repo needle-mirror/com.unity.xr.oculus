@@ -20,6 +20,7 @@ namespace Unity.XR.Oculus
         // Standalone headsets
         Oculus_Quest = 8,
         Oculus_Quest_2 = 9,
+        Meta_Quest_Pro = 10,
         Placeholder_10 = 10,
         Placeholder_11,
         Placeholder_12,
@@ -34,7 +35,8 @@ namespace Unity.XR.Oculus
         Rift_S,
         Oculus_Link_Quest,
         Oculus_Link_Quest_2,
-        PC_Placeholder_4103,
+        Meta_Link_Quest_Pro,
+        PC_Placeholder_4103 = Meta_Link_Quest_Pro,
         PC_Placeholder_4104,
         PC_Placeholder_4105,
         PC_Placeholder_4106,
@@ -106,13 +108,6 @@ namespace Unity.XR.Oculus
         {
 #if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
             Internal.SetUserDefinedSettings(settings);
-#endif
-        }
-
-        internal static void SetHasUserAuthorizedEyeTrackingPermission(bool authorized)
-        {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            Internal.SetHasUserAuthorizedEyeTrackingPermission(authorized);
 #endif
         }
 
@@ -295,6 +290,22 @@ namespace Unity.XR.Oculus
 #endif
         }
 
+        internal static bool GetEyeTrackedFoveatedRenderingEnabled()
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            return Internal.GetEyeTrackedFoveatedRenderingEnabled();
+#else
+            return false;
+#endif
+        }
+
+        internal static void SetEyeTrackedFoveatedRenderingEnabled(bool isEnabled)
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            Internal.SetEyeTrackedFoveatedRenderingEnabled(isEnabled);
+#endif
+        }
+
         internal static bool GetShouldRestartSession()
         {
 #if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
@@ -325,15 +336,12 @@ namespace Unity.XR.Oculus
             internal static extern void SetUserDefinedSettings(UserDefinedSettings settings);
 
             [DllImport("OculusXRPlugin")]
-            internal static extern void SetHasUserAuthorizedEyeTrackingPermission(bool authorized);
-
-            [DllImport("OculusXRPlugin")]
             internal static extern int SetCPULevel(int cpuLevel);
 
             [DllImport("OculusXRPlugin")]
             internal static extern int SetGPULevel(int gpuLevel);
 
-            [DllImport("OculusXRPlugin", CharSet=CharSet.Auto)]
+            [DllImport("OculusXRPlugin", CharSet = CharSet.Auto)]
             internal static extern void GetOVRPVersion(byte[] version);
 
             [DllImport("OculusXRPlugin")]
@@ -389,6 +397,12 @@ namespace Unity.XR.Oculus
 
             [DllImport("OculusXRPlugin")]
             internal static extern bool GetEyeTrackedFoveatedRenderingSupported();
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern bool GetEyeTrackedFoveatedRenderingEnabled();
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern void SetEyeTrackedFoveatedRenderingEnabled(bool isEnabled);
 
             [DllImport("OculusXRPlugin")]
             internal static extern bool GetShouldRestartSession();

@@ -194,19 +194,34 @@ namespace UnityEditor.XR.Oculus
             if (report.summary.platformGroup == BuildTargetGroup.Android)
             {
                 GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0];
+
+#if UNITY_2023_1_OR_NEWER
+                if (firstGfxType != GraphicsDeviceType.OpenGLES3 && firstGfxType != GraphicsDeviceType.Vulkan)
+                {
+                    throw new BuildFailedException("OpenGLES3 and Vulkan are currently the only graphics APIs compatible with the Oculus XR Plugin on mobile platforms.");
+                }
+                
+                if (PlayerSettings.colorSpace != ColorSpace.Linear && (firstGfxType == GraphicsDeviceType.OpenGLES3))
+                {
+                    throw new BuildFailedException("Only Linear Color Space is supported when using OpenGLES. Please set Color Space to Linear in Player Settings, or switch to Vulkan.");
+                }
+#else
                 if (firstGfxType != GraphicsDeviceType.OpenGLES3 && firstGfxType != GraphicsDeviceType.Vulkan && firstGfxType != GraphicsDeviceType.OpenGLES2)
                 {
                     throw new BuildFailedException("OpenGLES2, OpenGLES3, and Vulkan are currently the only graphics APIs compatible with the Oculus XR Plugin on mobile platforms.");
                 }
-                if (PlayerSettings.Android.minSdkVersion < AndroidSdkVersions.AndroidApiLevel23)
-                {
-                    throw new BuildFailedException("Android Minimum API Level must be set to 23 or higher for the Oculus XR Plugin.");
-                }
+                
                 if (PlayerSettings.colorSpace != ColorSpace.Linear && (firstGfxType == GraphicsDeviceType.OpenGLES3 || firstGfxType == GraphicsDeviceType.OpenGLES2))
                 {
                     throw new BuildFailedException("Only Linear Color Space is supported when using OpenGLES. Please set Color Space to Linear in Player Settings, or switch to Vulkan.");
                 }
-                
+#endif
+
+                if (PlayerSettings.Android.minSdkVersion < AndroidSdkVersions.AndroidApiLevel23)
+                {
+                    throw new BuildFailedException("Android Minimum API Level must be set to 23 or higher for the Oculus XR Plugin.");
+                }
+
                 // some features don't work in non-ARM64 builds
                 if ((PlayerSettings.Android.targetArchitectures & AndroidArchitecture.ARM64) != AndroidArchitecture.ARM64)
                 {
