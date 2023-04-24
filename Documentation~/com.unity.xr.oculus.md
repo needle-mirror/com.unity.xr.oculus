@@ -1,6 +1,6 @@
 # About the Oculus XR Plugin
 
-The Oculus XR Plugin enables you to build applications for a variety of Oculus devices including the Rift, Rift S, Quest, Quest 2, and Quest Pro.
+The Oculus XR Plugin enables you to build applications for a variety of Oculus devices including the Rift, Rift S, Quest 2, and Quest Pro.
 
 ## Supported XR plugin subsystems
 
@@ -8,11 +8,11 @@ The Oculus XR Plugin enables you to build applications for a variety of Oculus d
 
 The display subsystem provides stereo rendering support for the XR Plugin. It supports the following graphics APIs:
 
-* Windows (Rift, Rift S)
+* Windows
     * DX11
-* Android (Quest, Quest 2, Quest Pro)
+* Android
     * OpenGL ES 3.0
-    * Vulkan (Quest/Quest 2/Quest Pro, experimental in Unity versions prior to 2021.2)
+    * Vulkan
 
 ### Input 
 
@@ -27,7 +27,7 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 * **Runtime Settings** - Configure runtime settings such as rendering modes, depth buffer sharing, Dash support, etc.
 * **Lifecycle Management** - The Oculus XR Plugin ships with a default XR Plugin loader implementation that handles subsystem lifecycle such as application initialization, shutdown, pausing, and resuming.
 
-### Windows standalone settings (Rift, Rift S)
+### Windows standalone settings
 
 * **Stereo Rendering Mode** - You can select *Multi Pass* or *Single Pass Instanced* stereo rendering mode.
     * *Multi Pass* - Unity renders each eye independently by making two passes across the scene graph. Each pass has its own eye matrices and render target. Unity draws everything twice, which includes setting the graphics state for each pass. This is a slow and simple rendering method which doesn't require any special modification to shaders.
@@ -35,7 +35,7 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 * **Shared Depth Buffer** - Enable or disable support for using a shared depth buffer. This allows Unity and Oculus to use a common depth buffer, which enables Oculus to composite the Oculus Dash and other utilities over the Unity application.
 * **Dash Support** - Enable or disable Dash support. This inintializes the Oculus Plugin with Dash support, which enables the Oculus Dash to composite over the Unity application.
 
-### Android settings (Quest, Quest 2, Quest Pro)
+### Android settings
 
 * **Stereo Rendering Mode** - You can select *Multi Pass* or *Multiview* stereo rendering mode.
     * *Multi Pass* - Unity renders each eye independently by making two passes across the scene graph. Each pass has its own eye matrices and render target. Unity draws everything twice, which includes setting the graphics state for each pass. This is a slow and simple rendering method which doesn't require any special modification to shaders.
@@ -43,33 +43,22 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 * **Low Overhead Mode** - If enabled, the GLES graphics driver will bypass validation code, potentially running faster. Disable this if you experience graphics instabilities. GLES only.
 * **Optimize Buffer Discards** - If enabled, the depth buffer contents will be discarded rather than resolved and the MSAA color buffer will be resolved rather than stored after rendering. This is a performance optimization that can possibly break rendering effects that sample from the depth buffer, such as camera stacking. Vulkan only.
 * **Phase Sync** - This enables a latency optimization technique which can reduce simulation latency by several ms, depending on application workload. This is currently disabled by default, but we encourage trying it with your projects.
-* **Symmetric Projection** - If enabled, this allows the application to render with symmetric projection matrices. This can improve GPU performance when using multiview due to more common workloads between the left and right eye. Supported on Quest 2 and Quest Pro when using Vulkan and Multiview.
-* **Subsampled Layout** - If enabled, the eye textures will use a subsampled layout. When using FFR, the subsampled layout will improve app GPU performance and reduce FFR-related visual artifacts. However, this feature will slightly increase the GPU cost of Timewarp. Therefore, we only recommend enabling it if the app is using FFR level 2 or higher, in which case, the app GPU performance improvement should outweigh the extra Timewarp cost. Vulkan and Quest 2 or Quest Pro only. Note that this requires Unity 2020.3.11f1 or 2021.1.9f1 or higher, and will result in a black screen if enabled on earlier versions of Unity.
+* **Symmetric Projection** - If enabled, this allows the application to render with symmetric projection matrices. This can improve GPU performance when using multiview due to more common workloads between the left and right eye. Supported when using Vulkan and Multiview.
+* **Subsampled Layout** - If enabled, the eye textures will use a subsampled layout. When using FFR, the subsampled layout will improve app GPU performance and reduce FFR-related visual artifacts. However, this feature will slightly increase the GPU cost of Timewarp. Therefore, we only recommend enabling it if the app is using FFR level 2 or higher, in which case, the app GPU performance improvement should outweigh the extra Timewarp cost. Vulkan only.
 * **Foveated Rendering Method** - Choose which foveated rendering method is used when foveation is enabled.
     * *Fixed Foveated Rendering* - Foveates the image based on a fixed pattern.
     * *Eye Tracked Foveated Rendering* - Foveates the image using eye tracking. Only supported on Quest Pro with proper permissions and when using Vulkan, Multiview, and ARM64.
 * **Enable TrackingOrigin Stage Mode** - When enabled, if the Tracking Origin Mode is set to Floor, the tracking origin won't change with a system recenter.
 * **Depth Submission** - Enables support for submitting the depth buffer on mobile. This enables depth testing between layers on Oculus mobile platforms.
 * **System Splash Screen** - You can add a PNG file under the Assets folder as the system splash screen image. If set, the OS will display the system splash screen as a high quality compositor layer as soon as the app is starting to launch until the app submits the first frame.
+* **Late Latching** - This feature reduces tracked rendering latency by updating head and controller poses as late as possible before rendering. Vulkan only.
+* **Late Latching Debug Mode** - Enables a debug mode for Late Latching which will print information about the Late Latching system as well as any errors. This can be used to verify that Late Latching is performing correctly. Debug mode is only active in Development builds.
 * **Application SpaceWarp** - Enables support for a frame synthesis technology to allow your application to render at half frame rate, while still delivering a smooth experience. Note that this currently requires a custom version of the URP provided by Oculus in order to work, and should not be enabled if you aren't using that customized Oculus URP package.
-* **Late Latching** - This is an experimental feature that reduces tracked rendering latency by updating head and controller poses as late as possible before rendering. This is currently disabled by default, and is under active development. Vulkan only.
-* **Late Latching Debug Mode** - Enables a debug mode for Late Latching which will print information about the Late Latching system as well as any errors. This can be used to verify that Late Latching is performing correctly. Debug mode is only active in Development builds. Note that this requires Unity 2020.3.28f1 or higher, and will be available in a future version of 2021.2+.
 
 ## Technical details
 
 ### Fixed-Foveated Rendering (FFR)
 
-Quest, Quest 2, and Quest Pro support [fixed-foveated rendering](https://developer.oculus.com/documentation/quest/latest/concepts/mobile-ffr/) to provide better performance for [pixel-fill limited](https://en.wikipedia.org/wiki/Fillrate) applications. Controlling the level of foveation is made available through APIs in the Oculus XR Plugin.
+Quest 2, and Quest Pro support [fixed-foveated rendering](https://developer.oculus.com/documentation/quest/latest/concepts/mobile-ffr/) to provide better performance for [pixel-fill limited](https://en.wikipedia.org/wiki/Fillrate) applications. Controlling the level of foveation is made available through APIs in the Oculus XR Plugin.
 
 FFR works best when rendering directly into the *eye textures* using the [foward rendering mode](https://docs.unity3d.com/Manual/RenderTech-ForwardRendering.html).  [*Deferred rendering* mode](https://docs.unity3d.com/Manual/RenderTech-DeferredShading.html), which is characterized by rendering into an intermediate render texture, is not recommended for use with FFR. This situation arises often when using the default *Universal Rendering Pipeline*, which includes a blit operation by default at the end of the frame. 
-
-### Vulkan
-
-As of Unity 2021.2, Vulkan support for Oculus Quest devices is no longer considered experimental. The implementation supports multiview rendering and fixed-foveated rendering, and is only supported on Quest devices.
-
-In versions of Unity prior to 2021.2, Vulkan will be disabled by default. To enable Vulkan on those versions, follow the steps below:
-
-* Open the **Project Settings** window (menu: **Edit > Project Settings**), and select **Player**.
-* Under the **Android** settings, add and move **Vulkan** to the top of the list of **Graphic APIs** so that it is selected ahead of others.
-
-Note that unless otherwise modified, OpenGL ES 3.0 is the default graphics API used in Unity versions prior to 2021.2.

@@ -23,7 +23,6 @@ namespace Unity.XR.Oculus.Editor
         private const string kLateLatchingDebug = "LateLatchingDebug";
         private const string kEnableTrackingOriginStageMode = "EnableTrackingOriginStageMode";
         private const string kSpaceWarp = "SpaceWarp";
-        private const string kTargetQuest = "TargetQuest";
         private const string kTargetQuest2 = "TargetQuest2";
         private const string kTargetQuestPro = "TargetQuestPro";
         private const string kSystemSplashScreen = "SystemSplashScreen";
@@ -35,15 +34,14 @@ namespace Unity.XR.Oculus.Editor
         static GUIContent s_LowOverheadModeLabel = EditorGUIUtility.TrTextContent("Low Overhead Mode (GLES)");
         static GUIContent s_OptimizeBufferDiscardsLabel = EditorGUIUtility.TrTextContent("Optimize Buffer Discards (Vulkan)");
         static GUIContent s_PhaseSyncLabel = EditorGUIUtility.TrTextContent("Phase Sync");
-        static GUIContent s_SymmetricProjectionLabel = EditorGUIUtility.TrTextContent("Symmetric Projection (Vulkan)", "Supported on Quest 2 and Quest Pro when using Vulkan and Multiview.");
-        static GUIContent s_SubsampledLayoutLabel = EditorGUIUtility.TrTextContent("Subsampled Layout (Vulkan)", "Supported on Quest 2 and Quest Pro when using Vulkan.");
+        static GUIContent s_SymmetricProjectionLabel = EditorGUIUtility.TrTextContent("Symmetric Projection (Vulkan)", "Supported when using Vulkan and Multiview.");
+        static GUIContent s_SubsampledLayoutLabel = EditorGUIUtility.TrTextContent("Subsampled Layout (Vulkan)");
         static GUIContent s_FoveatedRenderingMethodLabel = EditorGUIUtility.TrTextContent("Foveated Rendering Method", "Choose which foveated rendering method is used when foveation is enabled. Eye Tracked Foveated Rendering is only supported on Quest Pro with proper permissions and when using Vulkan, Multiview, and ARM64.");
         static GUIContent s_LateLatchingLabel = EditorGUIUtility.TrTextContent("Late Latching (Vulkan)");
         static GUIContent s_LateLatchingDebugLabel = EditorGUIUtility.TrTextContent("Late Latching Debug Mode");
         static GUIContent s_TrackingOriginStageLabel = EditorGUIUtility.TrTextContent("Enable TrackingOrigin Stage Mode");
         static GUIContent s_SpaceWarpLabel = EditorGUIUtility.TrTextContent("Application SpaceWarp (Vulkan)");
         static GUIContent s_TargetDevicesLabel = EditorGUIUtility.TrTextContent("Target Devices");
-        static GUIContent s_TargetQuestLabel = EditorGUIUtility.TrTextContent("Quest");
         static GUIContent s_TargetQuest2Label = EditorGUIUtility.TrTextContent("Quest 2");
         static GUIContent s_TargetQuestProLabel = EditorGUIUtility.TrTextContent("Quest Pro"); 
         static GUIContent s_SystemSplashScreen = EditorGUIUtility.TrTextContent("System Splash Screen");
@@ -64,7 +62,6 @@ namespace Unity.XR.Oculus.Editor
         private SerializedProperty m_LateLatchingDebug;
         private SerializedProperty m_EnableTrackingOriginStageMode;
         private SerializedProperty m_SpaceWarp;
-        private SerializedProperty m_TargetQuest;
         private SerializedProperty m_TargetQuest2;
         private SerializedProperty m_TargetQuestPro;
         private SerializedProperty m_SystemSplashScreen;
@@ -91,7 +88,6 @@ namespace Unity.XR.Oculus.Editor
             if (m_LateLatchingDebug == null) m_LateLatchingDebug = serializedObject.FindProperty(kLateLatchingDebug);
             if (m_EnableTrackingOriginStageMode == null) m_EnableTrackingOriginStageMode = serializedObject.FindProperty(kEnableTrackingOriginStageMode);
             if (m_SpaceWarp == null) m_SpaceWarp = serializedObject.FindProperty(kSpaceWarp);
-            if (m_TargetQuest == null) m_TargetQuest = serializedObject.FindProperty(kTargetQuest);
             if (m_TargetQuest2 == null) m_TargetQuest2 = serializedObject.FindProperty(kTargetQuest2);
             if (m_TargetQuestPro == null) m_TargetQuestPro = serializedObject.FindProperty(kTargetQuestPro);
             if (m_SystemSplashScreen == null) m_SystemSplashScreen = serializedObject.FindProperty(kSystemSplashScreen);
@@ -124,23 +120,18 @@ namespace Unity.XR.Oculus.Editor
                 EditorGUILayout.PropertyField(m_OptimizeBufferDiscards, s_OptimizeBufferDiscardsLabel);
                 EditorGUILayout.PropertyField(m_PhaseSync, s_PhaseSyncLabel);
                 EditorGUILayout.PropertyField(m_SymmetricProjection, s_SymmetricProjectionLabel);
-#if UNITY_2020_1_OR_NEWER
                 EditorGUILayout.PropertyField(m_SubsampledLayout, s_SubsampledLayoutLabel);
-#endif
-#if UNITY_2021_3_OR_NEWER
                 EditorGUILayout.PropertyField(m_FoveatedRenderingMethod, s_FoveatedRenderingMethodLabel);
-#endif
                 EditorGUILayout.PropertyField(m_EnableTrackingOriginStageMode, s_TrackingOriginStageLabel);
-#if UNITY_2021_3_OR_NEWER
                 EditorGUILayout.PropertyField(m_DepthSubmission, s_DepthSubmission);
-#endif
+                EditorGUILayout.PropertyField(m_LateLatching, s_LateLatchingLabel);
+                EditorGUILayout.PropertyField(m_LateLatchingDebug, s_LateLatchingDebugLabel);
 
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(m_SystemSplashScreen, s_SystemSplashScreen);
                 EditorGUILayout.Space();
 
                 GUILayout.Label(s_TargetDevicesLabel, EditorStyles.boldLabel);
-                EditorGUILayout.PropertyField(m_TargetQuest, s_TargetQuestLabel);
                 EditorGUILayout.PropertyField(m_TargetQuest2, s_TargetQuest2Label);
                 EditorGUILayout.PropertyField(m_TargetQuestPro, s_TargetQuestProLabel);
 
@@ -149,11 +140,7 @@ namespace Unity.XR.Oculus.Editor
                 if (m_ShowAndroidExperimental = EditorGUILayout.Foldout(m_ShowAndroidExperimental, s_ShowAndroidExperimentalLabel))
                 {
                     EditorGUI.indentLevel++;
-                    EditorGUILayout.PropertyField(m_LateLatching, s_LateLatchingLabel);
-                    EditorGUILayout.PropertyField(m_LateLatchingDebug, s_LateLatchingDebugLabel);
-#if UNITY_2020_3_OR_NEWER
                     EditorGUILayout.PropertyField(m_SpaceWarp, s_SpaceWarpLabel);
-#endif
                     EditorGUI.indentLevel--;
                 }
             }

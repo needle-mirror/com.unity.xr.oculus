@@ -118,9 +118,9 @@ namespace Unity.XR.Oculus
         public bool SymmetricProjection = true;
 
         /// <summary>
-        /// Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan and Quest 2/Quest Pro only. Requires Unity 2020.3.11f1 or 2021.1.9f1 or higher, and will result in a black screen if enabled on earlier versions of Unity.
+        /// Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan and Quest 2/Quest Pro only.
         /// </summary>
-        [SerializeField, Tooltip("Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan and Quest 2/Quest Pro only. Requires Unity 2020.3.11f1 or 2021.1.9f1 or higher, and will result in a black screen if enabled on earlier versions of Unity.")]
+        [SerializeField, Tooltip("Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan and Quest 2/Quest Pro only.")]
         public bool SubsampledLayout = false;
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace Unity.XR.Oculus
         /// <summary>
         /// Reduces tracked rendering latency by updating head and controller poses as late as possible before rendering. Vulkan only.
         /// </summary>
-        [SerializeField, Tooltip("Experimental feature that reduces tracked rendering latency by updating head and controller poses as late as possible before rendering. Vulkan only.")]
+        [SerializeField, Tooltip("Reduces tracked rendering latency by updating head and controller poses as late as possible before rendering. Vulkan only.")]
         public bool LateLatching = false;
 
         /// <summary>
@@ -152,12 +152,6 @@ namespace Unity.XR.Oculus
         /// </summary>
         [SerializeField, Tooltip("A frame synthesis technology to allow your application to render at half frame rate, while still delivering a smooth experience. Note that this currently requires a custom version of the URP provided by Oculus in order to work, and should not be enabled if you aren't using that customized Oculus URP package.")]
         public bool SpaceWarp = false;
-
-        /// <summary>
-        /// Adds a Quest entry to the supported devices list in the Android manifest.
-        /// </summary>
-        [SerializeField, Tooltip("Adds a Quest entry to the supported devices list in the Android manifest.")]
-        public bool TargetQuest = true;
 
         /// <summary>
         /// Adds a Quest 2 entry to the supported devices list in the Android manifest.
@@ -187,12 +181,12 @@ namespace Unity.XR.Oculus
 #endif
         }
 #if !UNITY_EDITOR
-		public static OculusSettings s_Settings;
+        public static OculusSettings s_Settings;
 
-		public void Awake()
-		{
-			s_Settings = this;
-		}
+        public void Awake()
+        {
+            s_Settings = this;
+        }
 #else
         private void OnValidate()
         {

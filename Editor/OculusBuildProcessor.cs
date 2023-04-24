@@ -22,8 +22,7 @@ namespace UnityEditor.XR.Oculus
 
         private static List<BuildTarget> s_ValidStandaloneBuildTargets = new List<BuildTarget>()
         {
-            BuildTarget.StandaloneWindows,
-            BuildTarget.StandaloneWindows64,
+            BuildTarget.StandaloneWindows64
         };
 
         private bool IsCurrentBuildTargetVaild(BuildReport report)
@@ -242,6 +241,11 @@ namespace UnityEditor.XR.Oculus
                 }
 
                 bootConfig.WriteBootConfig();
+            }
+
+            if (report.summary.platform == BuildTarget.StandaloneWindows)
+            {
+                throw new BuildFailedException("The Oculus XR Plugin doesn't support 32-bit Windows player builds. Please use 64-bit instead.");
             }
 
             if (report.summary.platform == BuildTarget.StandaloneWindows || report.summary.platform == BuildTarget.StandaloneWindows64)
@@ -584,9 +588,6 @@ namespace UnityEditor.XR.Oculus
             {
                 var deviceList = new List<string>();
 
-                if (settings.TargetQuest)
-                    deviceList.Add("quest");
-
                 if (settings.TargetQuest2)
                     deviceList.Add("quest2");
 
@@ -614,7 +615,7 @@ namespace UnityEditor.XR.Oculus
             }
             else
             {
-                supportedDevices = "quest|quest2";
+                supportedDevices = "quest2";
             }
 
             if (supportedDevices != null)
