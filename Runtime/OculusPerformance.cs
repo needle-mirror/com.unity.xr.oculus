@@ -588,7 +588,7 @@ namespace Unity.XR.Oculus
 
 #if ENABLE_VR
             List<XRDisplaySubsystem> displays = new List<XRDisplaySubsystem>();
-            SubsystemManager.GetInstances(displays);
+            SubsystemManager.GetSubsystems(displays);
 
             foreach (XRDisplaySubsystem xrDisplaySubsystem in displays)
             {

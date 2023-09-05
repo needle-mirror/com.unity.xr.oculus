@@ -25,6 +25,7 @@ namespace Unity.XR.Oculus.Editor
         private const string kSpaceWarp = "SpaceWarp";
         private const string kTargetQuest2 = "TargetQuest2";
         private const string kTargetQuestPro = "TargetQuestPro";
+        private const string kTargetQuest3 = "TargetQuest3";
         private const string kSystemSplashScreen = "SystemSplashScreen";
         private const string kDepthSubmission = "DepthSubmission";
 
@@ -33,7 +34,7 @@ namespace Unity.XR.Oculus.Editor
         static GUIContent s_StereoRenderingModeLabel = EditorGUIUtility.TrTextContent("Stereo Rendering Mode");
         static GUIContent s_LowOverheadModeLabel = EditorGUIUtility.TrTextContent("Low Overhead Mode (GLES)");
         static GUIContent s_OptimizeBufferDiscardsLabel = EditorGUIUtility.TrTextContent("Optimize Buffer Discards (Vulkan)");
-        static GUIContent s_PhaseSyncLabel = EditorGUIUtility.TrTextContent("Phase Sync");
+        static GUIContent s_PhaseSyncLabel = EditorGUIUtility.TrTextContent("Phase Sync (Deprecated)");
         static GUIContent s_SymmetricProjectionLabel = EditorGUIUtility.TrTextContent("Symmetric Projection (Vulkan)", "Supported when using Vulkan and Multiview.");
         static GUIContent s_SubsampledLayoutLabel = EditorGUIUtility.TrTextContent("Subsampled Layout (Vulkan)");
         static GUIContent s_FoveatedRenderingMethodLabel = EditorGUIUtility.TrTextContent("Foveated Rendering Method", "Choose which foveated rendering method is used when foveation is enabled. Eye Tracked Foveated Rendering is only supported on Quest Pro with proper permissions and when using Vulkan, Multiview, and ARM64.");
@@ -43,7 +44,8 @@ namespace Unity.XR.Oculus.Editor
         static GUIContent s_SpaceWarpLabel = EditorGUIUtility.TrTextContent("Application SpaceWarp (Vulkan)");
         static GUIContent s_TargetDevicesLabel = EditorGUIUtility.TrTextContent("Target Devices");
         static GUIContent s_TargetQuest2Label = EditorGUIUtility.TrTextContent("Quest 2");
-        static GUIContent s_TargetQuestProLabel = EditorGUIUtility.TrTextContent("Quest Pro"); 
+        static GUIContent s_TargetQuestProLabel = EditorGUIUtility.TrTextContent("Quest Pro");
+        static GUIContent s_TargetQuest3Label = EditorGUIUtility.TrTextContent("Quest 3");
         static GUIContent s_SystemSplashScreen = EditorGUIUtility.TrTextContent("System Splash Screen");
         static GUIContent s_DepthSubmission = EditorGUIUtility.TrTextContent("Depth Submission (Vulkan)");
         static GUIContent s_ShowAndroidExperimentalLabel = EditorGUIUtility.TrTextContent("Experimental", "Experimental settings that are under active development and should be used with caution.");
@@ -64,6 +66,7 @@ namespace Unity.XR.Oculus.Editor
         private SerializedProperty m_SpaceWarp;
         private SerializedProperty m_TargetQuest2;
         private SerializedProperty m_TargetQuestPro;
+        private SerializedProperty m_TargetQuest3;
         private SerializedProperty m_SystemSplashScreen;
         private SerializedProperty m_DepthSubmission;
 
@@ -90,6 +93,7 @@ namespace Unity.XR.Oculus.Editor
             if (m_SpaceWarp == null) m_SpaceWarp = serializedObject.FindProperty(kSpaceWarp);
             if (m_TargetQuest2 == null) m_TargetQuest2 = serializedObject.FindProperty(kTargetQuest2);
             if (m_TargetQuestPro == null) m_TargetQuestPro = serializedObject.FindProperty(kTargetQuestPro);
+            if (m_TargetQuest3 == null) m_TargetQuest3 = serializedObject.FindProperty(kTargetQuest3);
             if (m_SystemSplashScreen == null) m_SystemSplashScreen = serializedObject.FindProperty(kSystemSplashScreen);
             if (m_DepthSubmission == null) m_DepthSubmission = serializedObject.FindProperty(kDepthSubmission);
 
@@ -134,6 +138,7 @@ namespace Unity.XR.Oculus.Editor
                 GUILayout.Label(s_TargetDevicesLabel, EditorStyles.boldLabel);
                 EditorGUILayout.PropertyField(m_TargetQuest2, s_TargetQuest2Label);
                 EditorGUILayout.PropertyField(m_TargetQuestPro, s_TargetQuestProLabel);
+                EditorGUILayout.PropertyField(m_TargetQuest3, s_TargetQuest3Label);
 
                 EditorGUILayout.Space();
 

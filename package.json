@@ -1,9 +1,9 @@
 {
   "name": "com.unity.xr.oculus",
   "displayName": "Oculus XR Plugin",
-  "version": "4.0.0",
-  "unity": "2022.2",
-  "unityRelease": "18f1",
+  "version": "4.1.1",
+  "unity": "2022.3",
+  "unityRelease": "1f1",
   "description": "Provides display and input support for Oculus devices.",
   "keywords": [
     "oculus",
@@ -15,21 +15,21 @@
     "xreditorsubsystem"
   ],
   "dependencies": {
-    "com.unity.xr.management": "4.2.0"
+    "com.unity.xr.management": "4.4.0"
   },
   "repository": {
     "url": "https://github.cds.internal.unity3d.com/unity/xr.sdk.oculus.git",
     "type": "git",
-    "revision": "feb0ba57c2ff63fb5f42b28da30f4d67fd328a6e"
+    "revision": "f4140cf34083633dceb4226b6b3d593059b9ca35"
   },
   "relatedPackages": {
-    "com.unity.xr.oculus.tests": "4.0.0"
+    "com.unity.xr.oculus.tests": "4.1.1"
   },
   "_upm": {
-    "changelog": "### Changed\n- Updated Oculus plugins to v51. V51 plugins no longer provide support for Quest 1 devices or 32-bit Windows builds\n- Moved Late Latching settings out of the Experimental section\n\n### Removed\n- Removed Quest 1 as a target device in the Oculus XR Plugin settings and manifest entries\n\n### Known Issues\n- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime\n- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes\n- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/"
+    "changelog": "### Added\n- Added Quest 3 target device checkbox\n- Updated the `SystemHeadset` enum to include `Meta_Quest_3` and `Meta_Link_Quest_3` entries\n\n### Changed\n- Added project validation rule and soft dependency to xr.core.utils package\n- Bumped up required XR Management version to 4.4.0 to fix issues with Android Manifest cleanup\n- Updated Oculus plugins to v56\n- Updated documentation to inform users that Phase Sync is always active when using the Oculus OpenXR Runtime\n- Bumped minimum Unity version from 2022.2 to 2022.3\n\n### Fixed\n- Removed Android manifest cleanup that removed the manifest file, existing projects need to do a clean build to completely remove the issue\n- Fixed Android app issues that arise when setting the entry point to GameActivity\n\n### Known Issues\n- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime\n- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes\n- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/"
   },
   "upmCi": {
-    "footprint": "4f07a414ed0eba0c9e45520f728845aecedf643e"
+    "footprint": "b56ec273629dfd67ac22e125bcbb5500ba088ebe"
   },
-  "documentationUrl": "https://docs.unity3d.com/Packages/com.unity.xr.oculus@4.0/manual/index.html"
+  "documentationUrl": "https://docs.unity3d.com/Packages/com.unity.xr.oculus@4.1/manual/index.html"
 }

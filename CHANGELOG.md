@@ -4,6 +4,27 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.1.1] - 2023-09-05
+### Added
+- Added Quest 3 target device checkbox
+- Updated the `SystemHeadset` enum to include `Meta_Quest_3` and `Meta_Link_Quest_3` entries
+
+### Changed
+- Added project validation rule and soft dependency to xr.core.utils package
+- Bumped up required XR Management version to 4.4.0 to fix issues with Android Manifest cleanup
+- Updated Oculus plugins to v56
+- Updated documentation to inform users that Phase Sync is always active when using the Oculus OpenXR Runtime
+- Bumped minimum Unity version from 2022.2 to 2022.3
+
+### Fixed
+- Removed Android manifest cleanup that removed the manifest file, existing projects need to do a clean build to completely remove the issue
+- Fixed Android app issues that arise when setting the entry point to GameActivity
+
+### Known Issues
+- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime
+- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes
+- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
+
 ## [4.0.0] - 2023-04-24
 ### Changed
 - Updated Oculus plugins to v51. V51 plugins no longer provide support for Quest 1 devices or 32-bit Windows builds
@@ -12,15 +33,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Removed
 - Removed Quest 1 as a target device in the Oculus XR Plugin settings and manifest entries
 
-### Known Issues
-- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime
-- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes
-- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
-
 ## [3.3.0] - 2023-03-13
+### Added
+- Updated the `SystemHeadset` enum to include `Meta_Quest_Pro` and `Meta_Link_Quest_Pro` entries
+
 ### Changed
 - Modified how foveated rendering (ETFR and FFR) is enabled and configured from script to make it more consistent
-- Updated the `SystemHeadset` enum to include `Meta_Quest_Pro` and `Meta_Link_Quest_Pro` entries
 
 ### Fixed
 - Reverted deferred eye texture deletion as we only needed to defer layer deletion

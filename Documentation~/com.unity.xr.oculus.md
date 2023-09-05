@@ -1,6 +1,6 @@
 # About the Oculus XR Plugin
 
-The Oculus XR Plugin enables you to build applications for a variety of Oculus devices including the Rift, Rift S, Quest 2, and Quest Pro.
+The Oculus XR Plugin enables you to build applications for a variety of Oculus devices including the Rift, Rift S, Quest 2, Quest Pro, and Quest 3.
 
 ## Supported XR plugin subsystems
 
@@ -42,7 +42,7 @@ The Oculus XR Plugin integration with XR Management provides the following funct
     * *Multiview* - Multiview is essentially the same as the *Single Pass Instanced* option described above, except the graphics driver does the draw call conversion, requiring less work from the Unity engine. As with *Single Pass Instanced*, shaders need to be authored to enable Multiview.  Using Unity's XR shader macros will simplify custom shader development.
 * **Low Overhead Mode** - If enabled, the GLES graphics driver will bypass validation code, potentially running faster. Disable this if you experience graphics instabilities. GLES only.
 * **Optimize Buffer Discards** - If enabled, the depth buffer contents will be discarded rather than resolved and the MSAA color buffer will be resolved rather than stored after rendering. This is a performance optimization that can possibly break rendering effects that sample from the depth buffer, such as camera stacking. Vulkan only.
-* **Phase Sync** - This enables a latency optimization technique which can reduce simulation latency by several ms, depending on application workload. This is currently disabled by default, but we encourage trying it with your projects.
+* **Phase Sync** - This enables a latency optimization technique which can reduce simulation latency by several ms, depending on application workload. Note: this is always enabled when using the Oculus OpenXR Runtime.
 * **Symmetric Projection** - If enabled, this allows the application to render with symmetric projection matrices. This can improve GPU performance when using multiview due to more common workloads between the left and right eye. Supported when using Vulkan and Multiview.
 * **Subsampled Layout** - If enabled, the eye textures will use a subsampled layout. When using FFR, the subsampled layout will improve app GPU performance and reduce FFR-related visual artifacts. However, this feature will slightly increase the GPU cost of Timewarp. Therefore, we only recommend enabling it if the app is using FFR level 2 or higher, in which case, the app GPU performance improvement should outweigh the extra Timewarp cost. Vulkan only.
 * **Foveated Rendering Method** - Choose which foveated rendering method is used when foveation is enabled.
@@ -59,6 +59,6 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 
 ### Fixed-Foveated Rendering (FFR)
 
-Quest 2, and Quest Pro support [fixed-foveated rendering](https://developer.oculus.com/documentation/quest/latest/concepts/mobile-ffr/) to provide better performance for [pixel-fill limited](https://en.wikipedia.org/wiki/Fillrate) applications. Controlling the level of foveation is made available through APIs in the Oculus XR Plugin.
+Support for [fixed-foveated rendering](https://developer.oculus.com/documentation/quest/latest/concepts/mobile-ffr/) to provide better performance for [pixel-fill limited](https://en.wikipedia.org/wiki/Fillrate) applications. Controlling the level of foveation is made available through APIs in the Oculus XR Plugin.
 
 FFR works best when rendering directly into the *eye textures* using the [foward rendering mode](https://docs.unity3d.com/Manual/RenderTech-ForwardRendering.html).  [*Deferred rendering* mode](https://docs.unity3d.com/Manual/RenderTech-DeferredShading.html), which is characterized by rendering into an intermediate render texture, is not recommended for use with FFR. This situation arises often when using the default *Universal Rendering Pipeline*, which includes a blit operation by default at the end of the frame. 

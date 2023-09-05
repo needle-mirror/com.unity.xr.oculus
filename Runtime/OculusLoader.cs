@@ -17,6 +17,7 @@ using Unity.XR.Oculus.Input;
 using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.MPE;
 #endif
 
 
@@ -240,6 +241,10 @@ namespace Unity.XR.Oculus
         [InitializeOnLoadMethod]
         static void EditorLoadOVRPlugin()
         {
+            // Early out for if this is invoked inside a secondary process (e.g. Standalone Profiler)
+            if ((uint)ProcessService.level == (uint)ProcessLevel.Secondary)
+                return;
+
             string ovrpPath = "";
 
             // loop over all the native plugin importers and find the OVRPlugin the editor should use

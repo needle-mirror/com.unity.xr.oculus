@@ -108,7 +108,7 @@ namespace Unity.XR.Oculus
         /// <summary>
         /// Enables a latency optimization technique which can reduce simulation latency by several ms, depending on application workload.
         /// </summary>
-        [SerializeField, Tooltip("Enables a latency optimization technique which can reduce simulation latency by several ms, depending on application workload.")]
+        [SerializeField, Tooltip("Enables a latency optimization technique which can reduce simulation latency by several ms, depending on application workload. Note: Phase Sync is always active when using the Oculus OpenXR runtime.")]
         public bool PhaseSync = false;
 
         /// <summary>
@@ -164,6 +164,12 @@ namespace Unity.XR.Oculus
         /// </summary>
         [SerializeField, Tooltip("Adds a Quest Pro entry to the supported devices list in the Android manifest.")]
         public bool TargetQuestPro = false;
+
+        /// <summary>
+        /// Adds a Quest 3 entry to the supported devices list in the Android manifest.
+        /// </summary>
+        [SerializeField, Tooltip("Adds a Quest 3 entry to the supported devices list in the Android manifest.")]
+        public bool TargetQuest3 = false;
 
         /// <summary>
         /// Adds a PNG under the Assets folder as the system splash screen image. If set, the OS will display the system splash screen as a high quality compositor layer as soon as the app is starting to launch until the app submits the first frame.

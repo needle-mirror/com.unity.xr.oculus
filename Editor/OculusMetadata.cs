@@ -60,6 +60,7 @@ namespace Unity.XR.Oculus.Editor
                 settings.SpaceWarp = false;
                 settings.TargetQuest2 = true;
                 settings.TargetQuestPro = false;
+                settings.TargetQuest3 = false;
                 settings.DepthSubmission = false;
 
                 return true;

@@ -176,11 +176,17 @@ namespace UnityEditor.XR.Oculus
     {
         public int callbackOrder { get; }
 
-        internal static string s_AndroidManifestPath = "";
-
         private static readonly Dictionary<string, string> AndroidBootConfigVars = new Dictionary<string, string>()
         {
-            { "xr-meta-enabled", "1" }
+            { "xr-usable-core-mask-enabled", "1" },
+            { "xr-vulkan-extension-fragment-density-map-enabled", "1" },
+            { "xr-low-latency-audio-enabled", "1"},
+            { "xr-require-backbuffer-textures", "0" },
+            { "xr-keyboard-overlay-enabled", "1" },
+            { "xr-pipeline-cache-enabled", "1" },
+            { "xr-skip-B10G11R11-special-casing", "1" },
+            { "xr-hide-memoryless-render-texture", "1" },
+            { "xr-skip-audio-buffer-size-check", "1" }
         };
 
         public void OnPreprocessBuild(BuildReport report)
@@ -189,7 +195,7 @@ namespace UnityEditor.XR.Oculus
                 return;
 
             var settings = OculusBuildTools.GetSettings();
-            
+
             if (report.summary.platformGroup == BuildTargetGroup.Android)
             {
                 GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0];
@@ -199,7 +205,7 @@ namespace UnityEditor.XR.Oculus
                 {
                     throw new BuildFailedException("OpenGLES3 and Vulkan are currently the only graphics APIs compatible with the Oculus XR Plugin on mobile platforms.");
                 }
-                
+
                 if (PlayerSettings.colorSpace != ColorSpace.Linear && (firstGfxType == GraphicsDeviceType.OpenGLES3))
                 {
                     throw new BuildFailedException("Only Linear Color Space is supported when using OpenGLES. Please set Color Space to Linear in Player Settings, or switch to Vulkan.");
@@ -209,7 +215,7 @@ namespace UnityEditor.XR.Oculus
                 {
                     throw new BuildFailedException("OpenGLES2, OpenGLES3, and Vulkan are currently the only graphics APIs compatible with the Oculus XR Plugin on mobile platforms.");
                 }
-                
+
                 if (PlayerSettings.colorSpace != ColorSpace.Linear && (firstGfxType == GraphicsDeviceType.OpenGLES3 || firstGfxType == GraphicsDeviceType.OpenGLES2))
                 {
                     throw new BuildFailedException("Only Linear Color Space is supported when using OpenGLES. Please set Color Space to Linear in Player Settings, or switch to Vulkan.");
@@ -262,7 +268,7 @@ namespace UnityEditor.XR.Oculus
         {
             if(!OculusBuildTools.OculusLoaderPresentInSettingsForBuildTarget(report.summary.platformGroup))
                 return;
-            
+
             if (report.summary.platformGroup == BuildTargetGroup.Android)
             {
                 // clean up Android Meta boot settings after build
@@ -276,36 +282,20 @@ namespace UnityEditor.XR.Oculus
 
                 bootConfig.WriteBootConfig();
 
-                // clean up Android manifest after build
-                if (!string.IsNullOrEmpty(s_AndroidManifestPath))
-                {
-                    try
-                    {
-                        File.Delete(s_AndroidManifestPath);
-                    }
-                    catch (Exception e)
-                    {
-                        // this only fails if the file can't be deleted; it is quiet if the file does not exist
-                        Debug.LogWarning("Failed to clean up AndroidManifest.xml file located at " + s_AndroidManifestPath + " : " + e.ToString());
-                    }
-                }
-
-                s_AndroidManifestPath = "";
-
                 // verify settings
                 var settings = OculusBuildTools.GetSettings();
                 if (settings != null)
                 {
                     GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0];
                     
-                    if (settings.SymmetricProjection && (!(settings.TargetQuest2 || settings.TargetQuestPro) || settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
+                    if (settings.SymmetricProjection && (settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
                     {
-                        Debug.LogWarning("Symmetric Projection is only supported on Quest 2 and Quest Pro with Vulkan and Multiview.");
+                        Debug.LogWarning("Symmetric Projection is only supported with Vulkan and Multiview.");
                     }
                     
-                    if (settings.SubsampledLayout && (!(settings.TargetQuest2 || settings.TargetQuestPro) || firstGfxType != GraphicsDeviceType.Vulkan))
+                    if (settings.SubsampledLayout && (firstGfxType != GraphicsDeviceType.Vulkan))
                     {
-                        Debug.LogWarning("Subsampled Layout is only supported on Quest 2 and Quest Pro with Vulkan.");
+                        Debug.LogWarning("Subsampled Layout is only supported with Vulkan.");
                     }
 
                     if (settings.DepthSubmission && (settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
@@ -559,7 +549,23 @@ namespace UnityEditor.XR.Oculus
 
             nodePath = "/manifest/application";
             UpdateOrCreateAttributeInTag(manifestDoc, nodePath, "activity", "screenOrientation", "landscape");
-            UpdateOrCreateAttributeInTag(manifestDoc, nodePath, "activity", "theme", "@android:style/Theme.Black.NoTitleBar.Fullscreen");
+
+            var styleTheme = string.Empty;
+#if UNITY_2023_1_OR_NEWER
+            switch (PlayerSettings.Android.applicationEntry)
+            {
+                case AndroidApplicationEntry.GameActivity: 
+                    styleTheme = "@style/BaseUnityGameActivityTheme"; 
+                    break;
+
+                case AndroidApplicationEntry.Activity:
+                    styleTheme = "@style/UnityThemeSelector";
+                    break;
+            }
+#else
+            styleTheme = "@android:style/Theme.Black.NoTitleBar.Fullscreen";
+#endif
+            UpdateOrCreateAttributeInTag(manifestDoc, nodePath, "activity", "theme", styleTheme);
 
             var configChangesValue = "keyboard|keyboardHidden|navigation|orientation|screenLayout|screenSize|uiMode";
             configChangesValue = ((sdkVersion >= 24) ? configChangesValue + "|density" : configChangesValue);
@@ -593,6 +599,9 @@ namespace UnityEditor.XR.Oculus
 
                 if (settings.TargetQuestPro)
                     deviceList.Add("cambria");
+
+                if (settings.TargetQuest3)
+                    deviceList.Add("eureka");
 
                 if (deviceList.Count > 0)
                 {
@@ -660,9 +669,6 @@ namespace UnityEditor.XR.Oculus
             RemoveNameValueElementInTag(manifestDoc, nodePath, "uses-permission", "android:name", "android.permission.BLUETOOTH");
 
             manifestDoc.Save(manifestPath);
-
-            // let OnPostprocessBuild() know which intermediate manifest to delete
-            OculusBuildHooks.s_AndroidManifestPath = manifestPath;
         }
 
         public int callbackOrder { get { return 10000; } }
