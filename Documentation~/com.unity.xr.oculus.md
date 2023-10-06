@@ -4,7 +4,7 @@ The Oculus XR Plugin enables you to build applications for a variety of Oculus d
 
 ## Supported XR plugin subsystems
 
-### Display 
+### Display
 
 The display subsystem provides stereo rendering support for the XR Plugin. It supports the following graphics APIs:
 
@@ -14,7 +14,7 @@ The display subsystem provides stereo rendering support for the XR Plugin. It su
     * OpenGL ES 3.0
     * Vulkan
 
-### Input 
+### Input
 
 The input subsystem provides controller support, haptics, and tracking for the controllers and HMD.
 
@@ -31,7 +31,7 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 
 * **Stereo Rendering Mode** - You can select *Multi Pass* or *Single Pass Instanced* stereo rendering mode.
     * *Multi Pass* - Unity renders each eye independently by making two passes across the scene graph. Each pass has its own eye matrices and render target. Unity draws everything twice, which includes setting the graphics state for each pass. This is a slow and simple rendering method which doesn't require any special modification to shaders.
-    * *Single Pass Instanced* - Unity uses a texture array with two slices, and uses instanced draw calls (converting non-instanced draws call to instanced versions when necessary) to direct rendering to the appropriate texture slice.  Custom shaders need to be modified for rendering in this mode.  Use Unity's XR shader macros to simplify authoring custom shaders. 
+    * *Single Pass Instanced* - Unity uses a texture array with two slices, and uses instanced draw calls (converting non-instanced draws call to instanced versions when necessary) to direct rendering to the appropriate texture slice.  Custom shaders need to be modified for rendering in this mode.  Use Unity's XR shader macros to simplify authoring custom shaders.
 * **Shared Depth Buffer** - Enable or disable support for using a shared depth buffer. This allows Unity and Oculus to use a common depth buffer, which enables Oculus to composite the Oculus Dash and other utilities over the Unity application.
 * **Dash Support** - Enable or disable Dash support. This inintializes the Oculus Plugin with Dash support, which enables the Oculus Dash to composite over the Unity application.
 
@@ -56,6 +56,10 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 * **Application SpaceWarp** - Enables support for a frame synthesis technology to allow your application to render at half frame rate, while still delivering a smooth experience. Note that this currently requires a custom version of the URP provided by Oculus in order to work, and should not be enabled if you aren't using that customized Oculus URP package.
 
 ## Technical details
+
+### Environment Depth
+
+For Quest 3, Environment Depth can be enabled to the sampling of real world depth data. This can be used to have real world objects occlude virtual objects in the application. The Environment Depth rendering system can be started by calling `SetupEnvironmentDepth`. When passing in `EnvironmentDepthCreateParams` to `SetupEnvironmentDepth`, cleaner hand masking can be turned on and off. The depth texture can then be accessed by getting the depth texture ID using `GetEnvironmentDepthTextureId` and passing the ID to `GetRenderTexture` on the XRDisplaySubsystem. The rendering can then be enabled/disabled with `SetEnvironmentDepthRendering` and to completely free resources `ShutdownEnvironmentDepth` must be called. Extra data about the depth frame can be accessed through `GetEnvironmentDepthFrameDesc`.
 
 ### Fixed-Foveated Rendering (FFR)
 

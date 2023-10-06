@@ -4,6 +4,15 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.2.0-exp-env-depth.1] - 2023-10-06
+### Added
+- Environment Depth APIs to allow for real world depth to be sampled from a depth texture
+
+### Known Issues
+- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime
+- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes
+- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
+
 ## [4.1.1] - 2023-09-05
 ### Added
 - Added Quest 3 target device checkbox
@@ -19,11 +28,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Removed Android manifest cleanup that removed the manifest file, existing projects need to do a clean build to completely remove the issue
 - Fixed Android app issues that arise when setting the entry point to GameActivity
-
-### Known Issues
-- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime
-- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes
-- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
 
 ## [4.0.0] - 2023-04-24
 ### Changed
@@ -415,7 +419,7 @@ No changes since 1.7.0-preview.2
 - Re-enables GLES2
 
 ### Fixed
-- [Quest] Fixes an issue where resting then waking the device with the power button caused a black screen in the application (v12 Quest runtime and up) 
+- [Quest] Fixes an issue where resting then waking the device with the power button caused a black screen in the application (v12 Quest runtime and up)
 
 ## [1.1.4-preview] - 2019-12-03
 ### Fixed
@@ -428,7 +432,7 @@ No changes since 1.7.0-preview.2
 
 ## [1.1.3-preview] - 2019-11-27
 ### Added
-- Adds FFR hookup for Quest with Vulkan 
+- Adds FFR hookup for Quest with Vulkan
 
 ## [1.1.2] - 2019-11-25
 ### Changed
@@ -471,7 +475,7 @@ No changes since 1.7.0-preview.2
 ### Added
 - Color scale and offset api and helper class
 - More Oculus statistics (accessible via display subsystem api)
-- User presence usage when using new input system 
+- User presence usage when using new input system
 
 ### Changed
 - Disables main framebuffer flag to save memory (~36MB on Quest)

@@ -67,6 +67,31 @@ namespace Unity.XR.Oculus
             public ushort foveatedRenderingMethod;
         }
 
+		[StructLayout(LayoutKind.Sequential)]
+		internal struct EnvironmentDepthFrameDescInternal
+		{
+			public bool isValid;
+			public double createTime;
+			public double predictedDisplayTime;
+			public int swapchainIndex;
+			public Vector3 createPoseLocation;
+			public Vector4 createPoseRotation;
+			public float fovLeftAngle;
+			public float fovRightAngle;
+			public float fovTopAngle;
+			public float fovDownAngle;
+			public float nearZ;
+			public float farZ;
+			public float minDepth;
+			public float maxDepth;
+		}
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct EnvironmentDepthCreateParamsInternal
+        {
+            public bool removeHands;
+        }
+
         internal static void SetColorScale(float x, float y, float z, float w)
         {
 #if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
@@ -314,7 +339,68 @@ namespace Unity.XR.Oculus
             return Internal.GetShouldRestartSession();
 #else
             return false;
-#endif          
+#endif
+        }
+
+        internal static void SetupEnvironmentDepth(Utils.EnvironmentDepthCreateParams createParams)
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            EnvironmentDepthCreateParamsInternal param = new EnvironmentDepthCreateParamsInternal();
+            param.removeHands = createParams.removeHands;
+
+            Internal.SetupEnvironmentDepth(ref param);
+#endif
+        }
+
+        internal static void SetEnvironmentDepthRendering(bool isEnabled)
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            Internal.SetEnvironmentDepthRendering(isEnabled);
+#endif
+        }
+
+        internal static void ShutdownEnvironmentDepth()
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            Internal.ShutdownEnvironmentDepth();
+#endif
+        }
+
+        internal static bool GetEnvironmentDepthTextureId(ref uint id)
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            return Internal.GetEnvironmentDepthTextureId(ref id);
+#else
+            return false;
+#endif
+        }
+
+        internal static Utils.EnvironmentDepthFrameDesc GetEnvironmentDepthFrameDesc(int eye)
+        {
+            Utils.EnvironmentDepthFrameDesc desc = new Utils.EnvironmentDepthFrameDesc();
+            desc.isValid = false;
+
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            EnvironmentDepthFrameDescInternal frameDesc = new EnvironmentDepthFrameDescInternal();
+            if (Internal.GetEnvironmentDepthFrameDesc(ref frameDesc, eye))
+            {
+                desc.isValid = frameDesc.isValid;
+                desc.createTime = frameDesc.createTime;
+                desc.predictedDisplayTime = frameDesc.predictedDisplayTime;
+                desc.swapchainIndex = frameDesc.swapchainIndex;
+                desc.createPoseLocation = frameDesc.createPoseLocation;
+                desc.createPoseRotation = frameDesc.createPoseRotation;
+                desc.fovLeftAngle = frameDesc.fovLeftAngle;
+                desc.fovRightAngle = frameDesc.fovRightAngle;
+                desc.fovTopAngle = frameDesc.fovTopAngle;
+                desc.fovDownAngle = frameDesc.fovDownAngle;
+                desc.nearZ = frameDesc.nearZ;
+                desc.farZ = frameDesc.farZ;
+                desc.minDepth = frameDesc.minDepth;
+                desc.maxDepth = frameDesc.maxDepth;
+            }
+#endif
+            return desc;
         }
 
         private static class Internal
@@ -408,6 +494,21 @@ namespace Unity.XR.Oculus
 
             [DllImport("OculusXRPlugin")]
             internal static extern bool GetShouldRestartSession();
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern bool SetupEnvironmentDepth(ref EnvironmentDepthCreateParamsInternal createParams);
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern bool SetEnvironmentDepthRendering(bool isEnabled);
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern bool ShutdownEnvironmentDepth();
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern bool GetEnvironmentDepthTextureId(ref uint id);
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern bool GetEnvironmentDepthFrameDesc(ref EnvironmentDepthFrameDescInternal frameDesc, int eye);
         }
     }
 }
