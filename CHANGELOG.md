@@ -4,6 +4,10 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.1.2] - 2023-11-06
+### Fixed
+- Some configuration flags weren't being set in 4.1.1 for 2022.3 only, causing some runtime features to not be enabled correctly. This has been fixed and only affected that specific version combination
+
 ## [4.1.1] - 2023-09-05
 ### Added
 - Added Quest 3 target device checkbox
