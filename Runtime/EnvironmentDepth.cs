@@ -92,5 +92,20 @@ namespace Unity.XR.Oculus
         {
             return NativeMethods.GetEnvironmentDepthFrameDesc(eye);
         }
+
+        public static bool SetEnvironmentDepthHandRemoval(bool isEnabled)
+        {
+            return NativeMethods.SetEnvironmentDepthHandRemoval(isEnabled);
+        }
+
+        public static bool GetEnvironmentDepthSupported()
+        {
+            return NativeMethods.GetEnvironmentDepthSupported();
+        }
+
+        public static bool GetEnvironmentDepthHandRemovalSupported()
+        {
+            return NativeMethods.GetEnvironmentDepthHandRemovalSupported();
+        }
     }
 }

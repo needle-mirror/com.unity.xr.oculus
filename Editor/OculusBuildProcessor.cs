@@ -186,7 +186,8 @@ namespace UnityEditor.XR.Oculus
             { "xr-pipeline-cache-enabled", "1" },
             { "xr-skip-B10G11R11-special-casing", "1" },
             { "xr-hide-memoryless-render-texture", "1" },
-            { "xr-skip-audio-buffer-size-check", "1" }
+            { "xr-skip-audio-buffer-size-check", "1" },
+            { "xr-meta-enabled", "1" }
         };
 
         public void OnPreprocessBuild(BuildReport report)

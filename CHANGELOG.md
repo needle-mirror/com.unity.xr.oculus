@@ -4,14 +4,28 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [4.2.0-exp-env-depth.1] - 2023-10-06
+## [4.2.0-exp-env-depth.2] - 2023-12-14
 ### Added
-- Environment Depth APIs to allow for real world depth to be sampled from a depth texture
+- New Environment Depth APIs:
+  - `bool GetEnvironmentDepthSupported()`
+  - `bool GetEnvironmentDepthHandRemovalSupported()`
+  - `bool SetEnvironmentDepthHandRemoval(bool isEnabled)`
+
+### Changed
+- Updated Oculus plugins to v60
 
 ### Known Issues
 - `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime
 - `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes
 - For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
+
+## [4.2.0-exp-env-depth.1] - 2023-10-06
+### Added
+- Environment Depth APIs to allow for real world depth to be sampled from a depth texture
+
+## [4.1.2] - 2023-11-06
+### Fixed
+- Some configuration flags weren't being set in 4.1.1 for 2022.3 only, causing some runtime features to not be enabled correctly. This has been fixed and only affected that specific version combination
 
 ## [4.1.1] - 2023-09-05
 ### Added

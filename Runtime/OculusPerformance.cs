@@ -592,7 +592,7 @@ namespace Unity.XR.Oculus
 
             foreach (XRDisplaySubsystem xrDisplaySubsystem in displays)
             {
-                if (xrDisplaySubsystem.SubsystemDescriptor.id == "oculus display" && xrDisplaySubsystem.running)
+                if (xrDisplaySubsystem.subsystemDescriptor.id == "oculus display" && xrDisplaySubsystem.running)
                 {
                     m_Display = xrDisplaySubsystem;
                     return m_Display;

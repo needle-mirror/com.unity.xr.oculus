@@ -403,6 +403,33 @@ namespace Unity.XR.Oculus
             return desc;
         }
 
+        internal static bool SetEnvironmentDepthHandRemoval(bool isEnabled)
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            return Internal.SetEnvironmentDepthHandRemoval(isEnabled);
+#else
+            return false;
+#endif
+        }
+
+        internal static bool GetEnvironmentDepthSupported()
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            return Internal.GetEnvironmentDepthSupported();
+#else
+            return false;
+#endif
+        }
+
+        internal static bool GetEnvironmentDepthHandRemovalSupported()
+        {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            return Internal.GetEnvironmentDepthHandRemovalSupported();
+#else
+            return false;
+#endif
+        }
+
         private static class Internal
         {
             [DllImport("OculusXRPlugin")]
@@ -509,6 +536,15 @@ namespace Unity.XR.Oculus
 
             [DllImport("OculusXRPlugin")]
             internal static extern bool GetEnvironmentDepthFrameDesc(ref EnvironmentDepthFrameDescInternal frameDesc, int eye);
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern bool SetEnvironmentDepthHandRemoval(bool isEnabled);
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern bool GetEnvironmentDepthSupported();
+
+            [DllImport("OculusXRPlugin")]
+            internal static extern bool GetEnvironmentDepthHandRemovalSupported();
         }
     }
 }
