@@ -10,12 +10,19 @@ namespace Unity.XR.Oculus
     {
         internal static void Initialize()
         {
-            Application.onBeforeRender += Update;
+            if(RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                Application.onBeforeRender += Update;
+            }
+            
         }
 
         internal static void Deinitialize()
         {
-            Application.onBeforeRender -= Update;
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                Application.onBeforeRender -= Update;
+            }
         }
         
         private static void Update()

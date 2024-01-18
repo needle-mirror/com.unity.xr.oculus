@@ -15,7 +15,6 @@ namespace Unity.XR.Oculus.Editor
         private const string kStereoRenderingModeAndroid = "m_StereoRenderingModeAndroid";
         private const string kLowOverheadMode = "LowOverheadMode";
         private const string kOptimizeBufferDiscards = "OptimizeBufferDiscards";
-        private const string kPhaseSync = "PhaseSync";
         private const string kSymmetricProjection = "SymmetricProjection";
         private const string kSubsampledLayout = "SubsampledLayout";
         private const string kFoveatedRenderingMethod = "FoveatedRenderingMethod";
@@ -34,7 +33,6 @@ namespace Unity.XR.Oculus.Editor
         static GUIContent s_StereoRenderingModeLabel = EditorGUIUtility.TrTextContent("Stereo Rendering Mode");
         static GUIContent s_LowOverheadModeLabel = EditorGUIUtility.TrTextContent("Low Overhead Mode (GLES)");
         static GUIContent s_OptimizeBufferDiscardsLabel = EditorGUIUtility.TrTextContent("Optimize Buffer Discards (Vulkan)");
-        static GUIContent s_PhaseSyncLabel = EditorGUIUtility.TrTextContent("Phase Sync (Deprecated)");
         static GUIContent s_SymmetricProjectionLabel = EditorGUIUtility.TrTextContent("Symmetric Projection (Vulkan)", "Supported when using Vulkan and Multiview.");
         static GUIContent s_SubsampledLayoutLabel = EditorGUIUtility.TrTextContent("Subsampled Layout (Vulkan)");
         static GUIContent s_FoveatedRenderingMethodLabel = EditorGUIUtility.TrTextContent("Foveated Rendering Method", "Choose which foveated rendering method is used when foveation is enabled. Eye Tracked Foveated Rendering is only supported on Quest Pro with proper permissions and when using Vulkan, Multiview, and ARM64.");
@@ -56,7 +54,6 @@ namespace Unity.XR.Oculus.Editor
         private SerializedProperty m_StereoRenderingModeAndroid;
         private SerializedProperty m_LowOverheadMode;
         private SerializedProperty m_OptimizeBufferDiscards;
-        private SerializedProperty m_PhaseSync;
         private SerializedProperty m_SymmetricProjection;
         private SerializedProperty m_SubsampledLayout;
         private SerializedProperty m_FoveatedRenderingMethod;
@@ -83,7 +80,6 @@ namespace Unity.XR.Oculus.Editor
             if (m_StereoRenderingModeAndroid == null) m_StereoRenderingModeAndroid = serializedObject.FindProperty(kStereoRenderingModeAndroid);
             if (m_LowOverheadMode == null) m_LowOverheadMode = serializedObject.FindProperty(kLowOverheadMode);
             if (m_OptimizeBufferDiscards == null) m_OptimizeBufferDiscards = serializedObject.FindProperty(kOptimizeBufferDiscards);
-            if (m_PhaseSync == null) m_PhaseSync = serializedObject.FindProperty(kPhaseSync);
             if (m_SymmetricProjection == null) m_SymmetricProjection = serializedObject.FindProperty(kSymmetricProjection);
             if (m_SubsampledLayout == null) m_SubsampledLayout = serializedObject.FindProperty(kSubsampledLayout);
             if (m_FoveatedRenderingMethod == null) m_FoveatedRenderingMethod = serializedObject.FindProperty(kFoveatedRenderingMethod);
@@ -122,7 +118,6 @@ namespace Unity.XR.Oculus.Editor
                 EditorGUILayout.PropertyField(m_StereoRenderingModeAndroid, s_StereoRenderingModeLabel);
                 EditorGUILayout.PropertyField(m_LowOverheadMode, s_LowOverheadModeLabel);
                 EditorGUILayout.PropertyField(m_OptimizeBufferDiscards, s_OptimizeBufferDiscardsLabel);
-                EditorGUILayout.PropertyField(m_PhaseSync, s_PhaseSyncLabel);
                 EditorGUILayout.PropertyField(m_SymmetricProjection, s_SymmetricProjectionLabel);
                 EditorGUILayout.PropertyField(m_SubsampledLayout, s_SubsampledLayoutLabel);
                 EditorGUILayout.PropertyField(m_FoveatedRenderingMethod, s_FoveatedRenderingMethodLabel);

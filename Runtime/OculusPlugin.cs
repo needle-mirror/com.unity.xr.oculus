@@ -12,7 +12,6 @@ using UnityEngine;
 
 namespace Unity.XR.Oculus
 {
-
     public enum SystemHeadset
     {
         None = 0,
@@ -44,6 +43,34 @@ namespace Unity.XR.Oculus
         PC_Placeholder_4106,
         PC_Placeholder_4107
     }
+    
+    // some platform support can only be determined at runtime such as Windows Arm64
+    internal static class RuntimePlatformChecks
+    {
+        private static readonly bool isRuntimeUnsupportedPlatform;
+        
+        static RuntimePlatformChecks()
+        {
+            // catch situations not handled by OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            isRuntimeUnsupportedPlatform = false;
+
+#if (UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN)
+            if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
+            {
+                isRuntimeUnsupportedPlatform = true;
+            }
+#endif
+        }
+
+        internal static bool IsSupportedPlatform()
+        {
+#if OCULUSPLUGIN_UNSUPPORTED_PLATFORM
+            return false;
+#else
+            return !isRuntimeUnsupportedPlatform;
+#endif
+        }
+    }
 
     public static partial class NativeMethods
     {
@@ -56,7 +83,6 @@ namespace Unity.XR.Oculus
             public ushort colorSpace;
             public ushort lowOverheadMode;
             public ushort optimizeBufferDiscards;
-            public ushort phaseSync;
             public ushort symmetricProjection;
             public ushort subsampledLayout;
             public ushort lateLatching;
@@ -67,24 +93,24 @@ namespace Unity.XR.Oculus
             public ushort foveatedRenderingMethod;
         }
 
-		[StructLayout(LayoutKind.Sequential)]
-		internal struct EnvironmentDepthFrameDescInternal
-		{
-			public bool isValid;
-			public double createTime;
-			public double predictedDisplayTime;
-			public int swapchainIndex;
-			public Vector3 createPoseLocation;
-			public Vector4 createPoseRotation;
-			public float fovLeftAngle;
-			public float fovRightAngle;
-			public float fovTopAngle;
-			public float fovDownAngle;
-			public float nearZ;
-			public float farZ;
-			public float minDepth;
-			public float maxDepth;
-		}
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct EnvironmentDepthFrameDescInternal
+        {
+            public bool isValid;
+            public double createTime;
+            public double predictedDisplayTime;
+            public int swapchainIndex;
+            public Vector3 createPoseLocation;
+            public Vector4 createPoseRotation;
+            public float fovLeftAngle;
+            public float fovRightAngle;
+            public float fovTopAngle;
+            public float fovDownAngle;
+            public float nearZ;
+            public float farZ;
+            public float minDepth;
+            public float maxDepth;
+        }
 
         [StructLayout(LayoutKind.Sequential)]
         internal struct EnvironmentDepthCreateParamsInternal
@@ -94,16 +120,18 @@ namespace Unity.XR.Oculus
 
         internal static void SetColorScale(float x, float y, float z, float w)
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            Internal.SetColorScale(x, y, z, w);
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                Internal.SetColorScale(x, y, z, w);
+            }
         }
 
         internal static void SetColorOffset(float x, float y, float z, float w)
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            Internal.SetColorOffset(x, y, z, w);
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                Internal.SetColorOffset(x, y, z, w);
+            }
         }
 
         internal static bool GetIsSupportedDevice()
@@ -117,262 +145,331 @@ namespace Unity.XR.Oculus
 
         internal static bool LoadOVRPlugin(string ovrpPath)
         {
-#if OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return false;
-#else
-            return Internal.LoadOVRPlugin(ovrpPath);
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.LoadOVRPlugin(ovrpPath);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         internal static void UnloadOVRPlugin()
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            Internal.UnloadOVRPlugin();
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                Internal.UnloadOVRPlugin();
+            }
         }
 
         internal static void SetUserDefinedSettings(UserDefinedSettings settings)
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            Internal.SetUserDefinedSettings(settings);
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                Internal.SetUserDefinedSettings(settings);
+            }
         }
 
         internal static int SetCPULevel(int cpuLevel)
         {
-#if OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return -1;
-#else
-            return Internal.SetCPULevel(cpuLevel);
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                 return Internal.SetCPULevel(cpuLevel);
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         internal static int SetGPULevel(int gpuLevel)
         {
-#if OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return -1;
-#else
-            return Internal.SetGPULevel(gpuLevel);
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.SetGPULevel(gpuLevel);
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         internal static void GetOVRPVersion(byte[] version)
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            Internal.GetOVRPVersion(version);
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                Internal.GetOVRPVersion(version);
+            }
         }
 
         internal static void EnablePerfMetrics(bool enable)
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            Internal.EnablePerfMetrics(enable);
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                Internal.EnablePerfMetrics(enable);
+            }
         }
 
         internal static void EnableAppMetrics(bool enable)
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            Internal.EnableAppMetrics(enable);
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                Internal.EnableAppMetrics(enable);
+            }
         }
 
         internal static bool SetDeveloperModeStrict(bool active)
         {
-#if OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return false;
-#else
-            return Internal.SetDeveloperModeStrict(active);
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.SetDeveloperModeStrict(active);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         internal static bool GetHasInputFocus()
         {
-#if OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return false;
-#else
-            return Internal.GetAppHasInputFocus();
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.GetAppHasInputFocus();
+            }
+            else
+            {
+                return false;
+            }
         }
 
         internal static bool GetBoundaryConfigured()
         {
-#if OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return false;
-#else
-            return Internal.GetBoundaryConfigured();
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.GetBoundaryConfigured();
+            }
+            else
+            {
+                return false;
+            }
         }
 
         internal static bool GetBoundaryDimensions(Boundary.BoundaryType boundaryType, out Vector3 dimensions)
         {
-#if OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            dimensions = Vector3.zero;
-            return false;
-#else
-            return Internal.GetBoundaryDimensions(boundaryType, out dimensions);
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.GetBoundaryDimensions(boundaryType, out dimensions);
+            }
+            else
+            {
+                dimensions = Vector3.zero;
+                return false;
+            }
         }
 
         internal static bool GetBoundaryVisible()
         {
-#if OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return false;
-#else
-            return Internal.GetBoundaryVisible();
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.GetBoundaryVisible();
+            }
+            else
+            {
+                return false;
+            }
         }
 
         internal static void SetBoundaryVisible(bool boundaryVisible)
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            Internal.SetBoundaryVisible(boundaryVisible);
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                Internal.SetBoundaryVisible(boundaryVisible);
+            }
         }
 
         internal static bool GetAppShouldQuit()
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return Internal.GetAppShouldQuit();
-#else
-            return false;
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.GetAppShouldQuit();
+            }
+            else
+            {
+                return false;
+            }
         }
 
         internal static bool GetDisplayAvailableFrequencies(IntPtr ptr, ref int numFrequencies)
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return Internal.GetDisplayAvailableFrequencies(ptr, ref numFrequencies);
-#else
-            return false;
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.GetDisplayAvailableFrequencies(ptr, ref numFrequencies);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         internal static bool SetDisplayFrequency(float refreshRate)
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return Internal.SetDisplayFrequency(refreshRate);
-#else
-            return false;
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.SetDisplayFrequency(refreshRate);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         internal static bool GetDisplayFrequency(out float refreshRate)
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return Internal.GetDisplayFrequency(out refreshRate);
-#else
-            refreshRate = 0.0f;
-            return false;
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.GetDisplayFrequency(out refreshRate);
+            }
+            else
+            {
+                refreshRate = 0.0f;
+                return false;
+            }
         }
 
         internal static SystemHeadset GetSystemHeadsetType()
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return Internal.GetSystemHeadsetType();
-#else
-            return SystemHeadset.None;
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.GetSystemHeadsetType();
+            }
+            else
+            {
+                return SystemHeadset.None;
+            }
         }
 
         internal static bool GetTiledMultiResSupported()
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return Internal.GetTiledMultiResSupported();
-#else
-            return false;
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.GetTiledMultiResSupported();
+            }
+            else
+            {
+                return false;
+            }
         }
 
         internal static void SetTiledMultiResLevel(int level)
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            Internal.SetTiledMultiResLevel(level);
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                Internal.SetTiledMultiResLevel(level);
+            }
         }
 
         internal static int GetTiledMultiResLevel()
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return Internal.GetTiledMultiResLevel();
-#else
-            return -1;
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.GetTiledMultiResLevel();
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         internal static void SetTiledMultiResDynamic(bool isDynamic)
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            Internal.SetTiledMultiResDynamic(isDynamic);
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                Internal.SetTiledMultiResDynamic(isDynamic);
+            }
         }
 
         internal static bool GetEyeTrackedFoveatedRenderingSupported()
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return Internal.GetEyeTrackedFoveatedRenderingSupported();
-#else
-            return false;
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.GetEyeTrackedFoveatedRenderingSupported();
+            }
+            else
+            {
+                return false;
+            }
         }
 
         internal static bool GetEyeTrackedFoveatedRenderingEnabled()
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return Internal.GetEyeTrackedFoveatedRenderingEnabled();
-#else
-            return false;
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.GetEyeTrackedFoveatedRenderingEnabled();
+            }
+            else
+            {
+                return false;
+            }
         }
 
         internal static void SetEyeTrackedFoveatedRenderingEnabled(bool isEnabled)
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            Internal.SetEyeTrackedFoveatedRenderingEnabled(isEnabled);
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                Internal.SetEyeTrackedFoveatedRenderingEnabled(isEnabled);
+            }
         }
 
         internal static bool GetShouldRestartSession()
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return Internal.GetShouldRestartSession();
-#else
-            return false;
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.GetShouldRestartSession();
+            } 
+            else
+            {
+                return false;
+            }
         }
 
         internal static void SetupEnvironmentDepth(Utils.EnvironmentDepthCreateParams createParams)
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            EnvironmentDepthCreateParamsInternal param = new EnvironmentDepthCreateParamsInternal();
-            param.removeHands = createParams.removeHands;
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                EnvironmentDepthCreateParamsInternal param = new EnvironmentDepthCreateParamsInternal();
+                param.removeHands = createParams.removeHands;
 
-            Internal.SetupEnvironmentDepth(ref param);
-#endif
+                Internal.SetupEnvironmentDepth(ref param);
+            }
         }
 
         internal static void SetEnvironmentDepthRendering(bool isEnabled)
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            Internal.SetEnvironmentDepthRendering(isEnabled);
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                Internal.SetEnvironmentDepthRendering(isEnabled);
+            }
         }
 
         internal static void ShutdownEnvironmentDepth()
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            Internal.ShutdownEnvironmentDepth();
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                Internal.ShutdownEnvironmentDepth();
+            }
         }
 
         internal static bool GetEnvironmentDepthTextureId(ref uint id)
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return Internal.GetEnvironmentDepthTextureId(ref id);
-#else
-            return false;
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.GetEnvironmentDepthTextureId(ref id);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         internal static Utils.EnvironmentDepthFrameDesc GetEnvironmentDepthFrameDesc(int eye)
@@ -380,54 +477,65 @@ namespace Unity.XR.Oculus
             Utils.EnvironmentDepthFrameDesc desc = new Utils.EnvironmentDepthFrameDesc();
             desc.isValid = false;
 
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            EnvironmentDepthFrameDescInternal frameDesc = new EnvironmentDepthFrameDescInternal();
-            if (Internal.GetEnvironmentDepthFrameDesc(ref frameDesc, eye))
+            if (RuntimePlatformChecks.IsSupportedPlatform())
             {
-                desc.isValid = frameDesc.isValid;
-                desc.createTime = frameDesc.createTime;
-                desc.predictedDisplayTime = frameDesc.predictedDisplayTime;
-                desc.swapchainIndex = frameDesc.swapchainIndex;
-                desc.createPoseLocation = frameDesc.createPoseLocation;
-                desc.createPoseRotation = frameDesc.createPoseRotation;
-                desc.fovLeftAngle = frameDesc.fovLeftAngle;
-                desc.fovRightAngle = frameDesc.fovRightAngle;
-                desc.fovTopAngle = frameDesc.fovTopAngle;
-                desc.fovDownAngle = frameDesc.fovDownAngle;
-                desc.nearZ = frameDesc.nearZ;
-                desc.farZ = frameDesc.farZ;
-                desc.minDepth = frameDesc.minDepth;
-                desc.maxDepth = frameDesc.maxDepth;
+                EnvironmentDepthFrameDescInternal frameDesc = new EnvironmentDepthFrameDescInternal();
+                if (Internal.GetEnvironmentDepthFrameDesc(ref frameDesc, eye))
+                {
+                    desc.isValid = frameDesc.isValid;
+                    desc.createTime = frameDesc.createTime;
+                    desc.predictedDisplayTime = frameDesc.predictedDisplayTime;
+                    desc.swapchainIndex = frameDesc.swapchainIndex;
+                    desc.createPoseLocation = frameDesc.createPoseLocation;
+                    desc.createPoseRotation = frameDesc.createPoseRotation;
+                    desc.fovLeftAngle = frameDesc.fovLeftAngle;
+                    desc.fovRightAngle = frameDesc.fovRightAngle;
+                    desc.fovTopAngle = frameDesc.fovTopAngle;
+                    desc.fovDownAngle = frameDesc.fovDownAngle;
+                    desc.nearZ = frameDesc.nearZ;
+                    desc.farZ = frameDesc.farZ;
+                    desc.minDepth = frameDesc.minDepth;
+                    desc.maxDepth = frameDesc.maxDepth;
+                }
             }
-#endif
+
             return desc;
         }
 
         internal static bool SetEnvironmentDepthHandRemoval(bool isEnabled)
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return Internal.SetEnvironmentDepthHandRemoval(isEnabled);
-#else
-            return false;
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.SetEnvironmentDepthHandRemoval(isEnabled);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         internal static bool GetEnvironmentDepthSupported()
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return Internal.GetEnvironmentDepthSupported();
-#else
-            return false;
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.GetEnvironmentDepthSupported();
+            }
+            else
+            {
+                return false;
+            }
         }
 
         internal static bool GetEnvironmentDepthHandRemovalSupported()
         {
-#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
-            return Internal.GetEnvironmentDepthHandRemovalSupported();
-#else
-            return false;
-#endif
+            if (RuntimePlatformChecks.IsSupportedPlatform())
+            {
+                return Internal.GetEnvironmentDepthHandRemovalSupported();
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private static class Internal
@@ -439,9 +547,11 @@ namespace Unity.XR.Oculus
             internal static extern void SetColorOffset(float x, float y, float z, float w);
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool GetIsSupportedDevice();
 
             [DllImport("OculusXRPlugin", CharSet = CharSet.Unicode)]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool LoadOVRPlugin(string ovrpPath);
 
             [DllImport("OculusXRPlugin")]
@@ -460,45 +570,55 @@ namespace Unity.XR.Oculus
             internal static extern void GetOVRPVersion(byte[] version);
 
             [DllImport("OculusXRPlugin")]
-            internal static extern void EnablePerfMetrics(bool enable);
+            internal static extern void EnablePerfMetrics([MarshalAs(UnmanagedType.I1)] bool enable);
 
             [DllImport("OculusXRPlugin")]
-            internal static extern void EnableAppMetrics(bool enable);
+            internal static extern void EnableAppMetrics([MarshalAs(UnmanagedType.I1)] bool enable);
 
             [DllImport("OculusXRPlugin")]
-            internal static extern bool SetDeveloperModeStrict(bool active);
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static extern bool SetDeveloperModeStrict([MarshalAs(UnmanagedType.I1)] bool active);
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool GetAppHasInputFocus();
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool GetBoundaryConfigured();
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool GetBoundaryDimensions(Boundary.BoundaryType boundaryType, out Vector3 dimensions);
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool GetBoundaryVisible();
 
             [DllImport("OculusXRPlugin")]
-            internal static extern void SetBoundaryVisible(bool boundaryVisible);
+            internal static extern void SetBoundaryVisible([MarshalAs(UnmanagedType.I1)] bool boundaryVisible);
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool GetAppShouldQuit();
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool GetDisplayAvailableFrequencies(IntPtr ptr, ref int numFrequencies);
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool SetDisplayFrequency(float refreshRate);
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool GetDisplayFrequency(out float refreshRate);
 
             [DllImport("OculusXRPlugin")]
             internal static extern SystemHeadset GetSystemHeadsetType();
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool GetTiledMultiResSupported();
 
             [DllImport("OculusXRPlugin")]
@@ -508,42 +628,53 @@ namespace Unity.XR.Oculus
             internal static extern int GetTiledMultiResLevel();
 
             [DllImport("OculusXRPlugin")]
-            internal static extern void SetTiledMultiResDynamic(bool isDynamic);
+            internal static extern void SetTiledMultiResDynamic([MarshalAs(UnmanagedType.I1)] bool isDynamic);
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool GetEyeTrackedFoveatedRenderingSupported();
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool GetEyeTrackedFoveatedRenderingEnabled();
 
             [DllImport("OculusXRPlugin")]
-            internal static extern void SetEyeTrackedFoveatedRenderingEnabled(bool isEnabled);
+            internal static extern void SetEyeTrackedFoveatedRenderingEnabled([MarshalAs(UnmanagedType.I1)] bool isEnabled);
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool GetShouldRestartSession();
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool SetupEnvironmentDepth(ref EnvironmentDepthCreateParamsInternal createParams);
 
             [DllImport("OculusXRPlugin")]
-            internal static extern bool SetEnvironmentDepthRendering(bool isEnabled);
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static extern bool SetEnvironmentDepthRendering([MarshalAs(UnmanagedType.I1)] bool isEnabled);
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool ShutdownEnvironmentDepth();
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool GetEnvironmentDepthTextureId(ref uint id);
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool GetEnvironmentDepthFrameDesc(ref EnvironmentDepthFrameDescInternal frameDesc, int eye);
 
             [DllImport("OculusXRPlugin")]
-            internal static extern bool SetEnvironmentDepthHandRemoval(bool isEnabled);
+            [return: MarshalAs(UnmanagedType.U1)]
+            internal static extern bool SetEnvironmentDepthHandRemoval([MarshalAs(UnmanagedType.I1)] bool isEnabled);
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool GetEnvironmentDepthSupported();
 
             [DllImport("OculusXRPlugin")]
+            [return: MarshalAs(UnmanagedType.U1)]
             internal static extern bool GetEnvironmentDepthHandRemovalSupported();
         }
     }

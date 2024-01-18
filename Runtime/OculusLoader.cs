@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Android;
 using UnityEngine.Rendering;
 using UnityEngine.XR.Management;
 using UnityEngine.XR;
+
 #if UNITY_INPUT_SYSTEM && ENABLE_VR
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -80,9 +82,15 @@ namespace Unity.XR.Oculus
 #if !ENABLE_VR
             return DeviceSupportedResult.NotSupported;
 #elif UNITY_EDITOR_WIN
-            return DeviceSupportedResult.Supported;
+            if(RuntimePlatformChecks.IsSupportedPlatform())
+                return DeviceSupportedResult.Supported;
+            else
+                return DeviceSupportedResult.NotSupported;
 #elif (UNITY_STANDALONE_WIN && !UNITY_EDITOR)
-            return DeviceSupportedResult.Supported;
+            if(RuntimePlatformChecks.IsSupportedPlatform())
+                return DeviceSupportedResult.Supported;
+            else
+                return DeviceSupportedResult.NotSupported;
 #elif (UNITY_ANDROID && !UNITY_EDITOR)
             try
             {
@@ -154,7 +162,6 @@ namespace Unity.XR.Oculus
                 userDefinedSettings.colorSpace = (ushort)((QualitySettings.activeColorSpace == ColorSpace.Linear) ? 1 : 0);
                 userDefinedSettings.lowOverheadMode = (ushort)(settings.LowOverheadMode ? 1 : 0);
                 userDefinedSettings.optimizeBufferDiscards = (ushort)(settings.OptimizeBufferDiscards ? 1 : 0);
-                userDefinedSettings.phaseSync = (ushort)(settings.PhaseSync ? 1 : 0);
                 userDefinedSettings.symmetricProjection = (ushort)(settings.SymmetricProjection ? 1 : 0);
                 userDefinedSettings.subsampledLayout = (ushort)(settings.SubsampledLayout ? 1 : 0);
                 userDefinedSettings.foveatedRenderingMethod = (ushort)settings.FoveatedRenderingMethod;
@@ -241,8 +248,12 @@ namespace Unity.XR.Oculus
         [InitializeOnLoadMethod]
         static void EditorLoadOVRPlugin()
         {
-            // Early out for if this is invoked inside a secondary process (e.g. Standalone Profiler)
+            // early out for if this is invoked inside a secondary process (e.g. Standalone Profiler)
             if ((uint)ProcessService.level == (uint)ProcessLevel.Secondary)
+                return;
+
+            // early out for unsupported platforms like Windows Arm64
+            if(!RuntimePlatformChecks.IsSupportedPlatform())
                 return;
 
             string ovrpPath = "";
@@ -303,6 +314,11 @@ namespace Unity.XR.Oculus
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
         static void RuntimeLoadOVRPlugin()
         {
+            var supported = IsDeviceSupported();
+
+            if (supported != DeviceSupportedResult.Supported)
+                return;
+            
             try
             {
                 if (!NativeMethods.LoadOVRPlugin(""))

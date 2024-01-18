@@ -4,7 +4,7 @@ The Oculus XR Plugin enables you to build applications for a variety of Oculus d
 
 ## Supported XR plugin subsystems
 
-### Display
+### Display 
 
 The display subsystem provides stereo rendering support for the XR Plugin. It supports the following graphics APIs:
 
@@ -14,7 +14,7 @@ The display subsystem provides stereo rendering support for the XR Plugin. It su
     * OpenGL ES 3.0
     * Vulkan
 
-### Input
+### Input 
 
 The input subsystem provides controller support, haptics, and tracking for the controllers and HMD.
 
@@ -31,7 +31,7 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 
 * **Stereo Rendering Mode** - You can select *Multi Pass* or *Single Pass Instanced* stereo rendering mode.
     * *Multi Pass* - Unity renders each eye independently by making two passes across the scene graph. Each pass has its own eye matrices and render target. Unity draws everything twice, which includes setting the graphics state for each pass. This is a slow and simple rendering method which doesn't require any special modification to shaders.
-    * *Single Pass Instanced* - Unity uses a texture array with two slices, and uses instanced draw calls (converting non-instanced draws call to instanced versions when necessary) to direct rendering to the appropriate texture slice.  Custom shaders need to be modified for rendering in this mode.  Use Unity's XR shader macros to simplify authoring custom shaders.
+    * *Single Pass Instanced* - Unity uses a texture array with two slices, and uses instanced draw calls (converting non-instanced draws call to instanced versions when necessary) to direct rendering to the appropriate texture slice.  Custom shaders need to be modified for rendering in this mode.  Use Unity's XR shader macros to simplify authoring custom shaders. 
 * **Shared Depth Buffer** - Enable or disable support for using a shared depth buffer. This allows Unity and Oculus to use a common depth buffer, which enables Oculus to composite the Oculus Dash and other utilities over the Unity application.
 * **Dash Support** - Enable or disable Dash support. This inintializes the Oculus Plugin with Dash support, which enables the Oculus Dash to composite over the Unity application.
 
@@ -42,7 +42,6 @@ The Oculus XR Plugin integration with XR Management provides the following funct
     * *Multiview* - Multiview is essentially the same as the *Single Pass Instanced* option described above, except the graphics driver does the draw call conversion, requiring less work from the Unity engine. As with *Single Pass Instanced*, shaders need to be authored to enable Multiview.  Using Unity's XR shader macros will simplify custom shader development.
 * **Low Overhead Mode** - If enabled, the GLES graphics driver will bypass validation code, potentially running faster. Disable this if you experience graphics instabilities. GLES only.
 * **Optimize Buffer Discards** - If enabled, the depth buffer contents will be discarded rather than resolved and the MSAA color buffer will be resolved rather than stored after rendering. This is a performance optimization that can possibly break rendering effects that sample from the depth buffer, such as camera stacking. Vulkan only.
-* **Phase Sync** - This enables a latency optimization technique which can reduce simulation latency by several ms, depending on application workload. Note: this is always enabled when using the Oculus OpenXR Runtime.
 * **Symmetric Projection** - If enabled, this allows the application to render with symmetric projection matrices. This can improve GPU performance when using multiview due to more common workloads between the left and right eye. Supported when using Vulkan and Multiview.
 * **Subsampled Layout** - If enabled, the eye textures will use a subsampled layout. When using FFR, the subsampled layout will improve app GPU performance and reduce FFR-related visual artifacts. However, this feature will slightly increase the GPU cost of Timewarp. Therefore, we only recommend enabling it if the app is using FFR level 2 or higher, in which case, the app GPU performance improvement should outweigh the extra Timewarp cost. Vulkan only.
 * **Foveated Rendering Method** - Choose which foveated rendering method is used when foveation is enabled.
@@ -59,7 +58,7 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 
 ### Environment Depth
 
-For Quest 3, Environment Depth can be enabled to the sampling of real world depth data. This can be used to have real world objects occlude virtual objects in the application. `GetEnvironmentDepthSupported` can be used to check if the device supports Environment Depth. The Environment Depth rendering system can be started by calling `SetupEnvironmentDepth`. To check if the device or platform supports cleaner hand masking, use `GetEnvironmentDepthHandRemovalSupported`. Hand masking can be turned on by setting `removeHands` in `EnvironmentDepthCreateParams` to true and passing it into `SetupEnvironmentDepth`. Hand masking can also be toggled on and off using `SetEnvironmentDepthHandRemoval`. The depth texture can then be accessed by getting the depth texture ID using `GetEnvironmentDepthTextureId` and passing the ID to `GetRenderTexture` on the XRDisplaySubsystem. The rendering can then be enabled/disabled with `SetEnvironmentDepthRendering` and to completely free resources `ShutdownEnvironmentDepth` must be called. Extra data about the depth frame can be accessed through `GetEnvironmentDepthFrameDesc`.
+For Quest 3, Environment Depth can be enabled to allow the sampling of real world depth data. This can be used to have real world objects occlude virtual objects in the application. `GetEnvironmentDepthSupported` can be used to check if the device supports Environment Depth. The Environment Depth rendering system can be started by calling `SetupEnvironmentDepth`. To check if the device or platform supports cleaner hand masking, use `GetEnvironmentDepthHandRemovalSupported`. Hand masking can be turned on by setting `removeHands` in `EnvironmentDepthCreateParams` to true and passing it into `SetupEnvironmentDepth`. Hand masking can also be toggled on and off using `SetEnvironmentDepthHandRemoval`. The depth texture can then be accessed by getting the depth texture ID using `GetEnvironmentDepthTextureId` and passing the ID to `GetRenderTexture` on the XRDisplaySubsystem. The rendering can then be enabled/disabled with `SetEnvironmentDepthRendering` and to completely free resources `ShutdownEnvironmentDepth` must be called. Extra data about the depth frame can be accessed through `GetEnvironmentDepthFrameDesc`.
 
 ### Fixed-Foveated Rendering (FFR)
 

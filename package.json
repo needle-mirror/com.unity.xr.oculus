@@ -1,7 +1,7 @@
 {
   "name": "com.unity.xr.oculus",
   "displayName": "Oculus XR Plugin",
-  "version": "4.2.0-exp-env-depth.2",
+  "version": "4.2.0",
   "unity": "2022.3",
   "unityRelease": "1f1",
   "description": "Provides display and input support for Oculus devices.",
@@ -20,16 +20,16 @@
   "repository": {
     "url": "https://github.cds.internal.unity3d.com/unity/xr.sdk.oculus.git",
     "type": "git",
-    "revision": "43f392dc0a7e60b0e7c63eebe9797e1c3ad3d68d"
+    "revision": "a87e6a4842f6c06d6b8a576c83caec99c5fc3e60"
   },
   "relatedPackages": {
-    "com.unity.xr.oculus.tests": "4.2.0-exp-env-depth.2"
+    "com.unity.xr.oculus.tests": "4.2.0"
   },
   "_upm": {
-    "changelog": "### Added\n- New Environment Depth APIs:\n  - `bool GetEnvironmentDepthSupported()`\n  - `bool GetEnvironmentDepthHandRemovalSupported()`\n  - `bool SetEnvironmentDepthHandRemoval(bool isEnabled)`\n\n### Changed\n- Updated Oculus plugins to v60\n\n### Known Issues\n- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime\n- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes\n- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/"
+    "changelog": "### Added\n- Environment Depth APIs to allow for real world depth to be sampled from a depth texture\n\n### Changed\n- Updated `GetConnectedControllers` to match the Oculus Integration Package's implementation\n- Removed PhaseSync setting since it is now always active\n- Updated Oculus plugins to v60\n\n### Fixed\n- Fixed issues with play in editor on ARM64 Windows devices\n\n### Known Issues\n- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime\n- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes\n- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/"
   },
   "upmCi": {
-    "footprint": "d625e534638c930571065bb1397f5ff6ef38e04c"
+    "footprint": "23bce131e55b3c1e8277758f12b9c1a517cd901b"
   },
   "documentationUrl": "https://docs.unity3d.com/Packages/com.unity.xr.oculus@4.2/manual/index.html"
 }
