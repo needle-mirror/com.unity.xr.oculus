@@ -1,7 +1,7 @@
 {
   "name": "com.unity.xr.oculus",
   "displayName": "Oculus XR Plugin",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "unity": "2021.3",
   "unityRelease": "4f1",
   "description": "Provides display and input support for Oculus devices.",
@@ -15,21 +15,21 @@
     "xreditorsubsystem"
   ],
   "dependencies": {
-    "com.unity.xr.management": "4.2.0"
+    "com.unity.xr.management": "4.4.0"
   },
   "repository": {
     "url": "https://github.cds.internal.unity3d.com/unity/xr.sdk.oculus.git",
     "type": "git",
-    "revision": "a6b7841c74914da7f9f8b5669452cec744a71fa4"
+    "revision": "1f3ddbc65816ff98c93ba0b67e4ea2653c44ca77"
   },
   "relatedPackages": {
-    "com.unity.xr.oculus.tests": "3.3.0"
+    "com.unity.xr.oculus.tests": "3.4.0"
   },
   "_upm": {
-    "changelog": "### Changed\n- Modified how foveated rendering (ETFR and FFR) is enabled and configured from script to make it more consistent\n- Updated the `SystemHeadset` enum to include `Meta_Quest_Pro` and `Meta_Link_Quest_Pro` entries\n\n### Fixed\n- Reverted deferred eye texture deletion as we only needed to defer layer deletion\n- Fixed a GLES2 script deprecation warning in Unity 2023.1+\n\n### Known Issues\n- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is the default in the 2.x and 3.x versions of the Oculus XR Plugin package\n- `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes\n- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/\n- Enabling mobile Depth Submission may cause crashes on application startup if MSAA is disabled. Enabling MSAA will resolve the issue. This will be resolved in future versions of Unity"
+    "changelog": "### Changed\n- Bumped up required XR Management version to 4.4.0 to fix issues with Android Manifest cleanup\n- Updated documentation to inform users that Phase Sync is always active when using the Oculus OpenXR Runtime\n\n### Fixed\n- Removed Android manifest cleanup that removed the manifest file, existing projects need to do a clean build to completely remove the issue\n\n### Known Issues\n- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is the default in the 2.x and 3.x versions of the Oculus XR Plugin package\n- `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes\n- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/\n- Enabling mobile Depth Submission may cause crashes on application startup if MSAA is disabled. Enabling MSAA will resolve the issue. This will be resolved in future versions of Unity"
   },
   "upmCi": {
-    "footprint": "5b2c7cddf366cfb5e5f61477c13329393d077e69"
+    "footprint": "b1ecacba01f864b83f8055b29dc27c1abcff9db6"
   },
-  "documentationUrl": "https://docs.unity3d.com/Packages/com.unity.xr.oculus@3.3/manual/index.html"
+  "documentationUrl": "https://docs.unity3d.com/Packages/com.unity.xr.oculus@3.4/manual/index.html"
 }

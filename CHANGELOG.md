@@ -4,6 +4,20 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.4.0] - 2024-02-12
+### Changed
+- Bumped up required XR Management version to 4.4.0 to fix issues with Android Manifest cleanup
+- Updated documentation to inform users that Phase Sync is always active when using the Oculus OpenXR Runtime
+
+### Fixed
+- Removed Android manifest cleanup that removed the manifest file, existing projects need to do a clean build to completely remove the issue
+
+### Known Issues
+- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is the default in the 2.x and 3.x versions of the Oculus XR Plugin package
+- `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes
+- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
+- Enabling mobile Depth Submission may cause crashes on application startup if MSAA is disabled. Enabling MSAA will resolve the issue. This will be resolved in future versions of Unity
+
 ## [3.3.0] - 2023-03-13
 ### Changed
 - Modified how foveated rendering (ETFR and FFR) is enabled and configured from script to make it more consistent
@@ -12,12 +26,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Reverted deferred eye texture deletion as we only needed to defer layer deletion
 - Fixed a GLES2 script deprecation warning in Unity 2023.1+
-
-### Known Issues
-- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime, which is the default in the 2.x and 3.x versions of the Oculus XR Plugin package
-- `Unity.XR.Oculus.Stats.AppMetrics` entries currently return `0` on all Oculus runtimes
-- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
-- Enabling mobile Depth Submission may cause crashes on application startup if MSAA is disabled. Enabling MSAA will resolve the issue. This will be resolved in future versions of Unity
 
 ## [3.2.3] - 2023-02-16
 ### Changed

@@ -108,7 +108,7 @@ namespace Unity.XR.Oculus
         /// <summary>
         /// Enables a latency optimization technique which can reduce simulation latency by several ms, depending on application workload.
         /// </summary>
-        [SerializeField, Tooltip("Enables a latency optimization technique which can reduce simulation latency by several ms, depending on application workload.")]
+        [SerializeField, Tooltip("Enables a latency optimization technique which can reduce simulation latency by several ms, depending on application workload. Note: Phase Sync is always active when using the Oculus OpenXR runtime.")]
         public bool PhaseSync = false;
 
         /// <summary>

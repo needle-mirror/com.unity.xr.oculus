@@ -34,7 +34,7 @@ namespace Unity.XR.Oculus.Editor
         static GUIContent s_StereoRenderingModeLabel = EditorGUIUtility.TrTextContent("Stereo Rendering Mode");
         static GUIContent s_LowOverheadModeLabel = EditorGUIUtility.TrTextContent("Low Overhead Mode (GLES)");
         static GUIContent s_OptimizeBufferDiscardsLabel = EditorGUIUtility.TrTextContent("Optimize Buffer Discards (Vulkan)");
-        static GUIContent s_PhaseSyncLabel = EditorGUIUtility.TrTextContent("Phase Sync");
+        static GUIContent s_PhaseSyncLabel = EditorGUIUtility.TrTextContent("Phase Sync (Deprecated)");
         static GUIContent s_SymmetricProjectionLabel = EditorGUIUtility.TrTextContent("Symmetric Projection (Vulkan)", "Supported on Quest 2 and Quest Pro when using Vulkan and Multiview.");
         static GUIContent s_SubsampledLayoutLabel = EditorGUIUtility.TrTextContent("Subsampled Layout (Vulkan)", "Supported on Quest 2 and Quest Pro when using Vulkan.");
         static GUIContent s_FoveatedRenderingMethodLabel = EditorGUIUtility.TrTextContent("Foveated Rendering Method", "Choose which foveated rendering method is used when foveation is enabled. Eye Tracked Foveated Rendering is only supported on Quest Pro with proper permissions and when using Vulkan, Multiview, and ARM64.");
