@@ -4,6 +4,22 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.3.0-pre.1] - 2024-07-18
+### Added
+- Added support for Unity's new common Foveated Rendering API, with improved URP support
+
+### Changed
+- Improved Symmetric Projection texture resolution calculations
+
+### Fixed
+- Fixed an issue with eye poses being incorrect in certain situations
+
+### Known Issues
+- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime
+- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes
+- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
+- `Acceleration` and `AngularAcceleration` values on tracked poses currently return `0` when using the OpenXR runtime.  This is a limitation of the OpenXR API
+
 ## [4.2.0] - 2024-01-18
 ### Added
 - Environment Depth APIs to allow for real world depth to be sampled from a depth texture
@@ -15,11 +31,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Fixed issues with play in editor on ARM64 Windows devices
-
-### Known Issues
-- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime
-- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes
-- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
 
 ## [4.1.2] - 2023-11-06
 ### Fixed

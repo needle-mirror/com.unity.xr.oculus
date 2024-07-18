@@ -204,6 +204,15 @@ namespace Unity.XR.Oculus
                 RegisterUpdateCallback.Initialize();
             }
 
+
+#if UNITY_2023_2_OR_NEWER && UNITY_URP_16
+            if (settings != null && settings.FoveatedRenderingMethod == OculusSettings.FoveationMethod.EyeTrackedFoveatedRenderingUsingUnityAPIForURP)
+            {
+                // With Unity's generic foveation API, we will request eye tracking permission here to prevent needing code specific to a single plugin to control foveation
+                Utils.eyeTrackedFoveatedRenderingEnabled = true;
+            }
+#endif
+
             return displaySubsystem != null && inputSubsystem != null;
 #else
             return false;

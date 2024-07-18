@@ -52,7 +52,20 @@ namespace Unity.XR.Oculus
             /// Eye Tracked Foveated Rendering
             /// Foveates the image using eye tracking.
             /// </summary>
-            EyeTrackedFoveatedRendering = 1
+            EyeTrackedFoveatedRendering = 1,
+            
+#if UNITY_2023_2_OR_NEWER && UNITY_URP_16 // Unity's Foveated Rendering API For URP is a new feature starting with Unity 2023.2
+            /// <summary>
+            /// Fixed Foveated Rendering with Unity's Foveated Rendering API (URP only)
+            /// Foveates the image based on a fixed pattern, this version uses the Unity common Foveated Rendering API
+            /// </summary>
+            FixedFoveatedRenderingUsingUnityAPIForURP = 2,
+            /// <summary>
+            /// Eye Tracked Foveated Rendering with Unity's Foveated Rendering API (URP only)
+            /// Foveates the image using eye tracking, this version uses the Unity common Foveated Rendering API
+            /// </summary>
+            EyeTrackedFoveatedRenderingUsingUnityAPIForURP = 3
+#endif
         }
 
         /// <summary>
@@ -187,6 +200,21 @@ namespace Unity.XR.Oculus
             return (ushort)m_StereoRenderingModeDesktop;
 #endif
         }
+
+        /// <summary>
+        /// Return true if the current Foveated Rendering settings are configured to request eye tracking on devices that supports it.
+        /// </summary>
+        public bool IsEyeTrackingRequested()
+        {
+#if UNITY_2023_2_OR_NEWER && UNITY_URP_16
+            return FoveatedRenderingMethod == FoveationMethod.EyeTrackedFoveatedRendering
+                   || FoveatedRenderingMethod == FoveationMethod.EyeTrackedFoveatedRenderingUsingUnityAPIForURP;
+#else
+            return FoveatedRenderingMethod == FoveationMethod.EyeTrackedFoveatedRendering;
+#endif
+        }
+
+
 #if !UNITY_EDITOR
         public static OculusSettings s_Settings;
 

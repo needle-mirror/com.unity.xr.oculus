@@ -232,7 +232,7 @@ namespace UnityEditor.XR.Oculus
                 if ((PlayerSettings.Android.targetArchitectures & AndroidArchitecture.ARM64) != AndroidArchitecture.ARM64)
                 {
                     // ETFR requires ARM64
-                    if ((settings != null) && (settings.FoveatedRenderingMethod == OculusSettings.FoveationMethod.EyeTrackedFoveatedRendering))
+                    if (settings != null && settings.IsEyeTrackingRequested())
                     {
                         throw new BuildFailedException("Eye Tracked Foveated Rendering can only be enabled when ARM64 is selected as the Target Architecture.");
                     }
@@ -582,7 +582,7 @@ namespace UnityEditor.XR.Oculus
             nodePath = "/manifest";
             CreateNameValueElementsInTag(manifestDoc, nodePath, "uses-feature", "name", "android.hardware.vr.headtracking", "required", "true", "version", "1");
 
-            var eyeTrackedFoveatedRendering = ((settings != null) && (settings.FoveatedRenderingMethod == OculusSettings.FoveationMethod.EyeTrackedFoveatedRendering));
+            var eyeTrackedFoveatedRendering = (settings != null && settings.IsEyeTrackingRequested());
             if (eyeTrackedFoveatedRendering)
             {
                 CreateNameValueElementsInTag(manifestDoc, nodePath, "uses-feature", "name", "oculus.software.eye_tracking", "required", "false");
