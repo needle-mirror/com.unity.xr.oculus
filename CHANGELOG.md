@@ -4,12 +4,14 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [4.3.0-pre.1] - 2024-07-18
+## [4.3.0] - 2024-07-30
 ### Added
 - Added support for Unity's new common Foveated Rendering API, with improved URP support
+- Added option to Oculus settings to activate support for Stick Control thumbsticks instead of Vector2 Control, which allows a greater range of usages, such as a D-Pad and independent buttons. When activating this feature, the define `META_USE_STICK_CONTROL_THUMBSTICKS` will be added in Scripting Define Symbols under Player Settings. Note that this feature requires at minimum the Input System package version 1.6.2 included in the project
 
 ### Changed
 - Improved Symmetric Projection texture resolution calculations
+- Removed legacy code no longer needed in currently supported versions of Unity
 
 ### Fixed
 - Fixed an issue with eye poses being incorrect in certain situations

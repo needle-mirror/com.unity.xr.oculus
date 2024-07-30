@@ -8,6 +8,12 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.XR;
 #endif
 
+#if META_USE_STICK_CONTROL_THUMBSTICKS && UNITY_INPUT_SYSTEM_STICK_SUPPORT
+using ThumbstickControl = UnityEngine.InputSystem.Controls.StickControl; // If replaced, make sure the control extends Vector2Control
+#else
+using ThumbstickControl = UnityEngine.InputSystem.Controls.Vector2Control;
+#endif
+
 namespace Unity.XR.Oculus.Input
 {
 #if ENABLE_VR || PACKAGE_DOCS_GENERATION
@@ -128,7 +134,7 @@ namespace Unity.XR.Oculus.Input
     {
         [Preserve]
         [InputControl(aliases = new[] { "Primary2DAxis", "Joystick" })]
-        public Vector2Control thumbstick { get; private set; }
+        public ThumbstickControl thumbstick { get; private set; }
 
         [Preserve]
         [InputControl]
@@ -197,7 +203,7 @@ namespace Unity.XR.Oculus.Input
         {
             base.FinishSetup();
 
-            thumbstick = GetChildControl<Vector2Control>("thumbstick");
+            thumbstick = GetChildControl<ThumbstickControl>("thumbstick");
             trigger = GetChildControl<AxisControl>("trigger");
             triggerTouched = GetChildControl<AxisControl>("triggerTouched");
             grip = GetChildControl<AxisControl>("grip");

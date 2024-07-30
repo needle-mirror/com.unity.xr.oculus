@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Unity.XR.Oculus;
+using System;
+using UnityEditor.Build;
 
 namespace Unity.XR.Oculus.Editor
 {
@@ -27,6 +29,7 @@ namespace Unity.XR.Oculus.Editor
         private const string kTargetQuest3 = "TargetQuest3";
         private const string kSystemSplashScreen = "SystemSplashScreen";
         private const string kDepthSubmission = "DepthSubmission";
+        private const string kUseStickControlThumbsticks = "UseStickControlThumbsticks";
 
         static GUIContent s_SharedDepthBufferLabel = EditorGUIUtility.TrTextContent("Shared Depth Buffer");
         static GUIContent s_DashSupportLabel = EditorGUIUtility.TrTextContent("Dash Support");
@@ -47,6 +50,7 @@ namespace Unity.XR.Oculus.Editor
         static GUIContent s_SystemSplashScreen = EditorGUIUtility.TrTextContent("System Splash Screen");
         static GUIContent s_DepthSubmission = EditorGUIUtility.TrTextContent("Depth Submission (Vulkan)");
         static GUIContent s_ShowAndroidExperimentalLabel = EditorGUIUtility.TrTextContent("Experimental", "Experimental settings that are under active development and should be used with caution.");
+        static GUIContent s_UseStickControlThumbsticksLabel = EditorGUIUtility.TrTextContent("Use Stick Control Thumbsticks*");
 
         private SerializedProperty m_SharedDepthBuffer;
         private SerializedProperty m_DashSupport;
@@ -66,6 +70,7 @@ namespace Unity.XR.Oculus.Editor
         private SerializedProperty m_TargetQuest3;
         private SerializedProperty m_SystemSplashScreen;
         private SerializedProperty m_DepthSubmission;
+        private SerializedProperty m_UseStickControlThumbstick;
 
         static private bool m_ShowAndroidExperimental = false;
 
@@ -92,6 +97,7 @@ namespace Unity.XR.Oculus.Editor
             if (m_TargetQuest3 == null) m_TargetQuest3 = serializedObject.FindProperty(kTargetQuest3);
             if (m_SystemSplashScreen == null) m_SystemSplashScreen = serializedObject.FindProperty(kSystemSplashScreen);
             if (m_DepthSubmission == null) m_DepthSubmission = serializedObject.FindProperty(kDepthSubmission);
+            if (m_UseStickControlThumbstick == null) m_UseStickControlThumbstick = serializedObject.FindProperty(kUseStickControlThumbsticks);
 
             serializedObject.Update();
 
@@ -107,11 +113,15 @@ namespace Unity.XR.Oculus.Editor
                 EditorGUILayout.Space();
             }
             EditorGUI.BeginDisabledGroup(EditorApplication.isPlayingOrWillChangePlaymode);
+
+
+            var stickCheckBefore = m_UseStickControlThumbstick.boolValue;
             if (selectedBuildTargetGroup == BuildTargetGroup.Standalone)
             {
                 EditorGUILayout.PropertyField(m_StereoRenderingModeDesktop, s_StereoRenderingModeLabel);
                 EditorGUILayout.PropertyField(m_SharedDepthBuffer, s_SharedDepthBufferLabel);
                 EditorGUILayout.PropertyField(m_DashSupport, s_DashSupportLabel);
+                EditorGUILayout.PropertyField(m_UseStickControlThumbstick, s_UseStickControlThumbsticksLabel);
             }
             else if (selectedBuildTargetGroup == BuildTargetGroup.Android)
             {
@@ -125,6 +135,7 @@ namespace Unity.XR.Oculus.Editor
                 EditorGUILayout.PropertyField(m_DepthSubmission, s_DepthSubmission);
                 EditorGUILayout.PropertyField(m_LateLatching, s_LateLatchingLabel);
                 EditorGUILayout.PropertyField(m_LateLatchingDebug, s_LateLatchingDebugLabel);
+                EditorGUILayout.PropertyField(m_UseStickControlThumbstick, s_UseStickControlThumbsticksLabel);
 
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(m_SystemSplashScreen, s_SystemSplashScreen);
@@ -150,7 +161,47 @@ namespace Unity.XR.Oculus.Editor
 
             serializedObject.ApplyModifiedProperties();
 
+            if (stickCheckBefore != m_UseStickControlThumbstick.boolValue)
+            {
+                if (m_UseStickControlThumbstick.boolValue)
+                {
+                    AddDefineIfDoesntExist(OculusSettings.kUseStickControlThumbsticksDefine);
+                }
+                else
+                {
+                    RemoveDefine(OculusSettings.kUseStickControlThumbsticksDefine);
+                }
+            }
+
             EditorGUIUtility.labelWidth = 0.0f;
+        }
+
+        private void AddDefineIfDoesntExist(string defineName)
+        {
+            NamedBuildTarget[] buildTargets = { NamedBuildTarget.Android, NamedBuildTarget.Standalone };
+            foreach(var target in buildTargets)
+            {
+                var defines = PlayerSettings.GetScriptingDefineSymbols(target);
+                if (!defines.Contains(defineName))
+                {
+                    defines += $";{defineName}";
+                    PlayerSettings.SetScriptingDefineSymbols(target, defines);
+                }
+            }
+        }
+
+        private void RemoveDefine(string defineName)
+        {
+            NamedBuildTarget[] buildTargets = { NamedBuildTarget.Android, NamedBuildTarget.Standalone };
+            foreach (var target in buildTargets)
+            {
+                var defines = PlayerSettings.GetScriptingDefineSymbols(target);
+                if (defines.Contains(defineName))
+                {
+                    defines = defines.Replace($"{defineName}", "");
+                    PlayerSettings.SetScriptingDefineSymbols(target, defines);
+                }
+            }
         }
     }
 }

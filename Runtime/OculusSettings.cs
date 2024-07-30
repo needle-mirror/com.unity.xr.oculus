@@ -10,6 +10,8 @@ namespace Unity.XR.Oculus
     [XRConfigurationData("Oculus", "Unity.XR.Oculus.Settings")]
     public class OculusSettings : ScriptableObject
     {
+        public const string kUseStickControlThumbsticksDefine = "META_USE_STICK_CONTROL_THUMBSTICKS";
+
         public enum StereoRenderingModeDesktop
         {
             /// <summary>
@@ -72,21 +74,13 @@ namespace Unity.XR.Oculus
         /// The current stereo rendering mode selected for desktop-based Oculus platforms
         /// </summary>
         [SerializeField, Tooltip("The current stereo rendering mode selected for desktop-based Oculus platforms.")]
-#if UNITY_2021_2_OR_NEWER
         public StereoRenderingModeDesktop m_StereoRenderingModeDesktop = StereoRenderingModeDesktop.SinglePassInstanced;
-#else
-        public StereoRenderingModeDesktop m_StereoRenderingModeDesktop = StereoRenderingModeDesktop.MultiPass;
-#endif
 
         /// <summary>
         /// The current stereo rendering mode selected for Android-based Oculus platforms
         /// </summary>
         [SerializeField, Tooltip("The current stereo rendering mode selected for Android-based Oculus platforms.")]
-#if UNITY_2021_2_OR_NEWER
         public StereoRenderingModeAndroid m_StereoRenderingModeAndroid = StereoRenderingModeAndroid.Multiview;
-#else
-        public StereoRenderingModeAndroid m_StereoRenderingModeAndroid = StereoRenderingModeAndroid.MultiPass;
-#endif
 
         /// <summary>
         /// Enable or disable support for using a shared depth buffer. This allows Unity and Oculus to use a common depth buffer which enables Oculus to composite the Oculus Dash and other utilities over the Unity application.
@@ -190,6 +184,12 @@ namespace Unity.XR.Oculus
         /// </summary>
         [SerializeField, Tooltip("Adds a PNG under the Assets folder as the system splash screen image. If set, the OS will display the system splash screen as a high quality compositor layer as soon as the app is starting to launch until the app submits the first frame.")]
         public Texture2D SystemSplashScreen;
+
+        /// <summary>
+        /// Switch to use StickControl thumbsticks instead of Vector2Control, but may break existing projects that have code dependencies to the Vector2Control type. StickControl allows more input options for thumbstick-based control, such as acting as both a combined 2D vector, two independent axes or a four-way Dpad with 4 independent buttons. This setting affects both Android and Standalone settings. Only works with Input System package version 1.6.2 onwards.
+        /// </summary>
+        [SerializeField, Tooltip("Switch to use StickControl thumbsticks instead of Vector2Control, but may break existing projects that have code dependencies to the Vector2Control type. StickControl allows more input options for thumbstick-based control, such as acting as both a combined 2D vector, two independent axes or a four-way Dpad with 4 independent buttons. This setting affects both Android and Standalone settings. Only works with Input System package version 1.6.2 onwards.")]
+        public bool UseStickControlThumbsticks = false;
 
 
         public ushort GetStereoRenderingMode()

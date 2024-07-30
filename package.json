@@ -1,7 +1,7 @@
 {
   "name": "com.unity.xr.oculus",
   "displayName": "Oculus XR Plugin",
-  "version": "4.3.0-pre.1",
+  "version": "4.3.0",
   "unity": "2022.3",
   "unityRelease": "1f1",
   "description": "Provides display and input support for Oculus devices.",
@@ -20,16 +20,16 @@
   "repository": {
     "url": "https://github.cds.internal.unity3d.com/unity/xr.sdk.oculus.git",
     "type": "git",
-    "revision": "1f074badf0a33bf875a5db5fc804f0ec0e4461b3"
+    "revision": "5559dca26d8434fb1535133f35f9d95b82f55cec"
   },
   "relatedPackages": {
-    "com.unity.xr.oculus.tests": "4.3.0-pre.1"
+    "com.unity.xr.oculus.tests": "4.3.0"
   },
   "_upm": {
-    "changelog": "### Added\n- Added support for Unity's new common Foveated Rendering API, with improved URP support\n\n### Changed\n- Improved Symmetric Projection texture resolution calculations\n\n### Fixed\n- Fixed an issue with eye poses being incorrect in certain situations\n\n### Known Issues\n- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime\n- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes\n- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/\n- `Acceleration` and `AngularAcceleration` values on tracked poses currently return `0` when using the OpenXR runtime.  This is a limitation of the OpenXR API"
+    "changelog": "### Added\n- Added support for Unity's new common Foveated Rendering API, with improved URP support\n- Added option to Oculus settings to activate support for Stick Control thumbsticks instead of Vector2 Control, which allows a greater range of usages, such as a D-Pad and independent buttons. When activating this feature, the define `META_USE_STICK_CONTROL_THUMBSTICKS` will be added in Scripting Define Symbols under Player Settings. Note that this feature requires at minimum the Input System package version 1.6.2 included in the project\n\n### Changed\n- Improved Symmetric Projection texture resolution calculations\n- Removed legacy code no longer needed in currently supported versions of Unity\n\n### Fixed\n- Fixed an issue with eye poses being incorrect in certain situations\n\n### Known Issues\n- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime\n- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes\n- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/\n- `Acceleration` and `AngularAcceleration` values on tracked poses currently return `0` when using the OpenXR runtime.  This is a limitation of the OpenXR API"
   },
   "upmCi": {
-    "footprint": "14c5941f741f51bfd76d66aabf9fa8cc30281570"
+    "footprint": "f85792e0a07f0a5844129f784b556d4813b52856"
   },
   "documentationUrl": "https://docs.unity3d.com/Packages/com.unity.xr.oculus@4.3/manual/index.html"
 }
