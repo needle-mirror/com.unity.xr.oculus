@@ -1,6 +1,6 @@
 # About the Oculus XR Plugin
 
-The Oculus XR Plugin enables you to build applications for a variety of Oculus devices including the Rift, Rift S, Quest 2, Quest Pro, and Quest 3.
+The Oculus XR Plugin enables you to build applications for a variety of Oculus devices including the Rift, Rift S, Quest 2, Quest Pro, Quest 3, and Quest 3S.
 
 ## Supported XR plugin subsystems
 
@@ -60,7 +60,7 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 
 ### Environment Depth
 
-For Quest 3, Environment Depth can be enabled to allow the sampling of real world depth data. This can be used to have real world objects occlude virtual objects in the application. `GetEnvironmentDepthSupported` can be used to check if the device supports Environment Depth. The Environment Depth rendering system can be started by calling `SetupEnvironmentDepth`. To check if the device or platform supports cleaner hand masking, use `GetEnvironmentDepthHandRemovalSupported`. Hand masking can be turned on by setting `removeHands` in `EnvironmentDepthCreateParams` to true and passing it into `SetupEnvironmentDepth`. Hand masking can also be toggled on and off using `SetEnvironmentDepthHandRemoval`. The depth texture can then be accessed by getting the depth texture ID using `GetEnvironmentDepthTextureId` and passing the ID to `GetRenderTexture` on the XRDisplaySubsystem. The rendering can then be enabled/disabled with `SetEnvironmentDepthRendering` and to completely free resources `ShutdownEnvironmentDepth` must be called. Extra data about the depth frame can be accessed through `GetEnvironmentDepthFrameDesc`.
+For Quest 3 and Quest 3S, Environment Depth can be enabled to allow the sampling of real world depth data. This can be used to have real world objects occlude virtual objects in the application. `GetEnvironmentDepthSupported` can be used to check if the device supports Environment Depth. The Environment Depth rendering system can be started by calling `SetupEnvironmentDepth`. To check if the device or platform supports cleaner hand masking, use `GetEnvironmentDepthHandRemovalSupported`. Hand masking can be turned on by setting `removeHands` in `EnvironmentDepthCreateParams` to true and passing it into `SetupEnvironmentDepth`. Hand masking can also be toggled on and off using `SetEnvironmentDepthHandRemoval`. The depth texture can then be accessed by getting the depth texture ID using `GetEnvironmentDepthTextureId` and passing the ID to `GetRenderTexture` on the XRDisplaySubsystem. The rendering can then be enabled/disabled with `SetEnvironmentDepthRendering` and to completely free resources `ShutdownEnvironmentDepth` must be called. Extra data about the depth frame can be accessed through `GetEnvironmentDepthFrameDesc`.
 
 ### Fixed-Foveated Rendering (FFR)
 
@@ -81,7 +81,7 @@ if (xrDisplays.Count == 1)
 {
     // Set the level of foveation needed, 0 is disabled, 1 is the maximum foveation
     //
-    // In the case of Meta Quest (2, 3, Pro) only 4 levels are available:
+    // In the case of Meta Quest devices, only 4 levels are available:
     // [0] = disabled
     // (0..0.33) : Low
     // [0.33, 0.66) : Medium

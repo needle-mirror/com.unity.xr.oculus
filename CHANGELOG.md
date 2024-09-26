@@ -4,6 +4,17 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.4.0] - 2024-09-26
+### Added
+- Added Quest 3S target device checkbox
+- Updated the `SystemHeadset` enum to include `Meta_Quest_3S` and `Meta_Link_Quest_3S` entries
+
+### Known Issues
+- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime
+- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes
+- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
+- `Acceleration` and `AngularAcceleration` values on tracked poses currently return `0` when using the OpenXR runtime.  This is a limitation of the OpenXR API
+
 ## [4.3.0] - 2024-07-30
 ### Added
 - Added support for Unity's new common Foveated Rendering API, with improved URP support
@@ -15,12 +26,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Fixed an issue with eye poses being incorrect in certain situations
-
-### Known Issues
-- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime
-- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes
-- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
-- `Acceleration` and `AngularAcceleration` values on tracked poses currently return `0` when using the OpenXR runtime.  This is a limitation of the OpenXR API
 
 ## [4.2.0] - 2024-01-18
 ### Added

@@ -126,9 +126,9 @@ namespace Unity.XR.Oculus
         public bool SymmetricProjection = true;
 
         /// <summary>
-        /// Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan and Quest 2/Quest Pro only.
+        /// Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan only.
         /// </summary>
-        [SerializeField, Tooltip("Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan and Quest 2/Quest Pro only.")]
+        [SerializeField, Tooltip("Enables a subsampled eye texture layout, which can improve performance when using FFR and reduce FFR related artifacts. Vulkan only.")]
         public bool SubsampledLayout = false;
 
         /// <summary>
@@ -178,6 +178,12 @@ namespace Unity.XR.Oculus
         /// </summary>
         [SerializeField, Tooltip("Adds a Quest 3 entry to the supported devices list in the Android manifest.")]
         public bool TargetQuest3 = false;
+
+        /// <summary>
+        /// Adds a Quest 3S entry to the supported devices list in the Android manifest.
+        /// </summary>
+        [SerializeField, Tooltip("Adds a Quest 3S entry to the supported devices list in the Android manifest.")]
+        public bool TargetQuest3S = false;
 
         /// <summary>
         /// Adds a PNG under the Assets folder as the system splash screen image. If set, the OS will display the system splash screen as a high quality compositor layer as soon as the app is starting to launch until the app submits the first frame.

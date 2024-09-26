@@ -23,7 +23,8 @@ namespace Unity.XR.Oculus
         Placeholder_10 = 10,
         Meta_Quest_3 = 11,
         Placeholder_11 = 11,
-        Placeholder_12,
+        Meta_Quest_3S = 12,
+        Placeholder_12 = 12,
         Placeholder_13,
         Placeholder_14,
 
@@ -39,7 +40,8 @@ namespace Unity.XR.Oculus
         PC_Placeholder_4103 = Meta_Link_Quest_Pro,
         Meta_Link_Quest_3,
         PC_Placeholder_4104 = Meta_Link_Quest_3,
-        PC_Placeholder_4105,
+        Meta_Link_Quest_3S,
+        PC_Placeholder_4105 = Meta_Link_Quest_3S,
         PC_Placeholder_4106,
         PC_Placeholder_4107
     }

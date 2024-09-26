@@ -27,6 +27,7 @@ namespace Unity.XR.Oculus.Editor
         private const string kTargetQuest2 = "TargetQuest2";
         private const string kTargetQuestPro = "TargetQuestPro";
         private const string kTargetQuest3 = "TargetQuest3";
+        private const string kTargetQuest3S = "TargetQuest3S";
         private const string kSystemSplashScreen = "SystemSplashScreen";
         private const string kDepthSubmission = "DepthSubmission";
         private const string kUseStickControlThumbsticks = "UseStickControlThumbsticks";
@@ -47,6 +48,7 @@ namespace Unity.XR.Oculus.Editor
         static GUIContent s_TargetQuest2Label = EditorGUIUtility.TrTextContent("Quest 2");
         static GUIContent s_TargetQuestProLabel = EditorGUIUtility.TrTextContent("Quest Pro");
         static GUIContent s_TargetQuest3Label = EditorGUIUtility.TrTextContent("Quest 3");
+        static GUIContent s_TargetQuest3SLabel = EditorGUIUtility.TrTextContent("Quest 3S");
         static GUIContent s_SystemSplashScreen = EditorGUIUtility.TrTextContent("System Splash Screen");
         static GUIContent s_DepthSubmission = EditorGUIUtility.TrTextContent("Depth Submission (Vulkan)");
         static GUIContent s_ShowAndroidExperimentalLabel = EditorGUIUtility.TrTextContent("Experimental", "Experimental settings that are under active development and should be used with caution.");
@@ -68,6 +70,7 @@ namespace Unity.XR.Oculus.Editor
         private SerializedProperty m_TargetQuest2;
         private SerializedProperty m_TargetQuestPro;
         private SerializedProperty m_TargetQuest3;
+        private SerializedProperty m_TargetQuest3S;
         private SerializedProperty m_SystemSplashScreen;
         private SerializedProperty m_DepthSubmission;
         private SerializedProperty m_UseStickControlThumbstick;
@@ -95,6 +98,7 @@ namespace Unity.XR.Oculus.Editor
             if (m_TargetQuest2 == null) m_TargetQuest2 = serializedObject.FindProperty(kTargetQuest2);
             if (m_TargetQuestPro == null) m_TargetQuestPro = serializedObject.FindProperty(kTargetQuestPro);
             if (m_TargetQuest3 == null) m_TargetQuest3 = serializedObject.FindProperty(kTargetQuest3);
+            if (m_TargetQuest3S == null) m_TargetQuest3S = serializedObject.FindProperty(kTargetQuest3S);
             if (m_SystemSplashScreen == null) m_SystemSplashScreen = serializedObject.FindProperty(kSystemSplashScreen);
             if (m_DepthSubmission == null) m_DepthSubmission = serializedObject.FindProperty(kDepthSubmission);
             if (m_UseStickControlThumbstick == null) m_UseStickControlThumbstick = serializedObject.FindProperty(kUseStickControlThumbsticks);
@@ -145,6 +149,7 @@ namespace Unity.XR.Oculus.Editor
                 EditorGUILayout.PropertyField(m_TargetQuest2, s_TargetQuest2Label);
                 EditorGUILayout.PropertyField(m_TargetQuestPro, s_TargetQuestProLabel);
                 EditorGUILayout.PropertyField(m_TargetQuest3, s_TargetQuest3Label);
+                EditorGUILayout.PropertyField(m_TargetQuest3S, s_TargetQuest3SLabel);
 
                 EditorGUILayout.Space();
 
