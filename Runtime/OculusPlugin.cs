@@ -45,12 +45,12 @@ namespace Unity.XR.Oculus
         PC_Placeholder_4106,
         PC_Placeholder_4107
     }
-    
+
     // some platform support can only be determined at runtime such as Windows Arm64
     internal static class RuntimePlatformChecks
     {
         private static readonly bool isRuntimeUnsupportedPlatform;
-        
+
         static RuntimePlatformChecks()
         {
             // catch situations not handled by OCULUSPLUGIN_UNSUPPORTED_PLATFORM
@@ -93,6 +93,17 @@ namespace Unity.XR.Oculus
             public ushort spaceWarp;
             public ushort depthSubmission;
             public ushort foveatedRenderingMethod;
+            public ushort optimizeMultiviewRenderRegions;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct UnityVersion
+        {
+            public int major;
+            public int minor;
+            public int patch;
+            public char type;
+            public int buildNumber;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -165,11 +176,11 @@ namespace Unity.XR.Oculus
             }
         }
 
-        internal static void SetUserDefinedSettings(UserDefinedSettings settings)
+        internal static void SetUserDefinedSettings(UserDefinedSettings settings, UnityVersion unityVersion)
         {
             if (RuntimePlatformChecks.IsSupportedPlatform())
             {
-                Internal.SetUserDefinedSettings(settings);
+                Internal.SetUserDefinedSettings(settings, unityVersion);
             }
         }
 
@@ -428,7 +439,7 @@ namespace Unity.XR.Oculus
             if (RuntimePlatformChecks.IsSupportedPlatform())
             {
                 return Internal.GetShouldRestartSession();
-            } 
+            }
             else
             {
                 return false;
@@ -560,7 +571,7 @@ namespace Unity.XR.Oculus
             internal static extern void UnloadOVRPlugin();
 
             [DllImport("OculusXRPlugin")]
-            internal static extern void SetUserDefinedSettings(UserDefinedSettings settings);
+            internal static extern void SetUserDefinedSettings(UserDefinedSettings settings, UnityVersion unityVersion);
 
             [DllImport("OculusXRPlugin")]
             internal static extern int SetCPULevel(int cpuLevel);

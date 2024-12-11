@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
@@ -10,6 +10,9 @@ using XRStats = UnityEngine.XR.Provider.XRStats;
 
 namespace Unity.XR.Oculus
 {
+    /// <summary>
+    /// Performance settings
+    /// </summary>
     public static class Performance
     {
         /// <summary>
@@ -49,6 +52,8 @@ namespace Unity.XR.Oculus
         /// <summary>
         /// Get an array of available display frequencies supported by this hardware.
         /// </summary>
+        /// <param name="refreshRates">populated list of available refresh rates</param>
+        /// <returns>true if able to populate the refresh rates</returns>
         public static bool TryGetAvailableDisplayRefreshRates(out float[] refreshRates)
         {
             if (cachedDisplayAvailableFrequencies == null || cachedDisplayAvailableFrequencies.Length == 0)
@@ -56,7 +61,7 @@ namespace Unity.XR.Oculus
                 cachedDisplayAvailableFrequencies = new float[0];
                 int numFrequencies = 0;
                 if (NativeMethods.GetDisplayAvailableFrequencies(IntPtr.Zero, ref numFrequencies) && numFrequencies > 0)
-                {                   
+                {
                     int size = sizeof(float) * numFrequencies;
                     IntPtr ptr = Marshal.AllocHGlobal(size);
                     if (NativeMethods.GetDisplayAvailableFrequencies(ptr, ref numFrequencies) && numFrequencies > 0)
@@ -75,6 +80,8 @@ namespace Unity.XR.Oculus
         /// <summary>
         /// Set the current display frequency.
         /// </summary>
+        /// <param name="refreshRate">The requested refresh rate</param>
+        /// <returns>true if able to successfully set the refresh rate</returns>
         public static bool TrySetDisplayRefreshRate(float refreshRate)
         {
             return NativeMethods.SetDisplayFrequency(refreshRate);
@@ -83,12 +90,17 @@ namespace Unity.XR.Oculus
         /// <summary>
         /// Get the current display frequency.
         /// </summary>
+        /// <param name="refreshRate">A variable to receive the current refresh rate.</param>
+        /// <returns><c>True</c> if the method successfully obtained the refresh rate and assigned it to the variable passed to <c>refreshRate</c>.</returns>
         public static bool TryGetDisplayRefreshRate(out float refreshRate)
         {
             return NativeMethods.GetDisplayFrequency(out refreshRate);
         }
     }
 
+    /// <summary>
+    /// Statistics for profiling device performance.
+    /// </summary>
     public class Stats
     {
         private static IntegratedSubsystem m_Display;
@@ -97,6 +109,7 @@ namespace Unity.XR.Oculus
         /// <summary>
         /// Gets the version of OVRPlugin currently in use. Format: "major.minor.release"
         /// </summary>
+        /// <value>A string representing the OVRPlugin version.</value>
         public static string PluginVersion
         {
             get
@@ -120,6 +133,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Reports the time the application spent on the GPU last frame in seconds.
             /// </summary>
+            /// <value>the time, in seconds</value>
             public static float GPUAppTime
             {
                 get
@@ -137,6 +151,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Reports the time the compositor spent on the GPU last frame in seconds.
             /// </summary>
+            /// <value>the time, in seconds</value>
             public static float GPUCompositorTime
             {
                 get
@@ -154,6 +169,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Reports the latency from when the last predicted tracking information was queried by the application to the moment the middle scaline of the target frame is illuminated on the display.
             /// </summary>
+            /// <value>the time, in seconds</value>
             public static float MotionToPhoton
             {
                 get
@@ -171,6 +187,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Reports the display's refresh rate in frames per second
             /// </summary>
+            /// <value>frames per second</value>
             [Obsolete("RefreshRate is deprecated. Use Performance.TryGetDisplayRefreshRate instead.", false)]
             public static float RefreshRate
             {
@@ -189,6 +206,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Gets the current battery temperature in degrees Celsius.
             /// </summary>
+            /// <value>degrees celsius</value>
             public static float BatteryTemp
             {
                 get
@@ -206,6 +224,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Gets the current available battery charge, ranging from 0.0 (empty) to 1.0 (full).
             /// </summary>
+            /// <value>value clamped between 0.0 and 1.0</value>
             public static float BatteryLevel
             {
                 get
@@ -223,6 +242,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// If true, the system is running in a reduced performance mode to save power.
             /// </summary>
+            /// <value>true if the system is running in reduced performance mode</value>
             public static bool PowerSavingMode
             {
                 get
@@ -241,6 +261,7 @@ namespace Unity.XR.Oculus
             /// Returns the recommended amount to scale GPU work in order to maintain framerate.
             /// Can be used to adjust viewportScale and textureScale
             /// </summary>
+            /// <value>recommended scale factor</value>
             public static float AdaptivePerformanceScale
             {
                 get
@@ -258,6 +279,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Gets the current CPU performance level, integer in the range 0 - 3.
             /// </summary>
+            /// <value>0, 1, 2 or 3</value>
             public static int CPULevel
             {
                 get
@@ -275,6 +297,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Gets the current GPU performance level, integer in the range 0 - 3.
             /// </summary>
+            /// <value>0, 1, 2 or 3</value>
             public static int GPULevel
             {
                 get
@@ -292,13 +315,19 @@ namespace Unity.XR.Oculus
 
         /// <summary>
         /// Provides additional perf metrics. These stats will not be tracked unless the user makes a PerfMetrics.EnablePerfMetrics(true) method call. Not every stat is supported on every Oculus platform and will always return a value of 0 if unsupported.
-        /// <para/><b>Note:</b> PerfMetrics stats will return 0 when using the OpenXR runtime. The suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
         /// </summary>
+        /// <remarks>
+        /// The PerfMetrics stats do not work under the OpenXR runtime. All values return 0.
+        /// Instead, you can use the profiling tools available from the Oculus Developer Hub.
+        /// Refer to <a href="https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/">Performance Analyzer and Metrics</a>
+        /// for more information.
+        /// </remarks>
         public static class PerfMetrics
         {
             /// <summary>
             /// Reports the time the application spent on the CPU last frame in seconds.
             /// </summary>
+            /// <value>time in seconds</value>
             public static float AppCPUTime
             {
                 get
@@ -316,6 +345,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Reports the time the application spen on the GPU last frame in seconds.
             /// </summary>
+            /// <value>time in seconds</value>
             public static float AppGPUTime
             {
                 get
@@ -333,6 +363,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Reports the time the compositor spent on the CPU last frame in seconds.
             /// </summary>
+            /// <value>time in seconds</value>
             public static float CompositorCPUTime
             {
                 get
@@ -350,6 +381,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Reports the time the compositor spent on the GPU last frame in seconds.
             /// </summary>
+            /// <value>time in seconds</value>
             public static float CompositorGPUTime
             {
                 get
@@ -367,6 +399,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Reports the GPU utilization as a value from 0.0 - 1.0.
             /// </summary>
+            /// <value>clamped value between 0.0 and 1.0</value>
             public static float GPUUtilization
             {
                 get
@@ -384,6 +417,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Reports the average CPU utilization as a value from 0.0 - 1.0.
             /// </summary>
+            /// <value>clamped value between 0.0 and 1.0</value>
             public static float CPUUtilizationAverage
             {
                 get
@@ -401,6 +435,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Reports the worst CPU utilization as a value from 0.0 - 1.0.
             /// </summary>
+            /// <value>clamped value between 0.0 and 1.0</value>
             public static float CPUUtilizationWorst
             {
                 get
@@ -418,6 +453,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Reports the CPU clock frequency
             /// </summary>
+            /// <value>the CPU clock frequency</value>
             public static float CPUClockFrequency
             {
                 get
@@ -435,6 +471,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Reports the GPU clock frequency
             /// </summary>
+            /// <value>the GPU clock frequency</value>
             public static float GPUClockFrequency
             {
                 get
@@ -452,6 +489,7 @@ namespace Unity.XR.Oculus
             /// <summary>
             /// Enable or disable provider tracking perf metrics. Perf metrics are disabled by default.
             /// </summary>
+            /// <param name="enable">true to enable perf metrics</param>
             public static void EnablePerfMetrics(bool enable)
             {
                 NativeMethods.EnablePerfMetrics(enable);
@@ -460,7 +498,9 @@ namespace Unity.XR.Oculus
 
         /// <summary>
         /// Provides additional application metrics. These metrics will not be tracked unless the user makes a AppMetrics.EnableAppMetrics(true) method call.
-        /// <para/><b>Note:</b> AppMetrics are deprecated and currently return 0 on all Oculus runtimes. The suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
+        /// <para>
+        /// <b>Note:</b> AppMetrics are deprecated and currently return 0 on all Oculus runtimes. The suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
+        /// </para>
         /// </summary>
         public static class AppMetrics
         {

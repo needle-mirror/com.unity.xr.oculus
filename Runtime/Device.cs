@@ -9,7 +9,6 @@ namespace Unity.XR.Oculus
         /// <summary>
         /// Returns the type of the current headset
         /// </summary>
-        /// <returns></returns>
         public static SystemHeadset GetSystemHeadsetType()
         {
             return NativeMethods.GetSystemHeadsetType();

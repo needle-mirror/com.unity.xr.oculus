@@ -58,6 +58,7 @@ namespace Unity.XR.Oculus.Editor
                 settings.TargetQuest3S = false;
                 settings.DepthSubmission = false;
                 settings.UseStickControlThumbsticks = false;
+                settings.OptimizeMultiviewRenderRegions = false;
 
                 return true;
             }

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -31,6 +31,7 @@ namespace Unity.XR.Oculus.Editor
         private const string kSystemSplashScreen = "SystemSplashScreen";
         private const string kDepthSubmission = "DepthSubmission";
         private const string kUseStickControlThumbsticks = "UseStickControlThumbsticks";
+        private const string kOptimizeMultiviewRenderRegions = "OptimizeMultiviewRenderRegions";
 
         static GUIContent s_SharedDepthBufferLabel = EditorGUIUtility.TrTextContent("Shared Depth Buffer");
         static GUIContent s_DashSupportLabel = EditorGUIUtility.TrTextContent("Dash Support");
@@ -53,6 +54,7 @@ namespace Unity.XR.Oculus.Editor
         static GUIContent s_DepthSubmission = EditorGUIUtility.TrTextContent("Depth Submission (Vulkan)");
         static GUIContent s_ShowAndroidExperimentalLabel = EditorGUIUtility.TrTextContent("Experimental", "Experimental settings that are under active development and should be used with caution.");
         static GUIContent s_UseStickControlThumbsticksLabel = EditorGUIUtility.TrTextContent("Use Stick Control Thumbsticks*");
+        static GUIContent s_OptimizeMultiviewRenderRegionsLabel = EditorGUIUtility.TrTextContent("Optimize Multiview Render Regions (Vulkan)");
 
         private SerializedProperty m_SharedDepthBuffer;
         private SerializedProperty m_DashSupport;
@@ -74,6 +76,7 @@ namespace Unity.XR.Oculus.Editor
         private SerializedProperty m_SystemSplashScreen;
         private SerializedProperty m_DepthSubmission;
         private SerializedProperty m_UseStickControlThumbstick;
+        private SerializedProperty m_OptimizeMultiviewRenderRegions;
 
         static private bool m_ShowAndroidExperimental = false;
 
@@ -102,10 +105,11 @@ namespace Unity.XR.Oculus.Editor
             if (m_SystemSplashScreen == null) m_SystemSplashScreen = serializedObject.FindProperty(kSystemSplashScreen);
             if (m_DepthSubmission == null) m_DepthSubmission = serializedObject.FindProperty(kDepthSubmission);
             if (m_UseStickControlThumbstick == null) m_UseStickControlThumbstick = serializedObject.FindProperty(kUseStickControlThumbsticks);
+            if (m_OptimizeMultiviewRenderRegions == null) m_OptimizeMultiviewRenderRegions = serializedObject.FindProperty(kOptimizeMultiviewRenderRegions);
 
             serializedObject.Update();
 
-            EditorGUIUtility.labelWidth = 240.0f;
+            EditorGUIUtility.labelWidth = 260.0f;
 
             BuildTargetGroup selectedBuildTargetGroup = EditorGUILayout.BeginBuildTargetSelectionGrouping();
             EditorGUILayout.Space();
@@ -140,6 +144,16 @@ namespace Unity.XR.Oculus.Editor
                 EditorGUILayout.PropertyField(m_LateLatching, s_LateLatchingLabel);
                 EditorGUILayout.PropertyField(m_LateLatchingDebug, s_LateLatchingDebugLabel);
                 EditorGUILayout.PropertyField(m_UseStickControlThumbstick, s_UseStickControlThumbsticksLabel);
+#if UNITY_6000_1_OR_NEWER
+                EditorGUILayout.PropertyField(m_OptimizeMultiviewRenderRegions, s_OptimizeMultiviewRenderRegionsLabel);
+                if(m_OptimizeMultiviewRenderRegions.boolValue)
+                {
+                    if (m_StereoRenderingModeAndroid.enumDisplayNames[m_StereoRenderingModeAndroid.enumValueIndex] != "Multiview")
+                        EditorGUILayout.HelpBox("Multiview Render Regions is only supported with Multiview", MessageType.Error);
+                    if (!m_SymmetricProjection.boolValue)
+                        EditorGUILayout.HelpBox("Multiview Render Regions is only supported with Symmetric Projection", MessageType.Error);
+                }
+#endif
 
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(m_SystemSplashScreen, s_SystemSplashScreen);

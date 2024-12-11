@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 
 namespace Unity.XR.Oculus
@@ -24,7 +24,7 @@ namespace Unity.XR.Oculus
                 return NativeMethods.GetHasInputFocus();
             }
         }
-        
+
         internal static void Update()
         {
             bool appHasInputFocus = hasInputFocus;
@@ -33,13 +33,13 @@ namespace Unity.XR.Oculus
                 if (InputFocusLost != null)
                     InputFocusLost();
             }
-        
+
             if (appHasInputFocus && !hadInputFocus)
             {
                 if (InputFocusAcquired != null)
                     InputFocusAcquired();
             }
-        
+
             hadInputFocus = appHasInputFocus;
         }
     }

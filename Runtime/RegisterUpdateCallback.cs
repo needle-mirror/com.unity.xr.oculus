@@ -1,4 +1,4 @@
-﻿#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
 #define OCULUSPLUGIN_WINDOWS_PLATFORM_ONLY
 #endif
 
@@ -14,7 +14,7 @@ namespace Unity.XR.Oculus
             {
                 Application.onBeforeRender += Update;
             }
-            
+
         }
 
         internal static void Deinitialize()
@@ -24,12 +24,12 @@ namespace Unity.XR.Oculus
                 Application.onBeforeRender -= Update;
             }
         }
-        
+
         private static void Update()
         {
             //Detect if input focus lost or acquired.
             InputFocus.Update();
-            
+
             // Update our session state
             OculusSession.Update();
 

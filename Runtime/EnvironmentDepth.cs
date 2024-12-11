@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using UnityEngine.Android;
 
@@ -39,9 +39,6 @@ namespace Unity.XR.Oculus
             }
         }
 
-        /// <summary>
-        /// Returns true if the user has allowed the USE_SCENE permission
-        /// </summary>
         public static bool IsScenePermissionGranted()
         {
 #if UNITY_ANDROID && !UNITY_EDITOR

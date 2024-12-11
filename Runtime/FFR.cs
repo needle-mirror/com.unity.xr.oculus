@@ -23,7 +23,7 @@ namespace Unity.XR.Oculus
         }
 
         /// <summary>
-        /// Gets or sets dynamic foveated rendering which will change the foveated rendering level automatically based on the current performance. 
+        /// Gets or sets dynamic foveated rendering which will change the foveated rendering level automatically based on the current performance.
         /// Works for both FFR and ETFR.
         /// </summary>
         public static bool useDynamicFoveatedRendering
@@ -130,7 +130,7 @@ namespace Unity.XR.Oculus
         /// </summary>
         /// <param name="level">
         ///  level can be 0, 1, 2, 3, or 4:
-        /// 
+        ///
         /// * 0 disables foveated rendering
         /// * 1 low foveated rendering level
         /// * 2 medium foveated rendering level

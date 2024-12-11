@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Unity.XR.Oculus
 {
+    /// <summary>
+    /// Developer mode settings
+    /// </summary>
     public static class Development
     {
         private enum UserDeveloperModeSettingCache
@@ -17,6 +20,7 @@ namespace Unity.XR.Oculus
         /// <summary>
         /// Enable or disable developer mode, default enable in development build
         /// </summary>
+        /// <param name="active">true to attempt to set developer mode active</param>
         public static void TrySetDeveloperMode(bool active)
         {
             //cache this setting to use it in Start() only
@@ -38,7 +42,7 @@ namespace Unity.XR.Oculus
             if (shouldOverride && !NativeMethods.SetDeveloperModeStrict(enable))
                 Debug.LogError("Failed to set DeveloperMode on Start.");
         }
- 
+
         internal static void OverrideDeveloperModeStop()
         {
             if (!NativeMethods.SetDeveloperModeStrict(false))

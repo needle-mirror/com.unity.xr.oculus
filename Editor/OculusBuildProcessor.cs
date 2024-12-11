@@ -187,7 +187,8 @@ namespace UnityEditor.XR.Oculus
             { "xr-skip-B10G11R11-special-casing", "1" },
             { "xr-hide-memoryless-render-texture", "1" },
             { "xr-skip-audio-buffer-size-check", "1" },
-            { "xr-meta-enabled", "1" }
+            { "xr-meta-enabled", "1" },
+            { "xr-mvpvv-enabled", "0" }
         };
 
         public void OnPreprocessBuild(BuildReport report)
@@ -238,6 +239,11 @@ namespace UnityEditor.XR.Oculus
                     }
                 }
 
+                if (settings != null && settings.OptimizeMultiviewRenderRegions && (settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || !settings.SymmetricProjection))
+                {
+                    throw new BuildFailedException("Multiview Render Regions is only supported with Vulkan with Multiview and Symmetric Projection.");
+                }
+
                 // write Android Meta tags to bootconfig
                 var bootConfig = new BootConfig(report);
                 bootConfig.ReadBootConfig();
@@ -246,6 +252,8 @@ namespace UnityEditor.XR.Oculus
                 {
                     bootConfig.SetValueForKey(entry.Key, entry.Value);
                 }
+
+                bootConfig.SetValueForKey("xr-mvpvv-enabled", (settings != null && settings.OptimizeMultiviewRenderRegions) ? "1" : "0");
 
                 bootConfig.WriteBootConfig();
             }
@@ -288,12 +296,12 @@ namespace UnityEditor.XR.Oculus
                 if (settings != null)
                 {
                     GraphicsDeviceType firstGfxType = PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0];
-                    
+
                     if (settings.SymmetricProjection && (settings.m_StereoRenderingModeAndroid != OculusSettings.StereoRenderingModeAndroid.Multiview || firstGfxType != GraphicsDeviceType.Vulkan))
                     {
                         Debug.LogWarning("Symmetric Projection is only supported with Vulkan and Multiview.");
                     }
-                    
+
                     if (settings.SubsampledLayout && (firstGfxType != GraphicsDeviceType.Vulkan))
                     {
                         Debug.LogWarning("Subsampled Layout is only supported with Vulkan.");
@@ -307,6 +315,11 @@ namespace UnityEditor.XR.Oculus
                     if (settings.DepthSubmission)
                     {
                         Debug.LogWarning("Enabling Depth Submission may cause a crash on application startup if MSAA is not enabled. This will be resolved in future versions of Unity.");
+                    }
+
+                    if (settings.OptimizeMultiviewRenderRegions && (firstGfxType != GraphicsDeviceType.Vulkan))
+                    {
+                        Debug.LogWarning("Multiview Render Regions is only supported with Vulkan.");
                     }
                 }
             }
@@ -555,8 +568,8 @@ namespace UnityEditor.XR.Oculus
 #if UNITY_2023_1_OR_NEWER
             switch (PlayerSettings.Android.applicationEntry)
             {
-                case AndroidApplicationEntry.GameActivity: 
-                    styleTheme = "@style/BaseUnityGameActivityTheme"; 
+                case AndroidApplicationEntry.GameActivity:
+                    styleTheme = "@style/BaseUnityGameActivityTheme";
                     break;
 
                 case AndroidApplicationEntry.Activity:
@@ -665,12 +678,6 @@ namespace UnityEditor.XR.Oculus
 
             nodePath = "/manifest/application/activity/intent-filter";
             CreateNameValueElementsInTag(manifestDoc, nodePath, "category", "name", "com.oculus.intent.category.VR");
-
-            // if the Microphone class is used in a project, the BLUETOOTH permission is automatically added to the manifest
-            // we remove it here since it will cause projects to fail Oculus cert
-            // this shouldn't affect Bluetooth HID devices, which don't need the permission
-            nodePath = "/manifest";
-            RemoveNameValueElementInTag(manifestDoc, nodePath, "uses-permission", "android:name", "android.permission.BLUETOOTH");
 
             manifestDoc.Save(manifestPath);
         }

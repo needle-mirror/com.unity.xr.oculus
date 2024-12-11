@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -55,7 +55,7 @@ namespace Unity.XR.Oculus
             /// Foveates the image using eye tracking.
             /// </summary>
             EyeTrackedFoveatedRendering = 1,
-            
+
 #if UNITY_2023_2_OR_NEWER && UNITY_URP_16 // Unity's Foveated Rendering API For URP is a new feature starting with Unity 2023.2
             /// <summary>
             /// Fixed Foveated Rendering with Unity's Foveated Rendering API (URP only)
@@ -166,7 +166,7 @@ namespace Unity.XR.Oculus
         /// </summary>
         [SerializeField, Tooltip("Adds a Quest 2 entry to the supported devices list in the Android manifest.")]
         public bool TargetQuest2 = true;
-        
+
         /// <summary>
         /// Adds a Quest Pro entry to the supported devices list in the Android manifest.
         /// </summary>
@@ -197,6 +197,12 @@ namespace Unity.XR.Oculus
         [SerializeField, Tooltip("Switch to use StickControl thumbsticks instead of Vector2Control, but may break existing projects that have code dependencies to the Vector2Control type. StickControl allows more input options for thumbstick-based control, such as acting as both a combined 2D vector, two independent axes or a four-way Dpad with 4 independent buttons. This setting affects both Android and Standalone settings. Only works with Input System package version 1.6.2 onwards.")]
         public bool UseStickControlThumbsticks = false;
 
+        /// <summary>
+        /// If enabled, optimize the viewports, scissors and render areas per eye to reduce rendering work. Vulkan with Multiview and Symmetric Projection only.
+        /// </summary>
+        [SerializeField, Tooltip("If enabled, optimize the viewports, scissors and render areas per eye to reduce rendering work. Vulkan with Multiview and Symmetric Projection only.")]
+        public bool OptimizeMultiviewRenderRegions = false;
+
 
         public ushort GetStereoRenderingMode()
         {
@@ -219,7 +225,6 @@ namespace Unity.XR.Oculus
             return FoveatedRenderingMethod == FoveationMethod.EyeTrackedFoveatedRendering;
 #endif
         }
-
 
 #if !UNITY_EDITOR
         public static OculusSettings s_Settings;

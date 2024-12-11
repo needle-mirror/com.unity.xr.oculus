@@ -1,0 +1,28 @@
+apiRules:
+  - exclude:
+      hasAttribute:
+        uid: System.ComponentModel.EditorBrowsableAttribute
+        ctorArguments:
+          - System.ComponentModel.EditorBrowsableState.Never
+  - exclude:
+      uidRegex: ^Unity\.XR\.Oculus\.Utils$
+  - exclude:
+      uidRegex: ^Unity\.XR\.Oculus\.InputFocus$
+  - exclude:
+      uidRegex: ^UnityEditor\.XR\.Oculus\.OculusBuildProcessor$
+  - exclude:
+      uidRegex: ^UnityEditor\.XR\.Oculus\.OculusBuildTools$
+  - exclude:
+      uidRegex: ^Unity\.XR\.Oculus\.OculusLoader$
+  - exclude:
+      uidRegex: ^Unity\.XR\.Oculus\.Stats\.AppMetrics$
+  - exclude:
+      uidRegex: ^Unity\.XR\.Oculus\.SystemHeadset$
+  - exclude:
+      uidRegex: ^Unity\.XR\.Oculus\.OculusSettings$
+  - exclude:
+      uidRegex: ^Unity\.XR\.Oculus\.Editor\.OculusSettingsEditor$
+  - exclude:
+      uidRegex: ^Unity\.XR\.Oculus\.NativeMethods$
+  - exclude:
+      uidRegex: ^UnityEditor\.XR\.Oculus\.OculusEnterPlayModeSettingsCheck$

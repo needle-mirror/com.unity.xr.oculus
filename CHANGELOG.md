@@ -4,16 +4,27 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [4.4.0] - 2024-09-26
+## [4.5.0] - 2024-12-11
 ### Added
-- Added Quest 3S target device checkbox
-- Updated the `SystemHeadset` enum to include `Meta_Quest_3S` and `Meta_Link_Quest_3S` entries
+- Added Optimize Multiview Render Regions setting for Meta Quest devices. Multiview Render Regions enables the GPU to skip shader invocations (and rendering work) for screen areas outside of the user's view. Requires Vulkan and Multiview
+
+### Changed
+- Reorient position delta of SpaceWarp's app space delta position to be relative to the current view space
+- Changed build process to keep Bluetooth permissions tag if present in the manifest
+
+### Fixed
+- Fixed an issue where headtracking would get desynced after switching from Game view to Scene view when using Meta Quest Link
 
 ### Known Issues
 - `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime
 - `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes
 - For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
 - `Acceleration` and `AngularAcceleration` values on tracked poses currently return `0` when using the OpenXR runtime.  This is a limitation of the OpenXR API
+
+## [4.4.0] - 2024-09-26
+### Added
+- Added Quest 3S target device checkbox
+- Updated the `SystemHeadset` enum to include `Meta_Quest_3S` and `Meta_Link_Quest_3S` entries
 
 ## [4.3.0] - 2024-07-30
 ### Added
@@ -449,7 +460,7 @@ No changes since 1.7.0-preview.2
 - Re-enables GLES2
 
 ### Fixed
-- [Quest] Fixes an issue where resting then waking the device with the power button caused a black screen in the application (v12 Quest runtime and up) 
+- [Quest] Fixes an issue where resting then waking the device with the power button caused a black screen in the application (v12 Quest runtime and up)
 
 ## [1.1.4-preview] - 2019-12-03
 ### Fixed
@@ -462,7 +473,7 @@ No changes since 1.7.0-preview.2
 
 ## [1.1.3-preview] - 2019-11-27
 ### Added
-- Adds FFR hookup for Quest with Vulkan 
+- Adds FFR hookup for Quest with Vulkan
 
 ## [1.1.2] - 2019-11-25
 ### Changed
@@ -505,7 +516,7 @@ No changes since 1.7.0-preview.2
 ### Added
 - Color scale and offset api and helper class
 - More Oculus statistics (accessible via display subsystem api)
-- User presence usage when using new input system 
+- User presence usage when using new input system
 
 ### Changed
 - Disables main framebuffer flag to save memory (~36MB on Quest)

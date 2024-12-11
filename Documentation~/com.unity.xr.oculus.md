@@ -4,7 +4,7 @@ The Oculus XR Plugin enables you to build applications for a variety of Oculus d
 
 ## Supported XR plugin subsystems
 
-### Display 
+### Display
 
 The display subsystem provides stereo rendering support for the XR Plugin. It supports the following graphics APIs:
 
@@ -14,7 +14,7 @@ The display subsystem provides stereo rendering support for the XR Plugin. It su
     * OpenGL ES 3.0
     * Vulkan
 
-### Input 
+### Input
 
 The input subsystem provides controller support, haptics, and tracking for the controllers and head-mounted display (HMD).
 
@@ -31,7 +31,7 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 
 * **Stereo Rendering Mode** - You can select *Multi Pass* or *Single Pass Instanced* stereo rendering mode.
     * *Multi Pass* - Unity renders each eye independently by making two passes across the scene graph. Each pass has its own eye matrices and render target. Unity draws everything twice, which includes setting the graphics state for each pass. This is a slow and simple rendering method which doesn't require any special modification to shaders.
-    * *Single Pass Instanced* - Unity uses a texture array with two slices, and uses instanced draw calls (converting non-instanced draw calls to instanced versions when necessary) to direct rendering to the appropriate texture slice. Modify custom shaders for rendering in this mode. Use Unity's [XR shader macros](xref:SinglePassInstancing) to simplify authoring custom shaders. 
+    * *Single Pass Instanced* - Unity uses a texture array with two slices, and uses instanced draw calls (converting non-instanced draw calls to instanced versions when necessary) to direct rendering to the appropriate texture slice. Modify custom shaders for rendering in this mode. Use Unity's [XR shader macros](xref:SinglePassInstancing) to simplify authoring custom shaders.
 * **Shared Depth Buffer** - Enable or disable support for using a shared depth buffer. This allows Unity and Oculus to use a common depth buffer, which enables Oculus to composite the Oculus Dash and other utilities over the Unity application.
 * **Dash Support** - Enable or disable Dash support. This initializes the Oculus Plugin with Dash support, which enables the Oculus Dash to composite over the Unity application.
 
@@ -55,6 +55,7 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 * **Late Latching** - This feature reduces tracked rendering latency by updating head and controller poses as late as possible before rendering. Vulkan only.
 * **Late Latching Debug Mode** - Enables a debug mode for Late Latching which will print information about the Late Latching system as well as any errors. This can be used to verify that Late Latching is performing correctly. Debug mode is only active in Development builds.
 * **Application SpaceWarp** - Enables support for a frame synthesis technology to allow your application to render at half frame rate, while still delivering a smooth experience. Note that this currently requires a custom version of the URP provided by Oculus in order to work, and should not be enabled if you aren't using that customized Oculus URP package.
+* **Optimize Multiview Render Regions (Vulkan)** - If enabled, Multiview Render Regions will prevent graphics processing outside of the user’s view. Refer to [Multiview Render Regions](https://docs.unity3d.com/6000.1/Documentation/Manual/xr-multiview-render-regions.html) to learn more about this feature.
 
 ## Technical details
 
