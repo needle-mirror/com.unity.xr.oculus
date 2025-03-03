@@ -4,6 +4,17 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.5.1] - 2025-03-03
+### Fixed
+- Fixed warnings and errors related to using Direct3D 12
+- Automatically disable Direct3D 12 when the Oculus XR Plugin is enabled on Windows in Unity 6.1 and higher
+
+### Known Issues
+- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime
+- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes
+- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
+- `Acceleration` and `AngularAcceleration` values on tracked poses currently return `0` when using the OpenXR runtime.  This is a limitation of the OpenXR API
+
 ## [4.5.0] - 2024-12-11
 ### Added
 - Added Optimize Multiview Render Regions setting for Meta Quest devices. Multiview Render Regions enables the GPU to skip shader invocations (and rendering work) for screen areas outside of the user's view. Requires Vulkan and Multiview
@@ -14,12 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Fixed an issue where headtracking would get desynced after switching from Game view to Scene view when using Meta Quest Link
-
-### Known Issues
-- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime
-- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes
-- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
-- `Acceleration` and `AngularAcceleration` values on tracked poses currently return `0` when using the OpenXR runtime.  This is a limitation of the OpenXR API
 
 ## [4.4.0] - 2024-09-26
 ### Added

@@ -1,7 +1,7 @@
 {
   "name": "com.unity.xr.oculus",
   "displayName": "Oculus XR Plugin",
-  "version": "4.5.0",
+  "version": "4.5.1",
   "unity": "2022.3",
   "unityRelease": "1f1",
   "description": "Provides display and input support for Oculus devices.",
@@ -20,16 +20,16 @@
   "repository": {
     "url": "https://github.cds.internal.unity3d.com/unity/xr.sdk.oculus.git",
     "type": "git",
-    "revision": "7bf7568e5fdef9d5f4b20a5d7c2a2622479a4679"
+    "revision": "952df4302289a51a63d59c9eecb8c0da8b8e458c"
   },
   "relatedPackages": {
-    "com.unity.xr.oculus.tests": "4.5.0"
+    "com.unity.xr.oculus.tests": "4.5.1"
   },
   "_upm": {
-    "changelog": "### Added\n- Added Optimize Multiview Render Regions setting for Meta Quest devices. Multiview Render Regions enables the GPU to skip shader invocations (and rendering work) for screen areas outside of the user's view. Requires Vulkan and Multiview\n\n### Changed\n- Reorient position delta of SpaceWarp's app space delta position to be relative to the current view space\n- Changed build process to keep Bluetooth permissions tag if present in the manifest\n\n### Fixed\n- Fixed an issue where headtracking would get desynced after switching from Game view to Scene view when using Meta Quest Link\n\n### Known Issues\n- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime\n- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes\n- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/\n- `Acceleration` and `AngularAcceleration` values on tracked poses currently return `0` when using the OpenXR runtime.  This is a limitation of the OpenXR API"
+    "changelog": "### Fixed\n- Fixed warnings and errors related to using Direct3D 12\n- Automatically disable Direct3D 12 when the Oculus XR Plugin is enabled on Windows in Unity 6.1 and higher\n\n### Known Issues\n- `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime\n- `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes\n- For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/\n- `Acceleration` and `AngularAcceleration` values on tracked poses currently return `0` when using the OpenXR runtime.  This is a limitation of the OpenXR API"
   },
   "upmCi": {
-    "footprint": "d0d64f77e062453fce7dd07bb619d5f9be3e8234"
+    "footprint": "82efa37f5338a0ea08df6de4e6c0ea3e22c995e3"
   },
   "documentationUrl": "https://docs.unity3d.com/Packages/com.unity.xr.oculus@4.5/manual/index.html"
 }

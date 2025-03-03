@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.Android;
 using UnityEngine.Rendering;
@@ -371,6 +372,61 @@ namespace Unity.XR.Oculus
 #endif
 
 #if UNITY_EDITOR && XR_MGMT_GTE_320
+#if UNITY_6000_1_OR_NEWER
+        private void RemoveD3D12FromStandaloneGraphicsAPIs()
+        {
+            bool d3d12Removed = false;
+
+            if (PlayerSettings.GetUseDefaultGraphicsAPIs(BuildTarget.StandaloneWindows64))
+            {
+                PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.StandaloneWindows64, false);
+                d3d12Removed = true;
+            }
+
+            GraphicsDeviceType[] oldApis = PlayerSettings.GetGraphicsAPIs(BuildTarget.StandaloneWindows64);
+            List<GraphicsDeviceType> newApisList = new List<GraphicsDeviceType>();
+
+            // copy all entries except D3D12
+            foreach (GraphicsDeviceType dev in oldApis)
+            {
+                if (dev == GraphicsDeviceType.Direct3D12)
+                {
+                    d3d12Removed = true;
+                    continue;
+                }
+
+                newApisList.Add(dev);
+            }
+
+            // if we didn't remove D3D12 from the list, no need to do any further processing
+            if (d3d12Removed == false)
+                return;
+
+            string removalWarning;
+
+            if (newApisList.Count <= 0)
+            {
+                newApisList.Add(GraphicsDeviceType.Direct3D11);
+                removalWarning = "Direct3D 12 is unsupported with the Oculus XR Plugin. It has been removed from your list of Windows graphics APIs and replaced with Direct3D 11.";
+            }
+            else
+            {
+                removalWarning = "Direct3D 12 is unsupported with the Oculus XR Plugin. It has been removed from your list of Windows graphics APIs.";
+            }
+
+            Debug.LogWarning(removalWarning);
+
+            PlayerSettings.SetGraphicsAPIs(BuildTarget.StandaloneWindows64, newApisList.ToArray());
+
+            // restart the editor
+            string dialogMsg = removalWarning + "\n\nRestart the editor now to use the updated settings, otherwise a restart will be required later to run on device.";
+            if (EditorUtility.DisplayDialog("Unity editor restart required", dialogMsg, "Restart", "Continue"))
+            {
+                typeof(EditorApplication).GetMethod("RestartEditorAndRecompileScripts", BindingFlags.NonPublic | BindingFlags.Static)?.Invoke(null, null);
+            }
+        }
+#endif // UNITY_6000_1_OR_NEWER
+
         private void SetAndroidMinSdkVersion()
         {
             if (PlayerSettings.Android.minSdkVersion < AndroidSdkVersions.AndroidApiLevel23)
@@ -382,6 +438,13 @@ namespace Unity.XR.Oculus
 
         public override void WasAssignedToBuildTarget(BuildTargetGroup buildTargetGroup)
         {
+#if UNITY_6000_1_OR_NEWER
+            if (buildTargetGroup == BuildTargetGroup.Standalone)
+            {
+                RemoveD3D12FromStandaloneGraphicsAPIs();
+            }
+#endif
+
             if (buildTargetGroup == BuildTargetGroup.Android)
             {
                 SetAndroidMinSdkVersion();

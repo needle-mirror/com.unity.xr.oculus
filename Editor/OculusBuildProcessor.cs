@@ -146,6 +146,7 @@ namespace UnityEditor.XR.Oculus
         }
     }
 
+#if UNITY_EDITOR_WIN
     [InitializeOnLoad]
     public static class OculusEnterPlayModeSettingsCheck
     {
@@ -163,14 +164,18 @@ namespace UnityEditor.XR.Oculus
                     return;
                 }
 
-                if (PlayerSettings.GetGraphicsAPIs(BuildTarget.StandaloneWindows)[0] !=
-                    GraphicsDeviceType.Direct3D11)
+                if (PlayerSettings.GetGraphicsAPIs(BuildTarget.StandaloneWindows64)[0] != GraphicsDeviceType.Direct3D11)
                 {
-                    Debug.LogError("D3D11 is currently the only graphics API compatible with the Oculus XR Plugin on desktop platforms. Please change the preferred Graphics API setting in Player Settings.");
+                    Debug.LogError("Direct3D 11 is currently the only graphics API compatible with the Oculus XR Plugin on Windows platforms. Please change the preferred Graphics API setting in Player Settings.");
+                }
+                else if (SystemInfo.graphicsDeviceType != GraphicsDeviceType.Direct3D11)
+                {
+                    Debug.LogError("Direct3D 11 is currently the only graphics API compatible with the Oculus XR Plugin on Windows platforms. Please restart the editor to use Direct3D 11.");
                 }
             }
         }
     }
+#endif // UNITY_EDITOR_WIN
 
     internal class OculusBuildHooks : IPreprocessBuildWithReport, IPostprocessBuildWithReport
     {
@@ -265,10 +270,9 @@ namespace UnityEditor.XR.Oculus
 
             if (report.summary.platform == BuildTarget.StandaloneWindows || report.summary.platform == BuildTarget.StandaloneWindows64)
             {
-                if (PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0] !=
-                    GraphicsDeviceType.Direct3D11)
+                if (PlayerSettings.GetGraphicsAPIs(report.summary.platform)[0] != GraphicsDeviceType.Direct3D11)
                 {
-                    throw new BuildFailedException("D3D11 is currently the only graphics API compatible with the Oculus XR Plugin on desktop platforms. Please change the Graphics API setting in Player Settings.");
+                    throw new BuildFailedException("Direct3D 11 is currently the only graphics API compatible with the Oculus XR Plugin on Windows platforms. Please change the Graphics API setting in Player Settings.");
                 }
             }
         }

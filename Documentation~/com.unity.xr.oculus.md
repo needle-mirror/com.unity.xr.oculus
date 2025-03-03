@@ -9,7 +9,7 @@ The Oculus XR Plugin enables you to build applications for a variety of Oculus d
 The display subsystem provides stereo rendering support for the XR Plugin. It supports the following graphics APIs:
 
 * Windows
-    * DX11
+    * Direct3D 11
 * Android
     * OpenGL ES 3.0
     * Vulkan
