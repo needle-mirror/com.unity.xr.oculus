@@ -229,10 +229,17 @@ namespace UnityEditor.XR.Oculus
                 }
 #endif
 
+#if UNITY_6000_2_OR_NEWER
+                if (PlayerSettings.Android.minSdkVersion < AndroidSdkVersions.AndroidApiLevel29)
+                {
+                    throw new BuildFailedException("Android Minimum API Level must be set to 29 or higher for the Oculus XR Plugin.");
+                }
+#else
                 if (PlayerSettings.Android.minSdkVersion < AndroidSdkVersions.AndroidApiLevel23)
                 {
                     throw new BuildFailedException("Android Minimum API Level must be set to 23 or higher for the Oculus XR Plugin.");
                 }
+#endif
 
                 // some features don't work in non-ARM64 builds
                 if ((PlayerSettings.Android.targetArchitectures & AndroidArchitecture.ARM64) != AndroidArchitecture.ARM64)

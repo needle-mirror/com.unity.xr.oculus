@@ -4,10 +4,13 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [4.5.1] - 2025-03-03
+## [4.5.2] - 2025-06-25
+### Changed
+- Updated documentation to note recommended migration path to the OpenXR provider. Migrating to OpenXR has additional benefits including ongoing support, an active development roadmap, and cross-platform development
+
 ### Fixed
-- Fixed warnings and errors related to using Direct3D 12
-- Automatically disable Direct3D 12 when the Oculus XR Plugin is enabled on Windows in Unity 6.1 and higher
+- Fixed the regex string when registering the OculusHMD layout inside OculusLoader.cs to include "Meta Quest" to capture newer Quest devices
+- Updated the Android Minimum API Version to 29 when using Unity 6.2 and newer to match Meta's developer requirements
 
 ### Known Issues
 - `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime
@@ -15,6 +18,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
 - `Acceleration` and `AngularAcceleration` values on tracked poses currently return `0` when using the OpenXR runtime.  This is a limitation of the OpenXR API
 
+## [4.5.1] - 2025-03-03
+### Fixed
+- Fixed warnings and errors related to using Direct3D 12
+- Automatically disable Direct3D 12 when the Oculus XR Plugin is enabled on Windows in Unity 6.1 and higher
+ 
 ## [4.5.0] - 2024-12-11
 ### Added
 - Added Optimize Multiview Render Regions setting for Meta Quest devices. Multiview Render Regions enables the GPU to skip shader invocations (and rendering work) for screen areas outside of the user's view. Requires Vulkan and Multiview

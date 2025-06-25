@@ -42,7 +42,7 @@ namespace Unity.XR.Oculus
             InputSystem.RegisterLayout<OculusHMD>(
                 matches: new InputDeviceMatcher()
                     .WithInterface(XRUtilities.InterfaceMatchAnyVersion)
-                    .WithProduct("^(Oculus Rift)|^(Oculus Quest)|^(Oculus Go)"));
+                    .WithProduct("^(Oculus Rift)|^(Oculus Quest)|^(Oculus Go)|^(Meta Quest)"));
             InputSystem.RegisterLayout<OculusTouchController>(
                 matches: new InputDeviceMatcher()
                     .WithInterface(XRUtilities.InterfaceMatchAnyVersion)
@@ -427,6 +427,16 @@ namespace Unity.XR.Oculus
         }
 #endif // UNITY_6000_1_OR_NEWER
 
+#if UNITY_6000_2_OR_NEWER
+        private void SetAndroidMinSdkVersion()
+        {
+            if (PlayerSettings.Android.minSdkVersion < AndroidSdkVersions.AndroidApiLevel29)
+            {
+                Debug.Log("The Android Minimum API Level has been updated to 29 in Player Settings as this is the minimum required for Oculus builds.");
+                PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel29;
+            }
+        }
+#else
         private void SetAndroidMinSdkVersion()
         {
             if (PlayerSettings.Android.minSdkVersion < AndroidSdkVersions.AndroidApiLevel23)
@@ -435,6 +445,7 @@ namespace Unity.XR.Oculus
                 PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel23;
             }
         }
+#endif
 
         public override void WasAssignedToBuildTarget(BuildTargetGroup buildTargetGroup)
         {
