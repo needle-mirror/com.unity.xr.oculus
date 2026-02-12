@@ -627,7 +627,7 @@ namespace UnityEditor.XR.Oculus
 
                 if (settings.TargetQuest3)
                     deviceList.Add("eureka");
-                
+
                 if (settings.TargetQuest3S)
                     deviceList.Add("quest3s");
 

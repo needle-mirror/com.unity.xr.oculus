@@ -1,4 +1,4 @@
-﻿#if ENABLE_VR || PACKAGE_DOCS_GENERATION
+#if ENABLE_VR || PACKAGE_DOCS_GENERATION
 using UnityEngine.XR;
 
 namespace Unity.XR.Oculus
