@@ -21,7 +21,11 @@ namespace Unity.XR.Oculus.Editor
 
         private class OculusLoaderMetadata : IXRLoaderMetadata
         {
+#if UNITY_6000_5_OR_NEWER
+            public string loaderName => "Oculus (Deprecated)";
+#else
             public string loaderName => "Oculus";
+#endif
             public string loaderType => "Unity.XR.Oculus.OculusLoader";
             public List<BuildTargetGroup> supportedBuildTargets => s_SupportedBuildTargets;
 

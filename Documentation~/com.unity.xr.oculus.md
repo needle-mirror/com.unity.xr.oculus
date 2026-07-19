@@ -49,6 +49,10 @@ The Oculus XR Plugin integration with XR Management provides the following funct
     * *Eye Tracked Foveated Rendering* - Foveates the image using eye tracking. Only supported on Quest Pro with proper permissions and when using Vulkan, Multiview, and ARM64.
     * *Fixed Foveated Rendering Using Unity API For URP* - Foveates the image based on a fixed pattern. This option will use Unity's common Foveated Rendering API that allows improved support for URP. This option does not work with the Built-In Render Pipeline.
     * *Eye Tracked Foveated Rendering Using Unity API For URP* - Foveates the image using eye tracking. Only supported on Quest Pro with proper permissions and when using Vulkan, Multiview, and ARM64. This option will use Unity's common Foveated Rendering API that allows improved support for URP. This option does not work with the Built-In Renderer Pipeline.
+
+    > [!IMPORTANT]
+    > In Unity 6.5 and newer, the Built-In Render Pipeline is deprecated and will be made obsolete in a future release. For more information, refer to [Migrating from the Built-In Render Pipeline to URP](https://docs.unity3d.com/6000.5/Documentation/Manual/urp/upgrading-from-birp.html) and [Render pipeline feature comparison](https://docs.unity3d.com/6000.5/Documentation/Manual/render-pipelines-feature-comparison.html).
+
 * **Enable TrackingOrigin Stage Mode** - If you enable **TrackingOrigin Stage Mode** when the `TrackingOriginMode` of your `XR Origin` component is set to `Floor`, the tracking origin won’t change with a system recenter.
 * **Depth Submission** - Enables support for submitting the depth buffer on mobile. This enables depth testing between layers on Oculus mobile platforms.
 * **System Splash Screen** - You can add a PNG file under the Assets folder as the system splash screen image. If set, the OS will display the system splash screen as a high quality compositor layer as soon as the app is starting to launch until the app submits the first frame.
@@ -58,6 +62,9 @@ The Oculus XR Plugin integration with XR Management provides the following funct
 * **Optimize Multiview Render Regions (Vulkan)** - If enabled, Multiview Render Regions will prevent graphics processing outside of the user’s view. Refer to [Multiview Render Regions](https://docs.unity3d.com/6000.1/Documentation/Manual/xr-multiview-render-regions.html) to learn more about this feature.
 
 ## Technical details
+
+> [!IMPORTANT]
+> In Unity 6.5 and newer, the Built-In Render Pipeline is deprecated and will be made obsolete in a future release. For more information, refer to [Migrating from the Built-In Render Pipeline to URP](https://docs.unity3d.com/6000.5/Documentation/Manual/urp/upgrading-from-birp.html) and [Render pipeline feature comparison](https://docs.unity3d.com/6000.5/Documentation/Manual/render-pipelines-feature-comparison.html).
 
 ### Environment Depth
 

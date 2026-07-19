@@ -104,5 +104,11 @@ namespace Unity.XR.Oculus
         {
             return NativeMethods.GetEnvironmentDepthHandRemovalSupported();
         }
+
+        [RuntimeInitializeOnLoadMethod]
+        static void OnRuntimeInitialized()
+        {
+            s_EnvironmentDepthCreateParams = default;
+        }
     }
 }

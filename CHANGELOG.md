@@ -4,16 +4,23 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [4.5.4] - 2026-02-12
+## [4.5.5] - 2026-07-19
 ### Changed
-- macOS binaries are now code signed
-- Added dependency on `com.unity.modules.androidjni`
+- Added warning message to indicate deprecation of the Oculus XR Plugin
+
+### Fixed
+- Fixed support for Fast Enter Play Mode (no domain reload).
 
 ### Known Issues
 - `Unity.XR.Oculus.Stats.PerfMetrics` entries currently return `0` when using the OpenXR runtime
 - `Unity.XR.Oculus.Stats.AppMetrics` entries return `0` on all Oculus runtimes
 - For both of the above, the suggested replacement is to use the profiling tools available via the Oculus Developer Hub: https://developer.oculus.com/documentation/unity/ts-odh-logs-metrics/
 - `Acceleration` and `AngularAcceleration` values on tracked poses currently return `0` when using the OpenXR runtime.  This is a limitation of the OpenXR API
+
+## [4.5.4] - 2026-02-12
+### Changed
+- macOS binaries are now code signed
+- Added dependency on `com.unity.modules.androidjni`
 
 ## [4.5.2] - 2025-06-25
 ### Changed

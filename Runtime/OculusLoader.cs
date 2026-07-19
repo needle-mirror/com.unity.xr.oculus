@@ -449,6 +449,10 @@ namespace Unity.XR.Oculus
 
         public override void WasAssignedToBuildTarget(BuildTargetGroup buildTargetGroup)
         {
+#if UNITY_6000_5_OR_NEWER
+            Debug.LogWarning("Unity's OpenXR: Meta Package is now the recommended path for building Meta Quest experiences. OculusXR is deprecated in Unity 6.5 and newer, and no longer recommended for production.");
+#endif
+
 #if UNITY_6000_1_OR_NEWER
             if (buildTargetGroup == BuildTargetGroup.Standalone)
             {
@@ -538,6 +542,14 @@ namespace Unity.XR.Oculus
 
             return true;
 #endif
+        }
+
+        [RuntimeInitializeOnLoadMethod]
+        static void OnRuntimeInitialized()
+        {
+            s_DisplaySubsystemDescriptors.Clear();
+            s_InputSubsystemDescriptors.Clear();
+            unityEngineVersion = default;
         }
     }
 }

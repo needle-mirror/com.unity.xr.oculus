@@ -96,6 +96,12 @@ namespace Unity.XR.Oculus
         {
             return NativeMethods.GetDisplayFrequency(out refreshRate);
         }
+
+        [RuntimeInitializeOnLoadMethod]
+        static void OnRuntimeInitialized()
+        {
+            cachedDisplayAvailableFrequencies = null;
+        }
     }
 
     /// <summary>
@@ -642,6 +648,13 @@ namespace Unity.XR.Oculus
 
             Debug.LogError("No active Oculus display subsystem was found.");
             return m_Display;
+        }
+
+        [RuntimeInitializeOnLoadMethod]
+        static void OnRuntimeInitialized()
+        {
+            m_Display = null;
+            m_PluginVersion = string.Empty;
         }
     }
 }

@@ -23,6 +23,11 @@
             "define": "XR_MGMT_GTE_320"
         },
         {
+            "name": "com.unity.xr.management",
+            "expression": "4.7.0",
+            "define": "XR_MGMT_GTE_470"
+        },
+        {
             "name": "com.unity.xr.core-utils",
             "expression": "",
             "define": "XR_CORE_UTILS"

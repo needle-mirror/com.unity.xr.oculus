@@ -117,7 +117,11 @@ namespace UnityEditor.XR.Oculus
             var generalSettingsForBuildTarget = XRGeneralSettingsPerBuildTarget.XRGeneralSettingsForBuildTarget(btg);
             if (!generalSettingsForBuildTarget)
                 return false;
+#if XR_MGMT_GTE_470
+            var settings = generalSettingsForBuildTarget.Manager;
+#else
             var settings = generalSettingsForBuildTarget.AssignedSettings;
+#endif
             if (!settings)
                 return false;
 

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEditor;
 
 namespace Unity.XR.Oculus
 {
@@ -41,6 +42,14 @@ namespace Unity.XR.Oculus
             }
 
             hadInputFocus = appHasInputFocus;
+        }
+
+        [RuntimeInitializeOnLoadMethod]
+        static void OnRuntimeInitialized()
+        {
+            InputFocusAcquired = null;
+            InputFocusLost = null;
+            hadInputFocus = false;
         }
     }
 }

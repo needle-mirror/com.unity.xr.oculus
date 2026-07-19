@@ -49,6 +49,7 @@ namespace Unity.XR.Oculus
     // some platform support can only be determined at runtime such as Windows Arm64
     internal static class RuntimePlatformChecks
     {
+#if !OCULUSPLUGIN_UNSUPPORTED_PLATFORM
         private static readonly bool isRuntimeUnsupportedPlatform;
 
         static RuntimePlatformChecks()
@@ -63,6 +64,7 @@ namespace Unity.XR.Oculus
             }
 #endif
         }
+#endif
 
         internal static bool IsSupportedPlatform()
         {

@@ -168,5 +168,13 @@ namespace Unity.XR.Oculus
                 }
             }
         }
+
+        [RuntimeInitializeOnLoadMethod]
+        static void OnRuntimeInitialized()
+        {
+            s_Instance = null;
+            m_pauseAndRestartAttempts = 0;
+            TimeBetweenRestartAttempts = 5.0f;
+        }
     }
 }

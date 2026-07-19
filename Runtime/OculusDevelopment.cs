@@ -48,5 +48,11 @@ namespace Unity.XR.Oculus
             if (!NativeMethods.SetDeveloperModeStrict(false))
                 Debug.LogError("Failed to set DeveloperMode to false on Stop.");
         }
+
+        [RuntimeInitializeOnLoadMethod]
+        static void OnRuntimeInitialized()
+        {
+            s_CachedMode = UserDeveloperModeSettingCache.NoUserSettingCached;
+        }
     }
 }

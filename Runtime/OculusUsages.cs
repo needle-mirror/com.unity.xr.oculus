@@ -1,4 +1,5 @@
 #if ENABLE_VR || PACKAGE_DOCS_GENERATION
+using UnityEngine;
 using UnityEngine.XR;
 
 namespace Unity.XR.Oculus
@@ -21,6 +22,14 @@ namespace Unity.XR.Oculus
         /// Represents the capacitive touch sensor state on the grip of the Oculus Rift Controller.
         /// </summary>
         public static InputFeatureUsage<bool> thumbTouch = new InputFeatureUsage<bool>("ThumbTouch");
+
+        [RuntimeInitializeOnLoadMethod]
+        static void OnRuntimeInitialized()
+        {
+            thumbrest = new InputFeatureUsage<bool>("Thumbrest");
+            indexTouch = new InputFeatureUsage<bool>("IndexTouch");
+            thumbTouch = new InputFeatureUsage<bool>("ThumbTouch");
+        }
     }
 }
 #endif
